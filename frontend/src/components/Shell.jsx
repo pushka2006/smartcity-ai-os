@@ -27,6 +27,7 @@ const NAV = [
   { to: "/monitor",  label: "Monitor",  icon: Activity,      id: "monitor" },
   { to: "/camera",   label: "Camera",   icon: Camera,        id: "camera" },
   { to: "/traffic",  label: "Traffic",  icon: Route,         id: "traffic" },
+  { to: "/urban",    label: "Urban AI",  icon: Brain,         id: "urban" },
   { to: "/particles",label: "Particles", icon: Atom,          id: "particles" },
   { to: "/animate",  label: "Animate",   icon: Clapperboard,  id: "animate" },
   { to: "/handanim", label: "Hand Anim",  icon: Wind,          id: "handanim" },

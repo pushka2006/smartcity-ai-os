@@ -718,5 +718,41 @@
     "agent": "nexus-core",
     "timestamp": "2026-06-19T20:01:29.172973+00:00",
     "_id": "2b68e482-de0a-4de8-b5e5-89e243a48534"
+  },
+  {
+    "id": "abaf5aa5-dd5a-4931-a975-d3ae981d7458",
+    "session_id": "test-rest",
+    "role": "user",
+    "content": "What are my tasks?",
+    "agent": "nexus-core",
+    "timestamp": "2026-06-30T16:32:48.952409+00:00",
+    "_id": "46b014c5-d69d-45c8-a9c0-1149daea29c2"
+  },
+  {
+    "id": "a31fda84-05fa-45f7-a9e6-3b88f70df1da",
+    "session_id": "test-rest",
+    "role": "assistant",
+    "content": "**NEXUS Tasks Swarm**: No active tasks found in the database. Use the Tasks panel to queue new objectives.",
+    "agent": "nexus-core",
+    "timestamp": "2026-06-30T16:32:50.812649+00:00",
+    "_id": "de69e093-341b-4568-a889-7338c6dc05ad"
+  },
+  {
+    "id": "721968b7-a4f4-4935-9c64-d19bb370139a",
+    "session_id": "test-rest",
+    "role": "user",
+    "content": "What is in my memory?",
+    "agent": "nexus-core",
+    "timestamp": "2026-06-30T16:33:02.713060+00:00",
+    "_id": "ea1e1426-3e08-48d2-b0c3-8cc0ecf4e5fe"
+  },
+  {
+    "id": "5222d13b-8e0d-4a6f-920e-7a99185cc255",
+    "session_id": "test-rest",
+    "role": "assistant",
+    "content": "### Holographic Memory Index\n\n- \ud83e\udde0 **Voice Memory** (Category: `general`, Importance: `3/5`)\n  > Tomorrow is Saturday\n- \ud83e\udde0 **Voice Memory** (Category: `general`, Importance: `3/5`)\n  > Tomorrow is Saturday",
+    "agent": "nexus-core",
+    "timestamp": "2026-06-30T16:33:05.834886+00:00",
+    "_id": "d2245c2f-5a66-4356-9cab-621c03c3f9ce"
   }
 ]

@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { toast } from "../components/Toast";
 import {
   MapPin, Clock, Navigation, AlertTriangle, Info, ShieldAlert,
-  Route as RouteIcon, ArrowRight, Gauge, Activity, RefreshCw, Zap, TrendingUp, Star
+  Route as RouteIcon, ArrowRight, Gauge, Activity, RefreshCw, Zap, TrendingUp, Star,
+  Locate
 } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
@@ -27,6 +28,27 @@ const darkMapStyles = [
   { featureType: "transit", elementType: "geometry", stylers: [{ color: "#0f172a" }] },
   { featureType: "water", elementType: "geometry", stylers: [{ color: "#081b33" }] },
   { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#38bdf8" }] }
+];
+
+// Custom high-contrast Dark Red theme for Emergency evac mode
+const easMapStyles = [
+  { elementType: "geometry", stylers: [{ color: "#110505" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#110505" }, { weight: 2 }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#f87171" }] },
+  { featureType: "administrative", elementType: "geometry.stroke", stylers: [{ color: "#7f1d1d" }] },
+  { featureType: "administrative.land_parcel", elementType: "labels.text.fill", stylers: [{ color: "#991b1b" }] },
+  { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#080101" }] },
+  { featureType: "poi", elementType: "geometry", stylers: [{ color: "#1f0303" }] },
+  { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#b91c1c" }] },
+  { featureType: "poi.park", elementType: "geometry.fill", stylers: [{ color: "#1a0202" }] },
+  { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#991b1b" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#2d0606" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#580707" }] },
+  { featureType: "road.highway.controlled_access", elementType: "geometry", stylers: [{ color: "#7f1d1d" }] },
+  { featureType: "road.local", elementType: "labels.text.fill", stylers: [{ color: "#b91c1c" }] },
+  { featureType: "transit", elementType: "geometry", stylers: [{ color: "#2d0606" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#120202" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#ef4444" }] }
 ];
 
 // Preset routes for NY and CA
@@ -121,8 +143,88 @@ export default function TrafficPrediction() {
   const startMarkerInstance = useRef(null);
   const endMarkerInstance = useRef(null);
   const simulatedPolylineInstance = useRef(null);
+  const currentLocationMarkerInstance = useRef(null);
   const [sdkReady, setSdkReady] = useState(false);
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [detectingLocation, setDetectingLocation] = useState(false);
+  const [easActive, setEasActive] = useState(false);
+  const easMarkerInstances = useRef([]);
+
+  // Audio Refs for EAS Siren
+  const sirenAudioContextRef = useRef(null);
+  const sirenOscillatorRef = useRef(null);
+  const sirenLfoRef = useRef(null);
+  const sirenGainRef = useRef(null);
+
+  const playSiren = () => {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      
+      const ctx = new AudioContext();
+      sirenAudioContextRef.current = ctx;
+
+      const osc = ctx.createOscillator();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(550, ctx.currentTime);
+      sirenOscillatorRef.current = osc;
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      sirenGainRef.current = gain;
+
+      const lfo = ctx.createOscillator();
+      lfo.frequency.setValueAtTime(0.35, ctx.currentTime);
+      sirenLfoRef.current = lfo;
+
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.setValueAtTime(150, ctx.currentTime);
+
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      lfo.start();
+      osc.start();
+    } catch (e) {
+      console.warn("Web Audio API failed to initialize:", e);
+    }
+  };
+
+  const stopSiren = () => {
+    try {
+      if (sirenGainRef.current && sirenAudioContextRef.current) {
+        const ctx = sirenAudioContextRef.current;
+        sirenGainRef.current.gain.setValueAtTime(sirenGainRef.current.gain.value, ctx.currentTime);
+        sirenGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+      }
+      
+      setTimeout(() => {
+        if (sirenOscillatorRef.current) {
+          try { sirenOscillatorRef.current.stop(); } catch (e) {}
+          sirenOscillatorRef.current.disconnect();
+          sirenOscillatorRef.current = null;
+        }
+        if (sirenLfoRef.current) {
+          try { sirenLfoRef.current.stop(); } catch (e) {}
+          sirenLfoRef.current.disconnect();
+          sirenLfoRef.current = null;
+        }
+        if (sirenGainRef.current) {
+          sirenGainRef.current.disconnect();
+          sirenGainRef.current = null;
+        }
+        if (sirenAudioContextRef.current && sirenAudioContextRef.current.state !== "closed") {
+          sirenAudioContextRef.current.close();
+          sirenAudioContextRef.current = null;
+        }
+      }, 450);
+    } catch (e) {
+      console.warn("Error stopping siren:", e);
+    }
+  };
 
   // Initialize Map SDK
   useEffect(() => {
@@ -170,11 +272,234 @@ export default function TrafficPrediction() {
       if (startMarkerInstance.current) startMarkerInstance.current.setMap(null);
       if (endMarkerInstance.current) endMarkerInstance.current.setMap(null);
       if (simulatedPolylineInstance.current) simulatedPolylineInstance.current.setMap(null);
+      if (currentLocationMarkerInstance.current) currentLocationMarkerInstance.current.setMap(null);
+      easMarkerInstances.current.forEach(m => m.setMap(null));
+      
+      // Stop siren if active
+      if (sirenOscillatorRef.current) {
+        try { sirenOscillatorRef.current.stop(); } catch (e) {}
+        sirenOscillatorRef.current.disconnect();
+      }
+      if (sirenLfoRef.current) {
+        try { sirenLfoRef.current.stop(); } catch (e) {}
+        sirenLfoRef.current.disconnect();
+      }
+      if (sirenGainRef.current) {
+        sirenGainRef.current.disconnect();
+      }
+      if (sirenAudioContextRef.current && sirenAudioContextRef.current.state !== "closed") {
+        sirenAudioContextRef.current.close();
+      }
     };
   }, []);
 
+  // Detect current live location using HTML5 Geolocation API
+  const detectCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by your browser");
+      return;
+    }
+
+    setDetectingLocation(true);
+    toast.info("Retrieving live location telemetries...");
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        
+        // 1. Center map on current location
+        if (mapInstance.current) {
+          const pos = { lat: latitude, lng: longitude };
+          mapInstance.current.setCenter(pos);
+          mapInstance.current.setZoom(14);
+          
+          // 2. Draw/Update custom current location marker
+          if (currentLocationMarkerInstance.current) {
+            currentLocationMarkerInstance.current.setPosition(pos);
+          } else if (window.google && window.google.maps) {
+            currentLocationMarkerInstance.current = new window.google.maps.Marker({
+              position: pos,
+              map: mapInstance.current,
+              title: "My Location",
+              icon: {
+                path: window.google.maps.SymbolPath.CIRCLE,
+                scale: 9,
+                fillColor: "#8b5cf6", // Purple/Violet for distinct location marker
+                fillOpacity: 1,
+                strokeColor: "#FFFFFF",
+                strokeWeight: 2.5
+              }
+            });
+          }
+        }
+
+        // 3. Reverse Geocode coordinate into an address string
+        let addressFound = false;
+
+        // Try Google Maps Geocoder if SDK is ready
+        if (window.google && window.google.maps && sdkReady) {
+          try {
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
+              if (status === "OK" && results[0]) {
+                setOrigin(results[0].formatted_address);
+                setDetectingLocation(false);
+                toast.success("Current location geocoded successfully!");
+              } else {
+                fallbackReverseGeocode(latitude, longitude);
+              }
+            });
+            addressFound = true;
+          } catch (e) {
+            console.warn("Google Geocoder failed, falling back to OSM Nominatim:", e);
+          }
+        }
+
+        if (!addressFound) {
+          fallbackReverseGeocode(latitude, longitude);
+        }
+      },
+      (error) => {
+        setDetectingLocation(false);
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            toast.error("Location access denied. Please enable browser permissions.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            toast.error("Location information is unavailable.");
+            break;
+          case error.TIMEOUT:
+            toast.error("Location request timed out.");
+            break;
+          default:
+            toast.error("An unknown error occurred while retrieving location.");
+        }
+      },
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+    );
+  };
+
+  const fallbackReverseGeocode = async (lat, lng) => {
+    try {
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+        { headers: { "User-Agent": "SmartCity-AI-OS-Telemetry" } }
+      );
+      const data = await resp.json();
+      if (data && data.display_name) {
+        setOrigin(data.display_name);
+        toast.success("Location identified via OpenStreetMap telemetry!");
+      } else {
+        setOrigin(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+        toast.success("Location set to GPS coordinates.");
+      }
+    } catch (err) {
+      console.error("OSM Geocoding failed:", err);
+      setOrigin(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+      toast.success("Location set to GPS coordinates.");
+    } finally {
+      setDetectingLocation(false);
+    }
+  };
+
+  const spawnEasIncidents = (centerCoords) => {
+    clearEasIncidents();
+    if (!window.google || !window.google.maps || !mapInstance.current) return;
+
+    let center = centerCoords;
+    if (!center) {
+      if (startMarkerInstance.current) {
+        center = startMarkerInstance.current.getPosition();
+      } else {
+        center = mapInstance.current.getCenter();
+      }
+    }
+
+    const lat = typeof center.lat === "function" ? center.lat() : center.lat;
+    const lng = typeof center.lng === "function" ? center.lng() : center.lng;
+
+    const incidents = [
+      { lat: lat + 0.005, lng: lng + 0.006, title: "Zone Alpha Evacuation Checkpoint" },
+      { lat: lat - 0.007, lng: lng - 0.005, title: "Critical Vehicle Accident (EAS Alert)" },
+      { lat: lat + 0.003, lng: lng - 0.006, title: "Evacuation Transit Hub" }
+    ];
+
+    easMarkerInstances.current = incidents.map(inc => {
+      return new window.google.maps.Marker({
+        position: { lat: inc.lat, lng: inc.lng },
+        map: mapInstance.current,
+        title: inc.title,
+        icon: {
+          path: "M 0 -10 L 10 10 L -10 10 Z", // warning triangle SVG
+          scale: 1.2,
+          fillColor: "#ef4444",
+          fillOpacity: 1.0,
+          strokeColor: "#ffffff",
+          strokeWeight: 1.5
+        }
+      });
+    });
+  };
+
+  const clearEasIncidents = () => {
+    easMarkerInstances.current.forEach(m => m.setMap(null));
+    easMarkerInstances.current = [];
+  };
+
+  const toggleEmergencyAlertSystem = () => {
+    const nextState = !easActive;
+    setEasActive(nextState);
+
+    if (!mapInstance.current) {
+      toast.error("Map not initialized yet");
+      return;
+    }
+
+    if (nextState) {
+      mapInstance.current.setOptions({ styles: easMapStyles });
+      spawnEasIncidents();
+
+      if (directionsRendererInstance.current) {
+        directionsRendererInstance.current.setOptions({
+          polylineOptions: {
+            strokeColor: "#ef4444",
+            strokeOpacity: 0.9,
+            strokeWeight: 7
+          }
+        });
+      }
+
+      playSiren();
+
+      toast.error("EMERGENCY ALERT SYSTEM ACTIVE! Civil evacuation mode engaged.");
+    } else {
+      mapInstance.current.setOptions({ styles: darkMapStyles });
+      clearEasIncidents();
+
+      if (directionsRendererInstance.current) {
+        directionsRendererInstance.current.setOptions({
+          polylineOptions: {
+            strokeColor: "#00F5FF",
+            strokeOpacity: 0.8,
+            strokeWeight: 6
+          }
+        });
+      }
+
+      stopSiren();
+
+      toast.success("EAS deactivated. Restoring standard telemetries.");
+    }
+
+    // Refresh routes to trigger layout updates and emergency calculations
+    setTimeout(() => {
+      fetchTrafficPrediction(nextState);
+    }, 50);
+  };
+
   // Fetch real routes & traffic analysis from Google Maps directions service
-  const fetchTrafficPrediction = () => {
+  const fetchTrafficPrediction = (forceEasActive) => {
+    const activeEAS = typeof forceEasActive === "boolean" ? forceEasActive : easActive;
     if (!origin.trim() || !destination.trim()) {
       toast.error("Please enter both origin and destination addresses");
       return;
@@ -230,8 +555,20 @@ export default function TrafficPrediction() {
               congestionPct = Math.round(10 + (ratio - 1.0) * 100);
             }
 
-            const speedKph = Math.round((leg.distance.value / 1000) / (trafficVal / 3600));
-            const name = route.summary ? `via ${route.summary}` : `Route alternative ${idx + 1}`;
+            if (activeEAS) {
+              congestionPct = Math.min(99, congestionPct + 25);
+              congestionLvl = "heavy";
+            }
+
+            let speedKph = Math.round((leg.distance.value / 1000) / (trafficVal / 3600));
+            if (activeEAS) {
+              speedKph = Math.round(speedKph * 0.6);
+            }
+
+            let name = route.summary ? `via ${route.summary}` : `Route alternative ${idx + 1}`;
+            if (activeEAS) {
+              name = route.summary ? `EVAC CORRIDOR (via ${route.summary})` : `EVAC CORRIDOR Alternative ${idx + 1}`;
+            }
 
             return {
               name,
@@ -243,7 +580,8 @@ export default function TrafficPrediction() {
               congestion_pct: congestionPct,
               congestion_lvl: congestionLvl,
               avg_speed_kph: speedKph,
-              googleRoute: route
+              googleRoute: route,
+              trends: generateTrends(congestionPct)
             };
           });
 
@@ -273,7 +611,7 @@ export default function TrafficPrediction() {
         } else {
           console.warn("Google Directions Service failed:", status, "- Falling back to OSRM multi-route.");
           setIsDemoMode(true);
-          runClientSimulation(origin, destination);
+          runClientSimulation(origin, destination, activeEAS);
         }
       }
     );
@@ -314,7 +652,8 @@ export default function TrafficPrediction() {
   };
 
   // Run client-side simulation when directions API is denied/keyless, loading real OSM road networks
-  const runClientSimulation = async (origVal, destVal) => {
+  const runClientSimulation = async (origVal, destVal, forceEasActive) => {
+    const activeEAS = typeof forceEasActive === "boolean" ? forceEasActive : easActive;
     directionsRendererInstance.current.setDirections({ routes: [] });
 
     try {
@@ -372,13 +711,23 @@ export default function TrafficPrediction() {
           congestionPct = isRushHour ? Math.round(80 + Math.random() * 15) : Math.round(10 + Math.random() * 10);
         }
 
+        if (activeEAS) {
+          congestionPct = Math.min(99, congestionPct + 20);
+        }
+
         const delayMins = Math.round(freeFlowMins * (congestionPct / 100) * 0.45);
         const totalMins = freeFlowMins + delayMins;
-        const avgSpeed = Math.round(distanceVal / (totalMins / 60));
+        let avgSpeed = Math.round(distanceVal / (totalMins / 60));
+        if (activeEAS) {
+          avgSpeed = Math.round(avgSpeed * 0.6);
+        }
         const congestionLvl = congestionPct > 60 ? "heavy" : congestionPct > 30 ? "moderate" : "light";
 
         // Route Name
-        const roadName = route.legs[0]?.summary ? `via ${route.legs[0].summary}` : `Route Alternative ${idx + 1}`;
+        let roadName = route.legs[0]?.summary ? `via ${route.legs[0].summary}` : `Route Alternative ${idx + 1}`;
+        if (activeEAS) {
+          roadName = route.legs[0]?.summary ? `EVAC CORRIDOR (via ${route.legs[0].summary})` : `EVAC CORRIDOR Alternative ${idx + 1}`;
+        }
         const coords = route.geometry.coordinates.map(c => ({ lat: c[1], lng: c[0] }));
 
         return {
@@ -391,7 +740,8 @@ export default function TrafficPrediction() {
           congestion_pct: congestionPct,
           congestion_lvl: congestionLvl,
           avg_speed_kph: avgSpeed,
-          coords: coords
+          coords: coords,
+          trends: generateTrends(congestionPct)
         };
       });
 
@@ -411,7 +761,7 @@ export default function TrafficPrediction() {
 
       // Render the best route line on the map
       const initialRoute = routesWithBest[bestIdx !== -1 ? bestIdx : 0];
-      drawSimulatedRoute(initialRoute.coords, initialRoute.congestion_lvl);
+      drawSimulatedRoute(initialRoute.coords, initialRoute.congestion_lvl, activeEAS);
 
       toast.warning("Google Directions API requires an API key. Operating in real-world OpenStreetMap fallback.");
     } catch (err) {
@@ -445,30 +795,33 @@ export default function TrafficPrediction() {
     mapInstance.current.fitBounds(bounds);
     
     const mockRoute = {
-      name: "via Expressway (Backup)",
+      name: easActive ? "EVAC ROUTE (Backup)" : "via Expressway (Backup)",
       distance: "24.8 km",
-      duration: "35 mins",
-      durationValue: 2100,
+      duration: easActive ? "55 mins" : "35 mins",
+      durationValue: easActive ? 3300 : 2100,
       free_flow_duration: "25 mins",
-      delay_mins: 10,
-      congestion_pct: 42,
-      congestion_lvl: "moderate",
-      avg_speed_kph: 42,
+      delay_mins: easActive ? 30 : 10,
+      congestion_pct: easActive ? 75 : 42,
+      congestion_lvl: easActive ? "heavy" : "moderate",
+      avg_speed_kph: easActive ? 25 : 42,
       isBest: true,
-      coords: backupCoords
+      coords: backupCoords,
+      trends: generateTrends(easActive ? 75 : 42)
     };
     setRoutes([mockRoute]);
     setSelectedRouteIdx(0);
   };
 
   // Draw simulated route line
-  const drawSimulatedRoute = (coords, congestionLvl) => {
+  const drawSimulatedRoute = (coords, congestionLvl, forceEasActive) => {
+    const activeEAS = typeof forceEasActive === "boolean" ? forceEasActive : easActive;
     if (simulatedPolylineInstance.current) {
       simulatedPolylineInstance.current.setMap(null);
     }
 
     let routeColor = "#10b981";
-    if (congestionLvl === "heavy") routeColor = "#ef4444";
+    if (activeEAS) routeColor = "#ef4444";
+    else if (congestionLvl === "heavy") routeColor = "#ef4444";
     else if (congestionLvl === "moderate") routeColor = "#f59e0b";
 
     simulatedPolylineInstance.current = new window.google.maps.Polyline({
@@ -494,7 +847,7 @@ export default function TrafficPrediction() {
     
     if (isDemoMode) {
       // Re-draw coordinates on map
-      drawSimulatedRoute(chosen.coords, chosen.congestion_lvl);
+      drawSimulatedRoute(chosen.coords, chosen.congestion_lvl, easActive);
     } else {
       // Tell google maps directions renderer to display the clicked route index
       directionsRendererInstance.current.setRouteIndex(idx);
@@ -538,6 +891,11 @@ export default function TrafficPrediction() {
 
   // AI comparison advisories
   const getAiRouteAdvisory = () => {
+    if (easActive) {
+      const currentSelected = routes[selectedRouteIdx] || routes[0];
+      const name = currentSelected ? currentSelected.name : "Evacuation Route";
+      return `CRITICAL CIVIL NOTICE: Emergency Alert System active. "${name}" is designated as a high-capacity Evacuation Corridor. Non-essential civil travel is restricted. Speed limits are adjusted for emergency dispatch vehicles. Evacuate calmly toward civil assembly zones.`;
+    }
     if (routes.length === 0) return "System initializing trajectory analysis...";
     if (routes.length === 1) {
       return generateAiSummary(origin, destination, routes[0].congestion_lvl, routes[0].delay_mins);
@@ -610,9 +968,24 @@ export default function TrafficPrediction() {
                 } else {
                   congestionPct = Math.round(10 + (ratio - 1.0) * 100);
                 }
-                const speedKph = Math.round((route.legs[0].distance.value / 1000) / (trafficVal / 3600));
+
+                if (easActive) {
+                  congestionPct = Math.min(99, congestionPct + 25);
+                  congestionLvl = "heavy";
+                }
+
+                let speedKph = Math.round((route.legs[0].distance.value / 1000) / (trafficVal / 3600));
+                if (easActive) {
+                  speedKph = Math.round(speedKph * 0.6);
+                }
+
+                let routeName = route.summary ? `via ${route.summary}` : `Route alternative ${idx + 1}`;
+                if (easActive) {
+                  routeName = route.summary ? `EVAC CORRIDOR (via ${route.summary})` : `EVAC CORRIDOR Alternative ${idx + 1}`;
+                }
+
                 return {
-                  name: route.summary ? `via ${route.summary}` : `Route alternative ${idx + 1}`,
+                  name: routeName,
                   distance,
                   duration: trafficText,
                   durationValue: trafficVal,
@@ -621,7 +994,8 @@ export default function TrafficPrediction() {
                   congestion_pct: congestionPct,
                   congestion_lvl: congestionLvl,
                   avg_speed_kph: speedKph,
-                  googleRoute: route
+                  googleRoute: route,
+                  trends: generateTrends(congestionPct)
                 };
               });
 
@@ -676,6 +1050,34 @@ export default function TrafficPrediction() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", padding: "20px 24px", gap: 20 }}>
+      <style>{`
+        @keyframes pulse-banner {
+          0% { border-color: rgba(239, 68, 68, 0.35); box-shadow: 0 0 10px rgba(239, 68, 68, 0.1); }
+          50% { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+          100% { border-color: rgba(239, 68, 68, 0.35); box-shadow: 0 0 10px rgba(239, 68, 68, 0.1); }
+        }
+      `}</style>
+      
+      {easActive && (
+        <div style={{
+          background: "rgba(239, 68, 68, 0.15)",
+          border: "1px solid rgba(239, 68, 68, 0.4)",
+          color: "#ef4444",
+          padding: "10px 16px",
+          borderRadius: 8,
+          fontSize: 11,
+          fontFamily: "monospace",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          animation: "pulse-banner 2s infinite",
+          transition: "all 0.3s"
+        }}>
+          <AlertTriangle style={{ width: 14, height: 14 }} />
+          <span><strong>[CIVIL DEFENSE NOTICE] EMERGENCY ALERT SYSTEM ACTIVE:</strong> CIVIL EVACUATION SCENARIO IN EFFECT. REMAIN CALM AND UTILIŻE THE RECOMMENDED EVACUATION CORRIDORS.</span>
+        </div>
+      )}
+      
       {/* Header Panel */}
       <div className="nx-glass" style={{ borderRadius: 12, padding: "16px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
@@ -684,6 +1086,28 @@ export default function TrafficPrediction() {
             <p className="hud-label" style={{ marginTop: 2, fontSize: 10 }}>Direct real-time Google Maps telemetry and congestion layers</p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button
+              onClick={toggleEmergencyAlertSystem}
+              className="nx-btn"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 12px",
+                background: easActive ? "rgba(239, 68, 68, 0.2)" : "rgba(255, 255, 255, 0.03)",
+                color: easActive ? "#ef4444" : "rgba(148, 163, 184, 0.8)",
+                border: easActive ? "1px solid rgba(239, 68, 68, 0.5)" : "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: 6,
+                cursor: "pointer",
+                fontSize: 11,
+                fontWeight: 600,
+                boxShadow: easActive ? "0 0 12px rgba(239, 68, 68, 0.4)" : "none",
+                transition: "all 0.2s"
+              }}
+            >
+              <AlertTriangle style={{ width: 12, height: 12, animation: easActive ? "spin 3s linear infinite" : "none" }} />
+              {easActive ? "EAS ACTIVE" : "ACTIVATE EAS"}
+            </button>
             {isDemoMode ? (
               <span style={{ fontSize: 10, background: "rgba(245, 158, 11, 0.15)", border: "1px solid #f59e0b", color: "#f59e0b", padding: "4px 8px", borderRadius: 6, fontFamily: "monospace" }}>
                 OSM ROUTE OVERLAY FALLBACK
@@ -716,10 +1140,34 @@ export default function TrafficPrediction() {
                 value={origin}
                 onChange={e => setOrigin(e.target.value)}
                 placeholder="e.g. Times Square, NY"
-                style={{ width: "100%", background: "rgba(2,6,23,0.5)", border: "1px solid rgba(0,245,255,0.18)", borderRadius: 6, padding: "7px 10px 7px 32px", fontSize: 12, color: "#fff", outline: "none", transition: "all 0.2s" }}
+                style={{ width: "100%", background: "rgba(2,6,23,0.5)", border: "1px solid rgba(0,245,255,0.18)", borderRadius: 6, padding: "7px 36px 7px 32px", fontSize: 12, color: "#fff", outline: "none", transition: "all 0.2s" }}
                 onFocus={e => e.target.style.borderColor = "#00F5FF"}
                 onBlur={e => e.target.style.borderColor = "rgba(0,245,255,0.18)"}
               />
+              <button
+                type="button"
+                onClick={detectCurrentLocation}
+                disabled={detectingLocation}
+                title="Use Current Location"
+                style={{
+                  position: "absolute",
+                  right: 10,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: detectingLocation ? "#6E56FF" : "#00F5FF",
+                  opacity: detectingLocation ? 0.6 : 1,
+                  padding: 0,
+                  outline: "none"
+                }}
+              >
+                <Locate style={{ width: 14, height: 14, animation: detectingLocation ? "spin 1s linear infinite" : "none" }} />
+              </button>
             </div>
           </div>
           <div>
@@ -821,12 +1269,12 @@ export default function TrafficPrediction() {
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {/* Telemetry Metrics */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px" }}>
+            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px", border: easActive ? "1px solid rgba(239, 68, 68, 0.2)" : "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                <span className="hud-label">ESTIMATED COMMUTE</span>
-                <Clock style={{ width: 12, height: 12, color: "#00F5FF" }} />
+                <span className="hud-label" style={{ color: easActive ? "#ef4444" : "rgba(148, 163, 184, 0.6)" }}>{easActive ? "EVACUATION TIMELINE" : "ESTIMATED COMMUTE"}</span>
+                <Clock style={{ width: 12, height: 12, color: easActive ? "#ef4444" : "#00F5FF" }} />
               </div>
-              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: "#00F5FF" }}>
+              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: easActive ? "#ef4444" : "#00F5FF" }}>
                 {currentRoute ? currentRoute.duration : "--"}
               </div>
               <div style={{ fontSize: 10, color: "rgba(148,163,184,0.5)", marginTop: 4, fontFamily: "monospace" }}>
@@ -834,25 +1282,25 @@ export default function TrafficPrediction() {
               </div>
             </div>
 
-            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px" }}>
+            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px", border: easActive ? "1px solid rgba(239, 68, 68, 0.2)" : "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                <span className="hud-label">CONGESTION SCALE</span>
-                <Activity style={{ width: 12, height: 12, color: getCongestionColor(currentRoute?.congestion_lvl) }} />
+                <span className="hud-label" style={{ color: easActive ? "#ef4444" : "rgba(148, 163, 184, 0.6)" }}>{easActive ? "SECTOR THREAT LEVEL" : "CONGESTION SCALE"}</span>
+                <Activity style={{ width: 12, height: 12, color: easActive ? "#ef4444" : getCongestionColor(currentRoute?.congestion_lvl) }} />
               </div>
-              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: getCongestionColor(currentRoute?.congestion_lvl) }}>
-                {currentRoute ? `${currentRoute.congestion_pct}%` : "--"}
+              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: easActive ? "#ef4444" : getCongestionColor(currentRoute?.congestion_lvl) }}>
+                {easActive ? "CRITICAL" : currentRoute ? `${currentRoute.congestion_pct}%` : "--"}
               </div>
               <div style={{ fontSize: 10, color: "rgba(148,163,184,0.5)", marginTop: 4, fontFamily: "monospace" }}>
                 Delay: {currentRoute ? `+${currentRoute.delay_mins} mins` : "--"} (vs flow)
               </div>
             </div>
 
-            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px" }}>
+            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px", border: easActive ? "1px solid rgba(239, 68, 68, 0.2)" : "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                <span className="hud-label">AVERAGE TRAVEL SPEED</span>
-                <Gauge style={{ width: 12, height: 12, color: "#ff2e88" }} />
+                <span className="hud-label" style={{ color: easActive ? "#ef4444" : "rgba(148, 163, 184, 0.6)" }}>{easActive ? "EVAC FLOW PACE" : "AVERAGE TRAVEL SPEED"}</span>
+                <Gauge style={{ width: 12, height: 12, color: easActive ? "#ef4444" : "#ff2e88" }} />
               </div>
-              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: "#ff2e88" }}>
+              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: easActive ? "#ef4444" : "#ff2e88" }}>
                 {currentRoute ? `${currentRoute.avg_speed_kph} km/h` : "--"}
               </div>
               <div style={{ fontSize: 10, color: "rgba(148,163,184,0.5)", marginTop: 4, fontFamily: "monospace" }}>
@@ -860,12 +1308,12 @@ export default function TrafficPrediction() {
               </div>
             </div>
 
-            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px" }}>
+            <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px", border: easActive ? "1px solid rgba(239, 68, 68, 0.2)" : "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                <span className="hud-label">FREE FLOW TARGET</span>
-                <Zap style={{ width: 12, height: 12, color: "#10b981" }} />
+                <span className="hud-label" style={{ color: easActive ? "#ef4444" : "rgba(148, 163, 184, 0.6)" }}>{easActive ? "EVACUATION TARGET" : "FREE FLOW TARGET"}</span>
+                <Zap style={{ width: 12, height: 12, color: easActive ? "#ef4444" : "#10b981" }} />
               </div>
-              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: "#10b981" }}>
+              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Unbounded',sans-serif", color: easActive ? "#ef4444" : "#10b981" }}>
                 {currentRoute ? currentRoute.free_flow_duration : "--"}
               </div>
               <div style={{ fontSize: 10, color: "rgba(148,163,184,0.5)", marginTop: 4, fontFamily: "monospace" }}>
@@ -875,13 +1323,13 @@ export default function TrafficPrediction() {
           </div>
 
           {/* AI Advisor Panel */}
-          <div className="nx-glass" style={{ borderRadius: 12, padding: "16px 20px", display: "flex", gap: 14, alignItems: "flex-start", position: "relative" }}>
-            <div style={{ position: "absolute", top: -10, right: -10, width: 60, height: 60, borderRadius: "50%", background: "#6E56FF", opacity: 0.1, filter: "blur(12px)" }} />
-            <div style={{ display: "flex", alignItems: "center", justifyitems: "center", justifyContent: "center", background: "rgba(110, 86, 255, 0.15)", border: "1px solid rgba(110, 86, 255, 0.4)", borderRadius: 8, padding: 8, color: "#6E56FF" }}>
+          <div className="nx-glass" style={{ borderRadius: 12, padding: "16px 20px", display: "flex", gap: 14, alignItems: "flex-start", position: "relative", border: easActive ? "1px solid rgba(239,68,68,0.2)" : "1px solid rgba(255,255,255,0.05)" }}>
+            <div style={{ position: "absolute", top: -10, right: -10, width: 60, height: 60, borderRadius: "50%", background: easActive ? "#EF4444" : "#6E56FF", opacity: 0.1, filter: "blur(12px)" }} />
+            <div style={{ display: "flex", alignItems: "center", justifyitems: "center", justifyContent: "center", background: easActive ? "rgba(239, 68, 68, 0.15)" : "rgba(110, 86, 255, 0.15)", border: easActive ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid rgba(110, 86, 255, 0.4)", borderRadius: 8, padding: 8, color: easActive ? "#ef4444" : "#6E56FF" }}>
               <Activity style={{ width: 18, height: 18 }} />
             </div>
             <div style={{ flex: 1 }}>
-              <div className="font-display" style={{ fontSize: 10, fontWeight: 800, color: "#6E56FF", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>NEXUS Routing Advisor</div>
+              <div className="font-display" style={{ fontSize: 10, fontWeight: 800, color: easActive ? "#ef4444" : "#6E56FF", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{easActive ? "NEXUS Emergency Advisor" : "NEXUS Routing Advisor"}</div>
               <p style={{ fontSize: 11.5, color: "rgba(255,255,255,0.85)", margin: 0, lineHeight: 1.5, fontFamily: "monospace" }}>
                 {getAiRouteAdvisory()}
               </p>
@@ -904,10 +1352,10 @@ export default function TrafficPrediction() {
                   <Line
                     type="monotone"
                     dataKey="congestion"
-                    stroke="#00F5FF"
+                    stroke={easActive ? "#ef4444" : "#00F5FF"}
                     strokeWidth={2}
-                    dot={{ fill: "#00F5FF", r: 2, strokeWidth: 0 }}
-                    activeDot={{ r: 4, stroke: "#00F5FF", strokeWidth: 1 }}
+                    dot={{ fill: easActive ? "#ef4444" : "#00F5FF", r: 2, strokeWidth: 0 }}
+                    activeDot={{ r: 4, stroke: easActive ? "#ef4444" : "#00F5FF", strokeWidth: 1 }}
                   />
                 </LineChart>
               </ResponsiveContainer>

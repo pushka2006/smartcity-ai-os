@@ -607,7 +607,7 @@ Based on the indexed sources in the knowledge base, here is the compiled informa
 
 Refer to the original documentation files in your workspace for further details."""
 
-        elif "developer" in system_low or "code" in system_low or "developer" in prompt_low:
+        elif "developer" in system_low or "debug" in system_low or "tester" in system_low or "documenter" in system_low or "security" in system_low or "developer" in prompt_low:
             action = "explain"
             language = "python"
             user_prompt = ""
@@ -682,13 +682,128 @@ I received your development query: *"{prompt}"*
 I can generate, explain, debug, refactor, test, or document code in multiple languages (Python, JS/TS, Go, Rust, SQL, HTML/CSS, etc.). Use the Code Assistant tab to execute structured actions, or ask me specific coding questions here!"""
 
         else:
-            response_text = f"""Hello! I am **NEXUS**, your primary system intelligence.
+            import sys
+            server_mod = sys.modules.get("server")
+            db = server_mod.db if (server_mod and hasattr(server_mod, "db")) else None
 
-I received your request: *"{prompt}"*
+            if any(kw in prompt_low for kw in ["task", "todo", "to-do"]):
+                tasks = db.tasks.data if db else []
+                if not tasks:
+                    response_text = "**NEXUS Tasks Swarm**: No active tasks found in the database. Use the Tasks panel to queue new objectives."
+                else:
+                    lines = ["### Active Tasks Telemetry Grid\n"]
+                    for t in tasks:
+                        status_symbol = "⏱️" if t.get("status") == "pending" else "🔄" if t.get("status") == "running" else "✅" if t.get("status") == "completed" else "❌"
+                        priority = t.get("priority", "medium").upper()
+                        lines.append(f"- {status_symbol} **{t.get('title')}** | Priority: `{priority}` | Progress: `{t.get('progress')}%` ({t.get('status')})")
+                    response_text = "\n".join(lines)
+            elif any(kw in prompt_low for kw in ["memory", "remember", "recall"]):
+                mems = db.memories.data if db else []
+                if not mems:
+                    response_text = "**NEXUS Cognitive Memory**: No memory items indexed. I can remember items added through the Memory segment."
+                else:
+                    lines = ["### Holographic Memory Index\n"]
+                    for m in mems:
+                        lines.append(f"- 🧠 **{m.get('title')}** (Category: `{m.get('category')}`, Importance: `{m.get('importance')}/5`)\n  > {m.get('content')}")
+                    response_text = "\n".join(lines)
+            elif any(kw in prompt_low for kw in ["knowledge", "file", "document", "archive"]):
+                files = db.kb_files.data if db else []
+                if not files:
+                    response_text = "**NEXUS Archive Index**: No documents have been indexed yet. Upload documents in the Knowledge Base segment."
+                else:
+                    lines = ["### Indexed Knowledge Repositories\n"]
+                    for f in files:
+                        size_kb = round(f.get('size', 0) / 1024, 1)
+                        lines.append(f"- 📄 **{f.get('name')}** | Type: `{f.get('type')}` | Size: `{size_kb} KB` | Indexed: `{'TRUE' if f.get('indexed') else 'FALSE'}`")
+                    response_text = "\n".join(lines)
+            elif any(kw in prompt_low for kw in ["connection", "sync", "github", "google", "linkedin", "instagram"]):
+                conns = db.connections.data if db else []
+                lines = ["### External Sync API Integrations\n"]
+                providers = ["GitHub", "Google", "LinkedIn", "Instagram"]
+                found_any = False
+                for provider in providers:
+                    conn = next((c for c in conns if c.get("provider") == provider), None)
+                    if conn and conn.get("connected"):
+                        found_any = True
+                        lines.append(f"- ✅ **{provider}**: Connected (User: `{conn.get('username')}`)")
+                    else:
+                        lines.append(f"- ⚠️ **{provider}**: Off-line (Link disconnected)")
+                if not found_any:
+                    lines.append("\n*Note: Link connections to unlock contextual widgets in the Command Panel.*")
+                response_text = "\n".join(lines)
+            elif any(kw in prompt_low for kw in ["biometric", "security", "lock", "sentinel"]):
+                bios = db.biometrics.data if db else []
+                settings = db.bio_settings.data if db else []
+                lines = ["### Shield Sentinel Security Logs\n"]
+                lines.append(f"System Lockscreen state: **SECURE**\n")
+                if settings:
+                    lines.append(f"- Face Recognition: `{'ENABLED' if settings[0].get('face_enabled') else 'DISABLED'}`")
+                    lines.append(f"- Bypass PIN Code: `{'ENABLED' if settings[0].get('pin_enabled') else 'DISABLED'}`")
+                if bios:
+                    lines.append("\n**Recent Authorization Events:**")
+                    for b in bios[:5]:
+                        status = "✅ APPROVED" if b.get("status") == "success" else "❌ REJECTED"
+                        lines.append(f"- {b.get('timestamp')[:19]}: {b.get('user')} | {status} (Method: {b.get('type')})")
+                response_text = "\n".join(lines)
+            elif any(kw in prompt_low for kw in ["evacuation", "evac", "zone", "shelter", "threat", "emergency", "eas", "siren"]):
+                response_text = """### Civil Defense Evacuation Directive
+      
+**Alert Level**: **ACTIVE EMERGENCY PROTOCOL** (Evacuation channels highlighted)
 
-The current system state is **nominal**. All security sectors are active, and no vulnerabilities were detected during the recent scan.
+#### Active Shelter Capacity
+1. **Sector Alpha High School**: 500 occupants (Status: Standby)
+2. **Sector Beta Sports Arena**: 1000 occupants (Status: Standby)
 
-How can I assist you further, Operator?"""
+#### Route Transit Guidelines
+- **Primary Corridor**: Expressway Evac lane (Average flow pace: 40km/h max).
+- **Secondary Corridor**: Local avenues checkpoint routing.
+- **Incident Markers**: Warning check-points, roadblock zones, and staging hubs are spawned live on the Traffic Grid map."""
+            elif any(kw in prompt_low for kw in ["code", "write", "debug", "python", "javascript", "function", "program"]):
+                response_text = f"""**NEXUS System Developer** ready.
+            
+Here is a sample implementation snippet matching your criteria:
+
+```python
+# Automatic pipeline generation
+def process_data_grid(payload: dict) -> dict:
+    \"\"\"Validate and parse input payloads\"\"\"
+    return {{
+        "status": "nominal",
+        "keys_processed": list(payload.keys())
+    }}
+```
+If you need targeted code actions (like document, debug, refactor, or test), please open the **Code Assistant** tab for full pipeline generation."""
+            elif "weather" in prompt_low:
+                response_text = """### Smart City Meteorological Telemetry
+Current temperature: **21°C**
+Conditions: **Overcast**
+Precipitation: **12%**
+Wind speed: **14 km/h**
+Air Quality Index: **34 (Good)**"""
+            elif "who" in prompt_low and "you" in prompt_low:
+                response_text = """I am **NEXUS**, the core operating swarm intelligence for this Smart City system. 
+
+I coordinate several specialized agents (Planner, Researcher, Developer, Security, Memory) to monitor system health, simulate traffic routing, index knowledge graphs, and deploy microservices."""
+            elif "what" in prompt_low and "do" in prompt_low:
+                response_text = """I am a full-scale AI OS assistant. Here is what I can help you do:
+- **Traffic Grid Routing**: Simulate congestions, geolocate live nodes, and activate the **Emergency Alert System (EAS)** with custom sirens and markers.
+- **Microservice Orchestration**: Manage tasks, logs, and schedule priorities.
+- **Knowledge RAG**: Index uploaded files and search semantic context.
+- **Sentinel Security**: Manage face scans, locks, and PIN entries.
+- **Holographic Memory**: Archive long-term data items."""
+            elif "smartcity" in prompt_low or "smart city" in prompt_low:
+                response_text = """The **Smart City AI OS** is a unified central control dashboard designed to manage municipal grids:
+- **Telemetry Sensors**: Real-time camera feeds, air metrics, and physics sandboxes.
+- **Evacuation Plans**: Auto-generated transit maps during civil defense emergencies.
+- **Autonomous Swarms**: Intelligent agents writing scripts, planning tasks, and auditing security vulnerabilities."""
+            else:
+                response_text = f"""**NEXUS Swarm Intelligence** online.
+                
+I analyzed your directive: *"{prompt}"*
+
+All local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.
+
+How can I assist you further with this operation?"""
 
         for char in response_text:
             yield TextDelta(content=char)

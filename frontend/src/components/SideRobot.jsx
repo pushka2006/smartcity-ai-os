@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { Send, X, Trash2, Sparkles } from "lucide-react";
+import { streamChat } from "../lib/api";
 
 export default function SideRobot() {
   const location = useLocation();
@@ -10,6 +12,30 @@ export default function SideRobot() {
   const [handStatus, setHandStatus] = useState("idle");
   const [handDetected, setHandDetected] = useState(false);
   const containerRef = useRef(null);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState("");
+  const [chatStreaming, setChatStreaming] = useState(false);
+  const [chatSessionId, setChatSessionId] = useState(null);
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
+
+  // Audio Refs for EAS Siren (if needed elsewhere, but kept simple here)
+  const messagesEndRefScroll = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (chatOpen) {
+      messagesEndRefScroll();
+    }
+  }, [chatMessages, chatOpen]);
+
+  useEffect(() => {
+    if (chatOpen) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [chatOpen]);
 
   // Listen to hand-tracking status from the hand animation studio page
   useEffect(() => {
@@ -50,75 +76,179 @@ export default function SideRobot() {
     return () => clearInterval(blinkInterval);
   }, []);
 
-  // Context-aware speech responses based on current path
-  useEffect(() => {
-    let text = "HELLO OPERATOR. NEXUS OS IS NOMINAL.";
-    switch (location.pathname) {
-      case "/":
-        text = "WELCOME BACK. CORE COMMAND PANEL INITIALIZED.";
-        break;
-      case "/chat":
-        text = "CONNECTING COGNITIVE MODULES... READY TO CHAT.";
-        break;
-      case "/agents":
-        text = "MONITORING ACTIVE AGENT SYSTEM SWARMS...";
-        break;
-      case "/memory":
-        text = "KNOWLEDGE GRAPHS SYNCHRONIZED AND SECURED.";
-        break;
-      case "/knowledge":
-        text = "SCANNING SYSTEM ARCHIVE AND RETRIEVAL INDEX.";
+  const getContextWelcomeMessage = (path) => {
+    let greeting = "HELLO HUMAN. I am NEXUS, the core operating swarm intelligence. How can I assist you today?";
+    switch (path) {
+      case "/traffic":
+        greeting = "EAS and Telemetry modules online. Evacuation routing models are active. Ask me anything about current traffic grids, evacuations, or speed paces.";
         break;
       case "/code":
-        text = "SYNTACTIC ANALYZERS ONLINE. LETS WRITE CODE!";
-        break;
-      case "/terminal":
-        text = "SANDBOX TERMINAL ENGAGED. CAUTION REQUIRED.";
-        break;
-      case "/browser":
-        text = "SECURE SANDBOXED WEB RUNTIME IS RUNNING.";
-        break;
-      case "/tasks":
-        text = "CORE SCHEDULE AND TO-DOS SYNCED COMPLETED.";
-        break;
-      case "/monitor":
-        text = "TELEMETRY SYSTEM HEALTH AND CPU NOMINAL.";
-        break;
-      case "/camera":
-        text = "CAMERA FEED ACCESSIBLE. BIOMETRICS ACTIVE.";
-        break;
-      case "/particles":
-        text = "KINETIC PHYSICS PARTICLE playground ENGAGED.";
-        break;
-      case "/animate":
-        text = "SVG TIMELINE ANIMATION RENDERER ONLINE.";
-        break;
-      case "/handanim":
-        if (handStatus === "error") {
-          text = "CAMERA LINK OFFLINE. CHECK DEVICE PERMISSIONS!";
-        } else if (handStatus === "loading") {
-          text = "INITIALIZING CAMERA & NEURAL ENGINE...";
-        } else if (handStatus === "active") {
-          if (handDetected) {
-            text = "✋ DUAL-HAND ACTIVE: PALM TRACKED!";
-          } else {
-            text = "SCANNING FRAME FOR HANDS...";
-          }
-        } else {
-          text = "MOUSE CONTROL ACTIVE. CLICKS DETONATE BLASTS.";
-        }
-        break;
-      case "/settings":
-        text = "NEXUS PARAMETERS READY FOR CALIBRATION.";
+        greeting = "Compiler pipelines ready. Lints analyzed. Ask me code assistant directives.";
         break;
       case "/biometrics":
-        text = "SHIELD SYSTEM ACCESS NOMINAL. SECURITY GREEN.";
+      case "/camera":
+        greeting = "Sentinel protocols active. Face scanners nominal. Ask me about system lock status or security profiles.";
+        break;
+      case "/chat":
+        greeting = "Connecting cognitive modules. Chat swarm is operational.";
+        break;
+      case "/settings":
+        greeting = "Calibration panel online. Ask me about custom system parameters.";
+        break;
+      case "/tasks":
+        greeting = "Schedule and TODO swarms sync complete. How can I assist with your tasks?";
+        break;
+      case "/terminal":
+        greeting = "Sandbox terminal engaged. Caution required. How can I assist with terminal operations?";
         break;
       default:
         break;
     }
+    return greeting;
+  };
+
+  // Reset conversation when route switches
+  useEffect(() => {
+    const welcome = getContextWelcomeMessage(location.pathname);
+    setChatMessages(prev => {
+      if (prev.length <= 1) {
+        return [{ id: `w${Date.now()}`, role: "assistant", content: welcome, timestamp: new Date().toISOString() }];
+      }
+      return [
+        ...prev,
+        { id: `sys${Date.now()}`, role: "system", content: `[Context switched to ${location.pathname}]`, timestamp: new Date().toISOString() }
+      ];
+    });
+  }, [location.pathname]);
+
+  // Context-aware speech responses based on current path
+  useEffect(() => {
+    let text = "HELLO OPERATOR. NEXUS OS IS NOMINAL.";
+    if (chatOpen) {
+      text = "COGNITIVE CHAT ASSISTANT SWARM ENGAGED.";
+    } else if (hovered) {
+      text = "CLICK ME TO OPEN THE COGNITIVE CHAT ASSISTANT.";
+    } else {
+      switch (location.pathname) {
+        case "/":
+          text = "WELCOME BACK. CORE COMMAND PANEL INITIALIZED.";
+          break;
+        case "/chat":
+          text = "CONNECTING COGNITIVE MODULES... READY TO CHAT.";
+          break;
+        case "/agents":
+          text = "MONITORING ACTIVE AGENT SYSTEM SWARMS...";
+          break;
+        case "/memory":
+          text = "KNOWLEDGE GRAPHS SYNCHRONIZED AND SECURED.";
+          break;
+        case "/knowledge":
+          text = "SCANNING SYSTEM ARCHIVE AND RETRIEVAL INDEX.";
+          break;
+        case "/code":
+          text = "SYNTACTIC ANALYZERS ONLINE. LETS WRITE CODE!";
+          break;
+        case "/terminal":
+          text = "SANDBOX TERMINAL ENGAGED. CAUTION REQUIRED.";
+          break;
+        case "/browser":
+          text = "SECURE SANDBOXED WEB RUNTIME IS RUNNING.";
+          break;
+        case "/tasks":
+          text = "CORE SCHEDULE AND TO-DOS SYNCED COMPLETED.";
+          break;
+        case "/monitor":
+          text = "TELEMETRY SYSTEM HEALTH AND CPU NOMINAL.";
+          break;
+        case "/camera":
+          text = "CAMERA FEED ACCESSIBLE. BIOMETRICS ACTIVE.";
+          break;
+        case "/particles":
+          text = "KINETIC PHYSICS PARTICLE playground ENGAGED.";
+          break;
+        case "/animate":
+          text = "SVG TIMELINE ANIMATION RENDERER ONLINE.";
+          break;
+        case "/handanim":
+          if (handStatus === "error") {
+            text = "CAMERA LINK OFFLINE. CHECK DEVICE PERMISSIONS!";
+          } else if (handStatus === "loading") {
+            text = "INITIALIZING CAMERA & NEURAL ENGINE...";
+          } else if (handStatus === "active") {
+            if (handDetected) {
+              text = "✋ DUAL-HAND ACTIVE: PALM TRACKED!";
+            } else {
+              text = "SCANNING FRAME FOR HANDS...";
+            }
+          } else {
+            text = "MOUSE CONTROL ACTIVE. CLICKS DETONATE BLASTS.";
+          }
+          break;
+        case "/settings":
+          text = "NEXUS PARAMETERS READY FOR CALIBRATION.";
+          break;
+        case "/biometrics":
+          text = "SHIELD SYSTEM ACCESS NOMINAL. SECURITY GREEN.";
+          break;
+        default:
+          break;
+      }
+    }
     setSpeechText(text);
-  }, [location.pathname, handStatus, handDetected]);
+  }, [location.pathname, handStatus, handDetected, hovered, chatOpen]);
+
+  const sendChatAssistantMessage = async () => {
+    if (!chatInput.trim() || chatStreaming) return;
+    const text = chatInput.trim();
+    setChatInput("");
+    setChatStreaming(true);
+
+    const userMsg = { id: `u${Date.now()}`, role: "user", content: text, timestamp: new Date().toISOString() };
+    setChatMessages(prev => [...prev, userMsg]);
+
+    const placeholder = { id: `a${Date.now()}`, role: "assistant", content: "", timestamp: new Date().toISOString(), streaming: true };
+    setChatMessages(prev => [...prev, placeholder]);
+
+    let sid = chatSessionId;
+
+    try {
+      let currentAgent = "nexus-core";
+      if (location.pathname === "/code") currentAgent = "developer";
+      
+      await streamChat({
+        session_id: sid,
+        agent: currentAgent,
+        message: text,
+        onMeta: m => {
+          sid = m.session_id;
+          setChatSessionId(m.session_id);
+        },
+        onDelta: c => {
+          setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content + c } : m));
+        },
+        onDone: () => {
+          setChatStreaming(false);
+          setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, streaming: false } : m));
+        },
+        onError: err => {
+          setChatStreaming(false);
+          setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content + ` [Stream Error: ${err.message}]`, streaming: false } : m));
+        }
+      });
+    } catch (e) {
+      console.error("Assistant chat stream failed:", e);
+      setChatStreaming(false);
+      setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content + ` [System Error]`, streaming: false } : m));
+    }
+  };
+
+  const clearChatAssistantHistory = () => {
+    setChatSessionId(null);
+    const welcome = getContextWelcomeMessage(location.pathname);
+    setChatMessages([
+      { id: `w${Date.now()}`, role: "assistant", content: welcome, timestamp: new Date().toISOString() }
+    ]);
+  };
 
   // Calculate face and eye angle offset based on mouse position relative to the container
   let headX = 0;
@@ -145,23 +275,226 @@ export default function SideRobot() {
   }
 
   return (
-    <div
-      ref={containerRef}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        position: "fixed",
-        bottom: 16,
-        right: 16,
-        zIndex: 9999,
-        pointerEvents: "auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-end",
-        gap: 12,
-        animation: "side-robot-float 4s ease-in-out infinite"
-      }}
-    >
+    <>
+      {/* Floating Chat Drawer */}
+      {chatOpen && (
+        <div
+          className="nx-glass"
+          onClick={e => e.stopPropagation()} // prevent closing when clicking inside
+          style={{
+            position: "fixed",
+            bottom: 195,
+            right: 16,
+            width: 340,
+            height: 440,
+            zIndex: 99999,
+            display: "flex",
+            flexDirection: "column",
+            background: "rgba(2, 6, 23, 0.9)",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(0, 245, 255, 0.22)",
+            borderRadius: 12,
+            boxShadow: "0 8px 32px rgba(0, 245, 255, 0.2)",
+            overflow: "hidden",
+            transition: "all 0.3s ease"
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              padding: "10px 14px",
+              background: "rgba(0, 245, 255, 0.05)",
+              borderBottom: "1px solid rgba(0, 245, 255, 0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 6, color: "#00F5FF" }}>
+              <Sparkles style={{ width: 13, height: 13 }} />
+              <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", fontFamily: "monospace" }}>NEXUS AI ASSISTANT</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <button
+                onClick={clearChatAssistantHistory}
+                title="Clear Session"
+                style={{ background: "none", border: "none", color: "rgba(148,163,184,0.6)", cursor: "pointer", display: "flex", alignItems: "center", padding: 2 }}
+                onMouseEnter={e => e.currentTarget.style.color = "#ef4444"}
+                onMouseLeave={e => e.currentTarget.style.color = "rgba(148,163,184,0.6)"}
+              >
+                <Trash2 style={{ width: 12, height: 12 }} />
+              </button>
+              <button
+                onClick={() => setChatOpen(false)}
+                title="Close"
+                style={{ background: "none", border: "none", color: "rgba(148,163,184,0.6)", cursor: "pointer", display: "flex", alignItems: "center", padding: 2 }}
+                onMouseEnter={e => e.currentTarget.style.color = "#00F5FF"}
+                onMouseLeave={e => e.currentTarget.style.color = "rgba(148,163,184,0.6)"}
+              >
+                <X style={{ width: 13, height: 13 }} />
+              </button>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              padding: "12px 14px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 10
+            }}
+          >
+            {chatMessages.map(msg => {
+              const isUser = msg.role === "user";
+              const isSystem = msg.role === "system";
+              
+              if (isSystem) {
+                return (
+                  <div
+                    key={msg.id}
+                    style={{
+                      fontSize: 9,
+                      color: "rgba(148, 163, 184, 0.45)",
+                      textAlign: "center",
+                      fontFamily: "monospace",
+                      margin: "4px 0"
+                    }}
+                  >
+                    {msg.content}
+                  </div>
+                );
+              }
+
+              return (
+                <div
+                  key={msg.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: isUser ? "flex-end" : "flex-start",
+                    alignItems: "flex-start"
+                  }}
+                >
+                  {!isUser && (
+                    <div style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      background: "rgba(0, 245, 255, 0.1)",
+                      border: "1px solid rgba(0, 245, 255, 0.25)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: 6,
+                      fontSize: 10,
+                      color: "#00F5FF",
+                      marginTop: 2
+                    }}>
+                      ⬡
+                    </div>
+                  )}
+                  <div
+                    style={{
+                      maxWidth: "80%",
+                      padding: "8px 10px",
+                      borderRadius: isUser ? "12px 12px 2px 12px" : "2px 12px 12px 12px",
+                      background: isUser ? "rgba(0, 245, 255, 0.08)" : "rgba(15, 23, 42, 0.6)",
+                      border: isUser ? "1px solid rgba(0, 245, 255, 0.2)" : "1px solid rgba(255, 255, 255, 0.05)",
+                      fontSize: 11,
+                      color: isUser ? "#e2e8f0" : "#cbd5e1",
+                      fontFamily: "monospace",
+                      lineHeight: 1.4,
+                      wordBreak: "break-word"
+                    }}
+                  >
+                    <div style={{ whiteSpace: "pre-wrap" }}>
+                      {msg.content}
+                      {msg.streaming && <span className="nx-caret" style={{ background: "#00F5FF", width: 4, height: 11, display: "inline-block", marginLeft: 2 }} />}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Panel */}
+          <div
+            style={{
+              padding: 10,
+              borderTop: "1px solid rgba(0, 245, 255, 0.12)",
+              display: "flex",
+              gap: 8,
+              background: "rgba(2, 6, 23, 0.4)"
+            }}
+          >
+            <input
+              ref={inputRef}
+              type="text"
+              value={chatInput}
+              onChange={e => setChatInput(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  sendChatAssistantMessage();
+                }
+              }}
+              placeholder="Ask NEXUS Assistant..."
+              disabled={chatStreaming}
+              style={{
+                flex: 1,
+                background: "rgba(2, 6, 23, 0.6)",
+                border: "1px solid rgba(0, 245, 255, 0.15)",
+                borderRadius: 6,
+                padding: "6px 10px",
+                fontSize: 11,
+                color: "#fff",
+                outline: "none",
+                fontFamily: "monospace"
+              }}
+            />
+            <button
+              onClick={sendChatAssistantMessage}
+              disabled={chatStreaming || !chatInput.trim()}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: 6,
+                background: chatInput.trim() ? "rgba(0, 245, 255, 0.15)" : "rgba(255, 255, 255, 0.02)",
+                border: chatInput.trim() ? "1px solid rgba(0, 245, 255, 0.3)" : "1px solid rgba(255,255,255,0.05)",
+                color: chatInput.trim() ? "#00F5FF" : "rgba(148,163,184,0.4)",
+                cursor: chatInput.trim() ? "pointer" : "default",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "all 0.2s"
+              }}
+            >
+              <Send style={{ width: 12, height: 12 }} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div
+        ref={containerRef}
+        onClick={() => setChatOpen(p => !p)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          zIndex: 9999,
+          pointerEvents: "auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: 12,
+          animation: "side-robot-float 4s ease-in-out infinite"
+        }}
+      >
       <style>{`
         @keyframes side-robot-float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -400,5 +733,6 @@ export default function SideRobot() {
         </svg>
       </div>
     </div>
+    </>
   );
 }

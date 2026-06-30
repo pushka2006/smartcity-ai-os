@@ -22,6 +22,7 @@ import AnimationStudio from "./pages/AnimationStudio";
 import HandParticleStudio from "./pages/HandParticleStudio";
 import MockAuth from "./pages/MockAuth";
 import TrafficPrediction from "./pages/TrafficPrediction";
+import UrbanIntelligence from "./pages/UrbanIntelligence";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
                   <Route path="/animate"   element={<AnimationStudio />} />
                   <Route path="/handanim"  element={<HandParticleStudio />} />
                   <Route path="/traffic"   element={<TrafficPrediction />} />
+                  <Route path="/urban"     element={<UrbanIntelligence />} />
                   <Route path="/auth/mock/:provider" element={<MockAuth />} />
                   <Route path="*"          element={<Navigate to="/" replace />} />
                 </Routes>
