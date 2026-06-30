@@ -1,0 +1,10 @@
+[
+  {
+    "enabled": false,
+    "bypass_pin": "1337",
+    "auto_lock_minutes": 0,
+    "lock_terminal": false,
+    "lock_database": false,
+    "_id": "45906da7-1c17-46ab-8ca5-7dfc31bf1ad8"
+  }
+]
