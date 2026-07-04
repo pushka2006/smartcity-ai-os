@@ -18,11 +18,11 @@ python -m venv venv
 pip install -r requirements.txt
 
 # Start backend
-uvicorn server:app --host 0.0.0.0 --port 8000 --reload
+uvicorn server:app --host 0.0.0.0 --port 8001 --reload
 ```
 
-Backend will be available at: http://localhost:8000
-API docs at: http://localhost:8000/docs
+Backend will be available at: http://localhost:8001
+API docs at: http://localhost:8001/docs
 
 ## Frontend Setup
 
@@ -52,7 +52,7 @@ EMERGENT_LLM_KEY=your-key-here
 
 ### Frontend `.env`
 ```
-REACT_APP_BACKEND_URL=http://localhost:8000
+REACT_APP_BACKEND_URL=http://localhost:8001
 ```
 
 ## Notes

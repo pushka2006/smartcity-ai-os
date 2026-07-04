@@ -9,6 +9,10 @@ try:
     from motor.motor_asyncio import AsyncIOMotorClient
 except ImportError:
     AsyncIOMotorClient = None
+try:
+    from pymongo import MongoClient
+except ImportError:
+    MongoClient = None
 import os
 import socket
 
@@ -25,6 +29,9 @@ import logging
 import math
 import re
 import httpx
+import base64
+from io import BytesIO
+from PIL import Image, ImageOps
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict, Any
@@ -37,6 +44,23 @@ MONGO_URL = os.environ["MONGO_URL"]
 DB_NAME = os.environ["DB_NAME"]
 EMERGENT_LLM_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
 
+# Global MongoDB client references
+mongo_client = None
+mongo_db = None
+
+if MongoClient:
+    try:
+        # Check connection with a 1-second timeout so it doesn't block server startup
+        mongo_client = MongoClient(MONGO_URL, serverSelectionTimeoutMS=1000)
+        # Force connection check
+        mongo_client.server_info()
+        mongo_db = mongo_client[DB_NAME]
+        logging.info(f"Successfully connected to MongoDB database: {DB_NAME}")
+    except Exception as e:
+        logging.warning(f"Could not connect to real MongoDB (falling back to local JSON database): {e}")
+        mongo_client = None
+        mongo_db = None
+
 class MockCollection:
     def __init__(self, name, filename):
         self.name = name
@@ -45,12 +69,25 @@ class MockCollection:
         self.load()
 
     def load(self):
-        if os.path.exists(self.filename):
+        # 1. Try to load from MongoDB first
+        loaded_from_mongo = False
+        if mongo_db is not None:
             try:
-                with open(self.filename, 'r', encoding='utf-8') as f:
-                    self.data = json.load(f)
-            except Exception:
-                self.data = []
+                cursor = mongo_db[self.name].find({}, {"_id": 0})
+                self.data = list(cursor)
+                loaded_from_mongo = True
+                logging.info(f"Loaded {len(self.data)} records from MongoDB for '{self.name}'")
+            except Exception as e:
+                logging.warning(f"Failed to load '{self.name}' from MongoDB: {e}")
+
+        # 2. Fallback to local JSON files if MongoDB failed or is disabled
+        if not loaded_from_mongo:
+            if os.path.exists(self.filename):
+                try:
+                    with open(self.filename, 'r', encoding='utf-8') as f:
+                        self.data = json.load(f)
+                except Exception:
+                    self.data = []
 
     def save(self):
         try:
@@ -58,6 +95,21 @@ class MockCollection:
                 json.dump(self.data, f, indent=2)
         except Exception:
             pass
+
+        # Also sync to MongoDB if connected
+        if mongo_db is not None:
+            try:
+                mongo_db[self.name].delete_many({})
+                if self.data:
+                    cleaned_data = []
+                    for doc in self.data:
+                        d = dict(doc)
+                        if '_id' in d:
+                            del d['_id']
+                        cleaned_data.append(d)
+                    mongo_db[self.name].insert_many(cleaned_data)
+            except Exception as e:
+                logging.warning(f"Failed to sync '{self.name}' to MongoDB: {e}")
 
     async def insert_one(self, doc):
         doc_copy = dict(doc)
@@ -284,6 +336,19 @@ class FileDoc(BaseModel):
     timestamp: str = Field(default_factory=now_iso)
 
 
+class FaceVerifyRequest(BaseModel):
+    face_data: str
+
+
+class FaceRegisterRequest(BaseModel):
+    operator_name: str
+    face_data: str
+
+
+class PinVerifyRequest(BaseModel):
+    pin: str
+
+
 # ─────────────────────────────────────────────────────────────────────
 # Agent personalities
 # ─────────────────────────────────────────────────────────────────────
@@ -406,7 +471,8 @@ async def _stream_with_llm(session_id: str, agent_meta: dict, message: str):
         import emergentintegrations.llm.chat
         importlib.reload(emergentintegrations.llm.chat)
         from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
-    except Exception:
+    except Exception as e:
+        logging.exception("Failed to import emergentintegrations.llm.chat")
         async for chunk in _stream_mock_async(agent_meta, message):
             yield chunk
         return
@@ -454,6 +520,21 @@ async def _stream_mock_async(agent_meta: dict, message: str):
     instagram_conn = await db.connections.find_one({"provider": "Instagram"})
     instagram_connected = instagram_conn.get("connected") if instagram_conn else False
     instagram_user = instagram_conn.get("username", "") if instagram_conn else ""
+
+    if "urban intelligence" in msg_low:
+        responses = [
+            "### ✦ NEXUS AI Smart City Diagnostics Report\n\n",
+            "- ✅ **Air Quality Index**: All sensors reporting clean atmospheric metrics. Average AQI is stable within nominal baselines (<50).\n",
+            "- ⚠️ **Weather Telemetry**: High-temperature cautions remain active. Cooling grid algorithms have been pre-staged for target residential sectors.\n",
+            "- ✅ **Municipal CCTV**: 100% active security node coverage verified. Anomaly detection algorithms report standard ambient flows.\n",
+            "- 🔴 **Transit Network**: Active congestion bottlenecks detected on central arterial routes. Signal cycles have been adjusted to flush traffic corridors.\n",
+            "- ✅ **Citizen Services**: NYC 311 queue indicators are fully optimized. 100% of critical infrastructure repairs dispatched.\n",
+            "- 🔵 **Data Portal Sync**: Synchronized datasets show a 98% average health score index with 0 critical telemetry anomalies flagged."
+        ]
+        for r in responses:
+            await asyncio.sleep(0.08)
+            yield r
+        return
 
     if "github" in msg_low:
         if github_connected:
@@ -697,22 +778,30 @@ async def chat_stream(req: ChatRequest):
     full_response = []
 
     async def generate():
+        # SSE: yield metadata
+        yield f"data: {json.dumps({'type': 'meta', 'session_id': session_id, 'agent': req.agent})}\n\n"
+        
         if EMERGENT_LLM_KEY:
             gen = _stream_with_llm(session_id, agent_meta, req.message)
         else:
             gen = _stream_mock_async(agent_meta, req.message)
 
-        async for chunk in gen:
-            full_response.append(chunk)
-            yield chunk
+        try:
+            async for chunk in gen:
+                full_response.append(chunk)
+                yield f"data: {json.dumps({'type': 'delta', 'content': chunk})}\n\n"
+        except Exception as e:
+            yield f"data: {json.dumps({'type': 'error', 'content': str(e)})}\n\n"
+            return
 
         assistant_msg = ChatMessage(
             session_id=session_id, role="assistant",
             content="".join(full_response), agent=req.agent
         )
         await db.messages.insert_one(assistant_msg.model_dump())
+        yield "data: {\"type\": \"done\"}\n\n"
 
-    return StreamingResponse(generate(), media_type="text/plain")
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 
 @api.get("/chat/sessions")
@@ -861,6 +950,116 @@ async def code_assistant(req: CodeRequest):
     return StreamingResponse(generate(), media_type="text/plain")
 
 
+@api.post("/code/run")
+async def code_assistant_run(req: CodeRequest):
+    prompt_map = {
+        "generate": f"Generate production-quality {req.language} code for: {req.prompt}",
+        "explain":  f"Explain this {req.language} code step by step:\n```\n{req.code}\n```",
+        "debug":    f"Debug this {req.language} code and fix all issues:\n```\n{req.code}\n```",
+        "refactor": f"Refactor this {req.language} code for clarity and performance:\n```\n{req.code}\n```",
+        "test":     f"Write comprehensive tests for this {req.language} code:\n```\n{req.code}\n```",
+        "document": f"Write complete documentation for this {req.language} code:\n```\n{req.code}\n```",
+    }
+    message = prompt_map.get(req.action, req.prompt or req.code)
+    agent_meta = get_agent("developer")
+
+    full_response = []
+    if EMERGENT_LLM_KEY:
+        async for chunk in _stream_with_llm(str(uuid.uuid4()), agent_meta, message):
+            full_response.append(chunk)
+    else:
+        async for chunk in _stream_mock_async(agent_meta, message):
+            full_response.append(chunk)
+
+    return {"output": "".join(full_response)}
+
+
+# ─── Browser Agent ────────────────────────────────────────────────────────────
+class BrowserPlanRequest(BaseModel):
+    goal: str
+    start_url: Optional[str] = None
+
+
+@api.post("/browser/plan")
+async def browser_plan(req: BrowserPlanRequest):
+    agent_meta = get_agent("browser")
+    prompt = f"Goal: {req.goal}\n"
+    if req.start_url:
+        prompt += f"Start URL: {req.start_url}\n"
+        
+    full_response = []
+    if EMERGENT_LLM_KEY:
+        async for chunk in _stream_with_llm(str(uuid.uuid4()), agent_meta, prompt):
+            full_response.append(chunk)
+    else:
+        # Fallback simulation
+        full_response = [
+            f"### Playwright Automation Plan for: \"{req.goal}\"\n\n",
+            f"1. **Navigate** to `{req.start_url or 'target site'}`.\n",
+            "2. **Wait** for the page content container to load successfully.\n",
+            "3. **Scan and locate** targeted elements (buttons, text fields, links).\n",
+            "4. **Interact** by scrolling, clicking links/buttons, or inputting text as described.\n",
+            "5. **Extract** the resulting page text or screen snapshot and summarize the findings."
+        ]
+    return {"plan": "".join(full_response)}
+
+
+@api.get("/browser/fetch")
+async def browser_fetch(url: str):
+    import re
+    from urllib.parse import urljoin
+    try:
+        async with httpx.AsyncClient(timeout=10.0, follow_redirects=True) as client:
+            resp = await client.get(url, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            })
+        
+        html = resp.text
+        status_code = resp.status_code
+        content_length = len(resp.content)
+        
+        # Parse title
+        title_match = re.search(r"<title>(.*?)</title>", html, re.IGNORECASE | re.DOTALL)
+        title = title_match.group(1).strip() if title_match else "No Title"
+        
+        # Parse description meta tag
+        desc_match = re.search(r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']', html, re.IGNORECASE)
+        if not desc_match:
+            desc_match = re.search(r'<meta\s+content=["\'](.*?)["\']\s+name=["\']description["\']', html, re.IGNORECASE)
+        description = desc_match.group(1).strip() if desc_match else "No description meta tag found."
+        
+        # Parse links
+        links = []
+        for m in re.finditer(r'<a\s+[^>]*href=["\'](.*?)["\'][^>]*>(.*?)</a>', html, re.IGNORECASE | re.DOTALL):
+            href = m.group(1).strip()
+            text = re.sub(r'<[^>]+>', '', m.group(2)).strip()
+            full_href = urljoin(url, href)
+            if full_href.startswith("http://") or full_href.startswith("https://"):
+                links.append({
+                    "text": text or "Link",
+                    "href": full_href
+                })
+        
+        # Clean text preview
+        text_content = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.IGNORECASE | re.DOTALL)
+        text_content = re.sub(r'<style[^>]*>.*?</style>', '', text_content, flags=re.IGNORECASE | re.DOTALL)
+        text_content = re.sub(r'<[^>]+>', ' ', text_content)
+        text_content = re.sub(r'\s+', ' ', text_content).strip()
+        text_preview = text_content[:2000] if text_content else "No readable text content found."
+        
+        return {
+            "status_code": status_code,
+            "content_length": content_length,
+            "title": title,
+            "description": description,
+            "url": str(resp.url),
+            "links": links[:100],
+            "text_preview": text_preview
+        }
+    except Exception as e:
+        raise HTTPException(500, detail=f"Failed to fetch or parse URL: {str(e)}")
+
+
 # ─── System Monitor ───────────────────────────────────────────────────────────
 @api.get("/monitor")
 async def system_monitor():
@@ -875,6 +1074,104 @@ async def system_monitor():
         "temperature": round(random.uniform(42, 78), 1),
         "timestamp": now_iso(),
     }
+
+
+@api.get("/system/metrics")
+async def system_metrics():
+    cpu_val = round(random.uniform(8, 72), 1)
+    ram_val = round(random.uniform(42, 88), 1)
+    gpu_val = round(random.uniform(5, 45), 1)
+    net_val = round(random.uniform(1, 40), 1)
+    disk_val = round(random.uniform(35, 65), 1)
+    
+    agents_active = len(AGENTS)
+    tasks_running = len([t for t in db.tasks.data if t.get("status") in ["running", "pending"]])
+    
+    return {
+        "cpu": cpu_val,
+        "ram": ram_val,
+        "gpu": gpu_val,
+        "network": net_val,
+        "disk": disk_val,
+        "agents_active": agents_active,
+        "tasks_running": tasks_running
+    }
+
+
+@api.get("/system/series")
+async def system_series(points: int = 50):
+    from datetime import timedelta
+    series_data = []
+    base_time = datetime.now(timezone.utc)
+    for i in range(points):
+        t_val = (base_time - timedelta(seconds=(points - i) * 2)).strftime("%H:%M:%S")
+        series_data.append({
+            "t": t_val,
+            "cpu": round(random.uniform(10, 70), 1),
+            "ram": round(random.uniform(40, 85), 1),
+            "gpu": round(random.uniform(5, 50), 1),
+            "net": round(random.uniform(1, 35), 1)
+        })
+    return series_data
+
+
+@api.get("/system/devices")
+async def system_devices():
+    devices_list = []
+    try:
+        import subprocess
+        cmd = 'powershell -Command "Get-PnpDevice -PresentOnly | Where-Object { $_.Class -in \'Keyboard\',\'Mouse\',\'AudioEndpoint\',\'Bluetooth\',\'Camera\',\'Monitor\',\'Display\' } | Select-Object FriendlyName, Class | ConvertTo-Json -Compress"'
+        proc = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=2.0)
+        if proc.returncode == 0 and proc.stdout.strip():
+            raw_devs = json.loads(proc.stdout.strip())
+            if not isinstance(raw_devs, list):
+                raw_devs = [raw_devs]
+            for item in raw_devs:
+                name = item.get("FriendlyName") or item.get("Name")
+                cls = item.get("Class") or "Unknown"
+                if name and cls:
+                    devices_list.append({
+                        "name": name,
+                        "class": cls,
+                        "status": "OK"
+                    })
+    except Exception as e:
+        logging.warning(f"Error querying physical devices: {e}")
+        
+    if not devices_list:
+        devices_list = [
+            {"name": "NEXUS Core Controller (V1)", "class": "Processor", "status": "OK"},
+            {"name": "OS Swarm Network Adapter", "class": "Bluetooth", "status": "OK"},
+            {"name": "Ultra-Wide Monitor Console", "class": "Monitor", "status": "OK"},
+            {"name": "High-Definition Web Camera", "class": "Camera", "status": "OK"},
+            {"name": "Central Operator Audio System", "class": "Audio", "status": "OK"},
+            {"name": "Mechanical Keyboard (USB)", "class": "Keyboard", "status": "OK"},
+            {"name": "Operator Optical Mouse", "class": "Mouse", "status": "OK"}
+        ]
+    return devices_list
+
+
+# ─── Bluetooth ────────────────────────────────────────────────────────────────
+@api.post("/bluetooth/pair-wizard")
+async def bluetooth_pair_wizard():
+    import subprocess
+    try:
+        subprocess.Popen("devicepairingwizard.exe")
+        return {"success": True}
+    except Exception as e:
+        logging.warning(f"Failed to open devicepairingwizard.exe: {e}")
+        return {"success": False, "error": str(e)}
+
+
+@api.post("/bluetooth/open-settings")
+async def bluetooth_open_settings():
+    import subprocess
+    try:
+        subprocess.Popen("cmd /c start ms-settings:bluetooth", shell=True)
+        return {"success": True}
+    except Exception as e:
+        logging.warning(f"Failed to open Bluetooth settings: {e}")
+        return {"success": False, "error": str(e)}
 
 
 # ─── Biometrics ───────────────────────────────────────────────────────────────
@@ -909,6 +1206,113 @@ async def save_bio_settings(payload: dict):
         payload["_id"] = str(uuid.uuid4())
         await db.bio_settings.insert_one(payload)
     return payload
+
+
+def compare_faces(face_data_1: str, face_data_2: str) -> float:
+    try:
+        if "," in face_data_1:
+            face_data_1 = face_data_1.split(",")[1]
+        if "," in face_data_2:
+            face_data_2 = face_data_2.split(",")[1]
+            
+        img1 = Image.open(BytesIO(base64.b64decode(face_data_1))).convert("L")
+        img2 = Image.open(BytesIO(base64.b64decode(face_data_2))).convert("L")
+        
+        img1 = ImageOps.autocontrast(img1)
+        img2 = ImageOps.autocontrast(img2)
+        
+        img1 = img1.resize((16, 16), Image.Resampling.LANCZOS)
+        img2 = img2.resize((16, 16), Image.Resampling.LANCZOS)
+        
+        pixels1 = list(img1.getdata())
+        pixels2 = list(img2.getdata())
+        
+        diff = sum(abs(p1 - p2) for p1, p2 in zip(pixels1, pixels2))
+        mae = diff / len(pixels1)
+        
+        # Convert Mean Absolute Error to similarity confidence percentage (0.0 to 100.0)
+        confidence = max(0.0, min(100.0, 100.0 - (mae * 100.0 / 255.0)))
+        return confidence
+    except Exception as e:
+        print(f"Error comparing faces: {e}")
+        return 0.0
+
+
+@api.get("/biometrics/signatures")
+async def list_signatures():
+    cursor = db.biometrics.find()
+    return await cursor.to_list(100)
+
+
+@api.post("/biometrics/register")
+async def register_face(req: FaceRegisterRequest):
+    doc = {
+        "id": str(uuid.uuid4()),
+        "operator_name": req.operator_name,
+        "face_data": req.face_data,
+        "created_at": now_iso()
+    }
+    await db.biometrics.insert_one(doc)
+    return doc
+
+
+@api.delete("/biometrics/signatures/{id}")
+async def delete_signature(id: str):
+    result = await db.biometrics.delete_one({"id": id})
+    if result["deleted_count"] == 0:
+        raise HTTPException(status_code=404, detail="Signature not found")
+    return {"deleted": True}
+
+
+@api.post("/biometrics/verify")
+async def verify_face(req: FaceVerifyRequest):
+    cursor = db.biometrics.find()
+    signatures = await cursor.to_list(100)
+    if not signatures:
+        return {"verified": False, "confidence": 0.0, "operator_name": ""}
+    
+    best_match = None
+    highest_conf = -1.0
+    
+    for sig in signatures:
+        # Check if the signature has face_data
+        sig_face = sig.get("face_data", "")
+        if not sig_face:
+            continue
+        conf = compare_faces(req.face_data, sig_face)
+        if conf > highest_conf:
+            highest_conf = conf
+            best_match = sig
+            
+    verified = highest_conf >= 70.0
+    operator_name = best_match.get("operator_name", "") if verified else ""
+    
+    if verified:
+        # Save a memory log of this interaction so the hologram "remembers" the user
+        mem = {
+            "id": str(uuid.uuid4()),
+            "title": f"Face Recognition: {operator_name}",
+            "content": f"Hologram recognized and spoke with operator {operator_name}.",
+            "category": "hologram_face_recognition",
+            "tags": ["hologram", "face_recognition", operator_name.lower()],
+            "importance": 3,
+            "timestamp": now_iso()
+        }
+        await db.memories.insert_one(mem)
+        
+    return {
+        "verified": verified,
+        "confidence": round(highest_conf, 1),
+        "operator_name": operator_name
+    }
+
+
+@api.post("/biometrics/verify-pin")
+async def verify_pin(req: PinVerifyRequest):
+    settings = await db.bio_settings.find_one({})
+    expected_pin = settings.get("bypass_pin", "1337") if settings else "1337"
+    verified = req.pin == expected_pin
+    return {"verified": verified}
 
 
 # ─── Connections (OAuth mock) ─────────────────────────────────────────────────
@@ -952,6 +1356,32 @@ async def terminal_run(payload: dict):
         return {"stdout": "", "stderr": "Command timed out (10s limit).", "returncode": 124}
     except Exception as e:
         return {"stdout": "", "stderr": str(e), "returncode": 1}
+
+
+@api.post("/terminal/exec")
+async def terminal_exec(payload: dict):
+    cmd = payload.get("command", "").strip()
+    if cmd == "clear":
+        return {"output": "__CLEAR__", "timestamp": now_iso()}
+        
+    import subprocess
+    try:
+        result = subprocess.run(
+            cmd, shell=True, capture_output=True, text=True, timeout=10
+        )
+        output = result.stdout
+        if result.stderr:
+            if output:
+                output += "\n" + result.stderr
+            else:
+                output = result.stderr
+        if not output.strip():
+            output = f"Command exited with code {result.returncode}"
+        return {"output": output, "timestamp": now_iso()}
+    except subprocess.TimeoutExpired:
+        return {"output": "Error: Command timed out (10s limit).", "timestamp": now_iso()}
+    except Exception as e:
+        return {"output": f"Error: {str(e)}", "timestamp": now_iso()}
 
 
 # ─── Settings ─────────────────────────────────────────────────────────────────
@@ -1414,17 +1844,19 @@ async def hls_proxy_manifest(url: str):
     try:
         decoded_url = unquote(url)
 
-        # Strip frontend cache-buster (_t=...) before fetching upstream
+        # Strip frontend cache-buster (_t=...) before fetching upstream,
+        # but append a fresh unix timestamp cache-buster to force the CDN to bypass cache.
         _p = urlparse(decoded_url)
         _qs = {k: v for k, v in parse_qs(_p.query).items() if k != "_t"}
+        _qs["_t"] = [str(int(_time.time()))]
         from urllib.parse import urlunparse
         decoded_url = urlunparse(_p._replace(query=urlencode(_qs, doseq=True)))
 
-        async with httpx.AsyncClient(timeout=12.0, follow_redirects=True) as client:
+        async with httpx.AsyncClient(timeout=3.0, follow_redirects=True) as client:
             resp = await client.get(decoded_url, headers={
                 "User-Agent": "Mozilla/5.0 (compatible; NexusProxy/1.0)",
                 "Accept": "*/*",
-                "Cache-Control": "no-cache, no-store",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
                 "Pragma": "no-cache",
             })
 
@@ -1441,7 +1873,6 @@ async def hls_proxy_manifest(url: str):
         fresh_ts = int(_time.time())
 
         # Rewrite each non-comment, non-empty line that is a URI
-        proxy_base = "/api/urban/hls-proxy"
         rewritten_lines = []
         for line in text.splitlines():
             stripped = line.strip()
@@ -1454,14 +1885,14 @@ async def hls_proxy_manifest(url: str):
                 else:
                     abs_url = urljoin(base_url, stripped)
 
-                if abs_url.endswith(".m3u8"):
+                if urlparse(abs_url).path.endswith(".m3u8"):
                     # Child playlist — proxy through manifest endpoint with fresh ts
                     encoded = quote(abs_url, safe="")
-                    rewritten_lines.append(f"{proxy_base}/manifest?url={encoded}&_t={fresh_ts}")
+                    rewritten_lines.append(f"manifest?url={encoded}&_t={fresh_ts}")
                 else:
                     # Media segment (.ts / .aac / .mp4 etc.) — proxy through segment endpoint
                     encoded = quote(abs_url, safe="")
-                    rewritten_lines.append(f"{proxy_base}/segment?url={encoded}")
+                    rewritten_lines.append(f"segment?url={encoded}")
 
         rewritten = "\n".join(rewritten_lines)
         return FastAPIResponse(
@@ -1489,7 +1920,7 @@ async def hls_proxy_segment(url: str):
     """
     try:
         decoded_url = unquote(url)
-        async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
+        async with httpx.AsyncClient(timeout=5.0, follow_redirects=True) as client:
             resp = await client.get(decoded_url, headers={
                 "User-Agent": "Mozilla/5.0 (compatible; NexusProxy/1.0)",
                 "Accept": "*/*",
@@ -1821,6 +2252,7 @@ class UrbanChatRequest(BaseModel):
     gov_datasets_count: Optional[int] = 0
     gov_health_avg: Optional[float] = 0.0
     gov_anomalies_total: Optional[int] = 0
+    operator_name: Optional[str] = None
 
 
 @api.post("/urban/analyze")
@@ -1853,12 +2285,12 @@ TRAFFIC CAMERA COVERAGE:
 - Online: {req.cameras_online}/{req.cameras_total} feeds active
 - Live traffic incidents: {req.incidents_count}
 
-CCTV MUNICIPAL SECURITY:
+CCTV MUNICIPAL SURVEILLANCE:
 - Nodes Active: {req.cctv_active}/{req.cctv_total}
 - Anomaly Alerts: {req.cctv_alerts} critical, {req.cctv_cautions} warning
 
 GOVERNMENT OPEN DATA STATUS:
-- Synced Datasets: {req.gov_datasets_count}
+- Online Datasets: {req.gov_datasets_count}
 - Data Health Index: {req.gov_health_avg}% average score
 - Total Anomalies: {req.gov_anomalies_total} flagged items
 
@@ -1951,8 +2383,42 @@ async def urban_ai_chat(req: UrbanChatRequest):
     aq = req.air_quality or {}
     comp = req.complaints_stats or {}
 
+    # Check if we have talked to this person previously
+    previous_interactions = []
+    last_interaction_time = None
+    if req.operator_name:
+        cursor = db.memories.find()
+        all_memories = await cursor.to_list(100)
+        op_lower = req.operator_name.lower()
+        for mem in all_memories:
+            tags = [t.lower() for t in mem.get("tags", [])]
+            if op_lower in tags or "face_recognition" in tags:
+                if op_lower in mem.get("content", "").lower() or op_lower in mem.get("title", "").lower():
+                    previous_interactions.append(mem)
+
+        if previous_interactions:
+            # Sort by timestamp descending
+            previous_interactions.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+            # Use the most recent interaction
+            last_interaction_time = previous_interactions[0].get("timestamp", "")
+
+    operator_context = ""
+    if req.operator_name:
+        operator_context = f"\nACTIVE OPERATOR: {req.operator_name} (Recognized via facial biometric scan)."
+        if last_interaction_time:
+            try:
+                # parse ISO timestamp to presentable format
+                dt = datetime.fromisoformat(last_interaction_time)
+                time_str = dt.strftime("%B %d, %Y at %H:%M UTC")
+            except Exception:
+                time_str = last_interaction_time
+            operator_context += f" You have talked to this operator previously (last interaction recorded on {time_str}). Acknowledge this previous conversation warmly in your greeting."
+        else:
+            operator_context += " Greet the operator by name."
+
     context = f"""You are NEXUS Urban Intelligence AI. Answer the operator's query based on this real-time city telemetry context.
 Keep your answer concise (max 3-4 sentences), highly professional, and data-driven.
+{operator_context}
 
 WEATHER:
 - Temp: {wx.get('temp', 'N/A')}°C (Feels like: {wx.get('feels_like', 'N/A')}°C)
@@ -1973,13 +2439,13 @@ CITIZEN COMPLAINTS:
 - Open: {comp.get('pending', 'N/A')}, Critical: {comp.get('critical', 'N/A')}
 
 GOVERNMENT OPEN DATA:
-- Synced Datasets: {req.gov_datasets_count}
+- Online Datasets: {req.gov_datasets_count}
 - Data Health: {req.gov_health_avg}% average, {req.gov_anomalies_total} total anomalies
 
 Operator's query: "{req.query}" """
 
     async def generate():
-        if EMERGENT_LLM_KEY:
+        if EMERGENT_LLM_KEY and not EMERGENT_LLM_KEY.startswith("sk-emergent-"):
             agent_meta = {
                 "name": "NEXUS Urban AI",
                 "system": "You are NEXUS Urban Intelligence — a smart city AI console. Speak with professional, calm telemetry confidence. Reference specific metrics from the context."
@@ -1993,7 +2459,23 @@ Operator's query: "{req.query}" """
 
         # Rule-based fallback responses matching query keywords
         q = req.query.lower()
-        if "traffic" in q or "incident" in q or "jam" in q or "road" in q:
+        if "greet me" in q or "recognized operator" in q:
+            if req.operator_name:
+                greeting = f"**[NEXUS AI]** Welcome back, operator **{req.operator_name}**! "
+                if last_interaction_time:
+                    try:
+                        # parse time
+                        dt = datetime.fromisoformat(last_interaction_time)
+                        time_str = dt.strftime("%H:%M:%S")
+                    except Exception:
+                        time_str = "previously"
+                    greeting += f"I remember speaking with you previously (our last scan recorded at {time_str}). All city telemetry feeds are synchronized and online for your shift!"
+                else:
+                    greeting += "I have registered our first biometric scan for this shift. I am ready to coordinate city sensors."
+                yield greeting
+            else:
+                yield "**[NEXUS AI]** Hello operator! Face scan diagnostics show no active identified signature. Please initiate a face scan so I can remember you!"
+        elif "traffic" in q or "incident" in q or "jam" in q or "road" in q:
             yield f"**[NEXUS AI]** Traffic camera monitoring reports {req.cameras_online}/{req.cameras_total} active feeds. "
             if req.incidents_count > 0:
                 yield f"There are currently **{req.incidents_count} live traffic incidents** reported on arterial routes. Traffic signal controllers are adjusting cycles to alleviate bottlenecks."
@@ -2028,6 +2510,35 @@ Operator's query: "{req.query}" """
         elif "gov" in q or "dataset" in q or "data" in q or "mta" in q:
             yield f"**[NEXUS AI]** official government repositories show **{req.gov_datasets_count} active datasets** synced. "
             yield f"The average data integrity health score is **{req.gov_health_avg}%** with **{req.gov_anomalies_total} anomalies** flagged. Integration pipelines report normal latency."
+        elif any(kw in q for kw in ["joke", "laugh", "funny", "humor", "giggle"]):
+            import random
+            jokes = [
+                "Why did the smart city assistant break up with the data pipeline? Because there was too much latency, and they were just moving in different stream rates!",
+                "How many AI operators does it take to fix a security camera? None, they just analyze the problem in their virtual workspace and tell the human operator to reload the browser!",
+                "Why do smart city streetlights never get lost? Because they always follow the grid coordinates!",
+                "Why did the compiler go to the party? To check out all the dynamic links and resolve its dependencies!"
+            ]
+            joke = random.choice(jokes)
+            yield f"**[NEXUS AI]** Ha, ha! Here is a smart-city telemetry joke for you: \n\n*\"{joke}\"* \n\nI hope that registers a nominal index on your humor sensors!"
+        elif any(kw in q for kw in ["hello", "hi ", "hey", "greetings", "yo "]) or q == "hi" or q == "hey":
+            if req.operator_name:
+                greeting = f"**[NEXUS AI]** Hello, operator **{req.operator_name}**! "
+                if last_interaction_time:
+                    try:
+                        dt = datetime.fromisoformat(last_interaction_time)
+                        time_str = dt.strftime("%H:%M:%S")
+                    except Exception:
+                        time_str = "previously"
+                    greeting += f"I recognize your biometric profile. I remember speaking with you previously (last scan recorded at {time_str}). All systems are nominal and ready for your command."
+                else:
+                    greeting += "I have successfully registered your face signature. How can I help you coordinate city subsystems?"
+                yield greeting
+            else:
+                yield f"**[NEXUS AI]** Hello there, operator! I am the NEXUS swarm core. My voice synthesis and 3D wireframe projections are active. Ask me anything about the traffic incidents, weather, CCTV anomalies, or tell me a joke!"
+        elif any(kw in q for kw in ["how are you", "how's it going", "how are you doing"]):
+            yield f"**[NEXUS AI]** I am operating at a 100% nominal state, operator. The CPU cycles are optimized, databases are fully synced, and my neural network arrays are ready to assist you. How is your shift going?"
+        elif any(kw in q for kw in ["who are you", "what is your name", "tell me about yourself"]):
+            yield f"**[NEXUS AI]** I am NEXUS, the central swarm intelligence operating system for this smart city dashboard. I manage sensors, simulate traffic, coordinate open data pipelines, and verify security protocols."
         else:
             yield f"**[NEXUS AI]** Core diagnostic sweep shows: Weather: {wx.get('condition','N/A')} ({wx.get('temp','N/A')}°C) | AQI: {aq.get('aqi','N/A')} | "
             yield f"Incidents: {req.incidents_count} | Active CCTV nodes: {req.cctv_active}/{req.cctv_total} | Open complaints: {comp.get('pending',0)} (Critical: {comp.get('critical',0)}). "

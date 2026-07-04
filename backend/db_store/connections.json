@@ -1,9 +1,9 @@
 [
   {
     "provider": "Google",
-    "connected": false,
-    "username": "",
-    "updated_at": "2026-06-20T09:59:35.180120+00:00",
+    "connected": true,
+    "username": "pushkar@smartcity.gov",
+    "updated_at": "2026-07-02T00:00:22.000000+00:00",
     "_id": "9e0c70c9-80a3-4c80-8a1f-3899fd6f188b"
   },
   {

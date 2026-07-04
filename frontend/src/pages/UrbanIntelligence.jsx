@@ -1,18 +1,23 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { toast } from "../components/Toast";
 import HlsPlayer from "../components/HlsPlayer";
+import HologramFace from "../components/HologramFace";
+import RotatingGlobe from "../components/RotatingGlobe";
+import FaceScanner from "../components/FaceScanner";
+import { API as API_BASE } from "../lib/api";
 import {
   Camera, Eye, CloudRain, Wind, AlertTriangle,
   Activity, Zap, TrendingUp, Brain, RefreshCw,
   ThumbsDown, BarChart2, Shield, Radio, Cpu, Wifi, Database,
-  MapPin, MessageSquare, Send, Sparkles, ChevronRight
+  MapPin, MessageSquare, Send, Sparkles, ChevronRight, Mic, MicOff
 } from "lucide-react";
 import {
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
+import { useVoice } from "../lib/VoiceContext";
 
-const API_BASE = "http://localhost:8000/api";
+
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const aqiColor = (aqi) => {
@@ -170,6 +175,22 @@ export default function UrbanIntelligence() {
   const [chatLoading,   setChatLoading]   = useState(false);
   const chatEndRef = useRef(null);
 
+  // Voice & Hologram states
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [isTalking,    setIsTalking]    = useState(false);
+  const [isListening,  setIsListening]  = useState(false);
+  const utteranceRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const { setAmbientActive } = useVoice();
+
+  // Biometric / Face Recognition states
+  const [recognizedOperator, setRecognizedOperator] = useState(null);
+
+  // Background constant camera tracking
+  const bgVideoRef = useRef(null);
+  const bgStreamRef = useRef(null);
+  const [bgCameraActive, setBgCameraActive] = useState(false);
+
   // UI state
   const [activeTab,    setActiveTab]    = useState("cameras");
   const [lastRefresh,  setLastRefresh]  = useState(now());
@@ -183,9 +204,9 @@ export default function UrbanIntelligence() {
   const setErr  = (key, msg) => setErrors(p => ({ ...p, [key]: msg }));
   const clearErr = (key)     => setErrors(p => ({ ...p, [key]: null }));
 
-  const appendLog = (msg, color = "#00F5FF") => {
+  const appendLog = useCallback((msg, color = "#00F5FF") => {
     setStreamLog(prev => [{ time: now(), msg, color }, ...prev.slice(0, 39)]);
-  };
+  }, []);
 
   const fetchWeather = useCallback(async () => {
     setLoad("weather", true); clearErr("weather");
@@ -407,7 +428,36 @@ export default function UrbanIntelligence() {
     }
   }, [buildTelemetryPayload]);
 
-  const runChatQuery = useCallback(async (queryText) => {
+  const speakText = useCallback((text) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const cleanText = text
+      .replace(/\*\*|__/g, "")
+      .replace(/\[NEXUS AI\]/gi, "Nexus AI")
+      .replace(/✅|🟡|🔴|⚠️|🔵/g, "");
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utteranceRef.current = utterance;
+
+    utterance.onstart = () => setIsTalking(true);
+    utterance.onend = () => setIsTalking(false);
+    utterance.onerror = () => setIsTalking(false);
+
+    window.speechSynthesis.speak(utterance);
+  }, []);
+
+  const handleToggleVoice = useCallback(() => {
+    setVoiceEnabled(prev => {
+      const next = !prev;
+      if (!next && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        setIsTalking(false);
+      }
+      return next;
+    });
+  }, []);
+
+  const runChatQuery = useCallback(async (queryText, overrideOperatorName = null) => {
     const q = queryText || chatInput.trim();
     if (!q) return;
     setChatInput("");
@@ -417,7 +467,11 @@ export default function UrbanIntelligence() {
     appendLog(`[AI-CHAT] Query: "${q}"`, "#a78bfa");
 
     try {
-      const payload = { query: q, ...buildTelemetryPayload() };
+      const payload = {
+        query: q,
+        operator_name: overrideOperatorName !== null ? overrideOperatorName : recognizedOperator,
+        ...buildTelemetryPayload()
+      };
       const resp = await fetch(`${API_BASE}/urban/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -444,13 +498,205 @@ export default function UrbanIntelligence() {
         });
       }
       appendLog(`[AI-CHAT] ✅ Response delivered`, "#34d399");
+      if (voiceEnabled) {
+        speakText(full);
+      }
     } catch (e) {
       setChatHistory(prev => [...prev, { role: "ai", text: `⚠️ Error: ${e.message}`, time: now() }]);
       appendLog(`[AI-CHAT] ❌ ${e.message}`, "#ef4444");
     } finally {
       setChatLoading(false);
     }
-  }, [chatInput, buildTelemetryPayload]);
+  }, [chatInput, buildTelemetryPayload, voiceEnabled, speakText, recognizedOperator]);
+
+  // Stable ref to avoid Web Speech API capture closures
+  const runChatQueryRef = useRef(runChatQuery);
+  useEffect(() => {
+    runChatQueryRef.current = runChatQuery;
+  }, [runChatQuery]);
+
+  // Prevent global ambient listener from occupying mic while in Hologram tab
+  useEffect(() => {
+    if (activeTab === "hologram") {
+      setAmbientActive(false);
+    } else {
+      setAmbientActive(true);
+    }
+    return () => {
+      setAmbientActive(true);
+    };
+  }, [activeTab, setAmbientActive]);
+
+  const startBgCamera = useCallback(async () => {
+    if (bgStreamRef.current) return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 160, height: 160, facingMode: "user" },
+        audio: false
+      });
+      bgStreamRef.current = stream;
+      if (bgVideoRef.current) {
+        bgVideoRef.current.srcObject = stream;
+        bgVideoRef.current.play().catch(e => console.warn("Bg video play error", e));
+      }
+      setBgCameraActive(true);
+      appendLog("[BIOMETRICS] Background facial tracking camera engaged.", "#34d399");
+    } catch (err) {
+      console.warn("Background camera access failed, engaging mock biometric sensor", err);
+      setBgCameraActive(false);
+      appendLog("[BIOMETRICS] Webcam unavailable. Engaging mock biometric sensor.", "#fbbf24");
+    }
+  }, [appendLog]);
+
+  const stopBgCamera = useCallback(() => {
+    if (bgStreamRef.current) {
+      bgStreamRef.current.getTracks().forEach(track => track.stop());
+      bgStreamRef.current = null;
+    }
+    setBgCameraActive(false);
+    appendLog("[BIOMETRICS] Background facial tracking camera disengaged.", "#ef4444");
+  }, [appendLog]);
+
+  const captureBgFrame = useCallback(() => {
+    if (!bgVideoRef.current) return null;
+    const video = bgVideoRef.current;
+    const canvas = document.createElement("canvas");
+    canvas.width = 160;
+    canvas.height = 160;
+    const ctx = canvas.getContext("2d");
+    try {
+      const size = Math.min(video.videoWidth, video.videoHeight);
+      if (size > 0) {
+        const sx = (video.videoWidth - size) / 2;
+        const sy = (video.videoHeight - size) / 2;
+        ctx.drawImage(video, sx, sy, size, size, 0, 0, 160, 160);
+        return canvas.toDataURL("image/jpeg", 0.85);
+      }
+    } catch (e) {
+      console.warn("Failed to capture video frame:", e);
+    }
+    return null;
+  }, []);
+
+  // Monitor active tab to open/close webcam background stream
+  useEffect(() => {
+    if (activeTab === "hologram") {
+      startBgCamera();
+    } else {
+      stopBgCamera();
+    }
+    return () => {
+      stopBgCamera();
+    };
+  }, [activeTab, startBgCamera, stopBgCamera]);
+
+  // Background face scan loop (real camera)
+  useEffect(() => {
+    let scanInterval;
+    if (bgCameraActive && activeTab === "hologram") {
+      scanInterval = setInterval(async () => {
+        const frame = captureBgFrame();
+        if (!frame) return;
+        try {
+          const resp = await fetch(`${API_BASE}/biometrics/verify`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ face_data: frame }),
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.verified) {
+              if (recognizedOperator !== data.operator_name) {
+                setRecognizedOperator(data.operator_name);
+                appendLog(`[BIOMETRICS] Background scan verified operator: ${data.operator_name} (${data.confidence}%)`, "#34d399");
+                toast.success(`Identity Verified: Welcome, ${data.operator_name}!`);
+                runChatQuery("greet me as recognized operator", data.operator_name);
+              }
+            } else {
+              if (recognizedOperator !== null) {
+                setRecognizedOperator(null);
+                appendLog("[BIOMETRICS] Operator signature lost.", "#ef4444");
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Background verification error:", e);
+        }
+      }, 7000);
+    }
+    return () => {
+      if (scanInterval) clearInterval(scanInterval);
+    };
+  }, [bgCameraActive, activeTab, recognizedOperator, appendLog, runChatQuery, captureBgFrame]);
+
+  // Background scan simulation (fallback when webcam unavailable)
+  useEffect(() => {
+    let mockScanTimeout;
+    if (!bgCameraActive && activeTab === "hologram" && !recognizedOperator) {
+      mockScanTimeout = setTimeout(() => {
+        const mockOperator = "pushkar";
+        setRecognizedOperator(mockOperator);
+        appendLog(`[BIOMETRICS] Mock scan verified operator: ${mockOperator} (100% simulated)`, "#34d399");
+        toast.success(`Identity Verified (Simulated): Welcome, ${mockOperator}!`);
+        runChatQuery("greet me as recognized operator", mockOperator);
+      }, 5000);
+    }
+    return () => {
+      if (mockScanTimeout) clearTimeout(mockScanTimeout);
+    };
+  }, [bgCameraActive, activeTab, recognizedOperator, appendLog, runChatQuery]);
+
+  const handleToggleListen = useCallback(() => {
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+    } else {
+      // Cancel any ongoing speaking synthesizer voice output so we listen cleanly!
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      setIsTalking(false);
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        toast.error("Speech Recognition is not supported in this browser.");
+        return;
+      }
+
+      const rec = new SpeechRecognition();
+      recognitionRef.current = rec;
+      rec.continuous = false;
+      rec.interimResults = false;
+      rec.lang = "en-US";
+
+      rec.onstart = () => {
+        setIsListening(true);
+        appendLog("[VOICE-IN] Microphone listening active...", "#FF2E88");
+      };
+
+      rec.onresult = (event) => {
+        const resultText = event.results[0][0].transcript;
+        appendLog(`[VOICE-IN] Heard: "${resultText}"`, "#FF2E88");
+        setChatInput(resultText);
+        if (runChatQueryRef.current) {
+          runChatQueryRef.current(resultText);
+        }
+      };
+
+      rec.onerror = (event) => {
+        appendLog(`[VOICE-IN] Error: ${event.error}`, "#ef4444");
+        setIsListening(false);
+      };
+
+      rec.onend = () => {
+        setIsListening(false);
+      };
+
+      rec.start();
+    }
+  }, [isListening, appendLog]);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -466,6 +712,7 @@ export default function UrbanIntelligence() {
     { id: "complaints", label: "Complaints",     icon: ThumbsDown,    color: "#FF2E88" },
     { id: "govdata",    label: "Gov Open Data",  icon: Database,      color: "#34d399" },
     { id: "aianalysis", label: "AI Analysis",    icon: Sparkles,      color: "#a78bfa" },
+    { id: "hologram",   label: "NEXUS Hologram", icon: Radio,         color: "#00F5FF" },
   ];
 
   const anyLoading = Object.values(loading).some(Boolean);
@@ -1250,121 +1497,339 @@ export default function UrbanIntelligence() {
                 )}
               </GlassCard>
 
-              {/* Section: Interactive Telemetry Q&A Console */}
-              <GlassCard style={{ border: "1px solid rgba(167,139,250,0.2)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(167,139,250,0.12)", border: "1px solid rgba(167,139,250,0.35)" }}>
-                    <MessageSquare style={{ width: 14, height: 14, color: "#a78bfa" }} />
-                  </div>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "#a78bfa", fontWeight: 700 }}>Telemetry Q&A Console</span>
-                  {chatLoading && (
-                    <span style={{ display: "flex", alignItems: "center", gap: 4, marginLeft: "auto" }}>
-                      <Cpu style={{ width: 10, height: 10, color: "#a78bfa", animation: "spin 1s linear infinite" }} />
-                      <span style={{ fontSize: 9, color: "#a78bfa", fontFamily: "monospace" }}>AI COMPUTING</span>
-                    </span>
-                  )}
-                </div>
-
-                {/* Quick Query Chips */}
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }}>
-                  {[
-                    { label: "🚦 Analyze traffic bottlenecks",     query: "What are the current traffic bottlenecks and incidents?" },
-                    { label: "🔒 Assess safety anomalies",          query: "Are there any CCTV security anomalies or crowd alerts?" },
-                    { label: "🌿 Check air quality impact",          query: "What is the current air quality and pollution level impact?" },
-                    { label: "📋 Summarize citizen issues",          query: "Summarize the current citizen complaints and critical issues." },
-                    { label: "🏛️ Government data status",            query: "What is the status of government open data repositories?" },
-                    { label: "☁️ Weather & visibility advisory",     query: "What are the weather conditions and any visibility advisories?" },
-                  ].map((chip, i) => (
-                    <button key={i} onClick={() => runChatQuery(chip.query)} disabled={chatLoading}
-                      style={{
-                        display: "flex", alignItems: "center", gap: 5,
-                        padding: "5px 10px", background: "rgba(167,139,250,0.06)",
-                        border: "1px solid rgba(167,139,250,0.22)", borderRadius: 20,
-                        cursor: chatLoading ? "not-allowed" : "pointer", color: "rgba(167,139,250,0.85)",
-                        fontSize: 9, fontFamily: "monospace", letterSpacing: "0.06em",
-                        transition: "all 0.15s", opacity: chatLoading ? 0.5 : 1,
-                        whiteSpace: "nowrap"
-                      }}
-                      onMouseEnter={e => { if (!chatLoading) { e.currentTarget.style.background = "rgba(167,139,250,0.15)"; e.currentTarget.style.borderColor = "rgba(167,139,250,0.5)"; }}}
-                      onMouseLeave={e => { e.currentTarget.style.background = "rgba(167,139,250,0.06)"; e.currentTarget.style.borderColor = "rgba(167,139,250,0.22)"; }}
-                    >
-                      <ChevronRight style={{ width: 9, height: 9 }} />{chip.label}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Chat Messages */}
-                <div style={{
-                  minHeight: 180, maxHeight: 280, overflowY: "auto", marginBottom: 10,
-                  padding: "10px", background: "rgba(2,6,23,0.5)", borderRadius: 8,
-                  border: "1px solid rgba(167,139,250,0.1)",
-                  display: "flex", flexDirection: "column", gap: 8
-                }}>
-                  {chatHistory.length === 0 && (
-                    <div style={{ color: "rgba(148,163,184,0.35)", fontFamily: "monospace", fontSize: 10, textAlign: "center", margin: "auto", padding: "20px 0" }}>
-                      Ask me anything about the live city telemetry above…
-                    </div>
-                  )}
-                  {chatHistory.map((msg, i) => (
-                    <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: msg.role === "user" ? "flex-end" : "flex-start" }}>
-                      <div style={{
-                        maxWidth: "88%", padding: "8px 12px", borderRadius: msg.role === "user" ? "12px 12px 2px 12px" : "12px 12px 12px 2px",
-                        background: msg.role === "user" ? "rgba(167,139,250,0.15)" : "rgba(0,245,255,0.06)",
-                        border: `1px solid ${msg.role === "user" ? "rgba(167,139,250,0.35)" : "rgba(0,245,255,0.15)"}`,
-                        fontSize: 10.5, fontFamily: "monospace", lineHeight: 1.65,
-                        color: msg.role === "user" ? "rgba(226,232,240,0.9)" : "rgba(226,232,240,0.85)",
-                        whiteSpace: "pre-wrap", wordBreak: "break-word"
-                      }}>
-                        {msg.role === "ai" && !msg.text && <span style={{ color: "rgba(148,163,184,0.4)" }}>Processing…</span>}
-                        {msg.text}
-                        {msg.role === "ai" && chatLoading && i === chatHistory.length - 1 && <span className="nx-caret" />}
-                      </div>
-                      <span style={{ fontSize: 8, color: "rgba(148,163,184,0.3)", fontFamily: "monospace", marginTop: 2, marginLeft: 4, marginRight: 4 }}>
-                        {msg.role === "user" ? "You" : "NEXUS AI"} · {msg.time}
-                      </span>
-                    </div>
-                  ))}
-                  <div ref={chatEndRef} />
-                </div>
-
-                {/* Chat Input */}
-                <div style={{ display: "flex", gap: 8 }}>
-                  <input
-                    value={chatInput}
-                    onChange={e => setChatInput(e.target.value)}
-                    onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); runChatQuery(); } }}
-                    placeholder="Ask about any city telemetry source…"
-                    disabled={chatLoading}
-                    style={{
-                      flex: 1, padding: "9px 14px",
-                      background: "rgba(2,6,23,0.7)", border: "1px solid rgba(167,139,250,0.25)",
-                      borderRadius: 8, color: "rgba(226,232,240,0.9)", fontFamily: "monospace", fontSize: 10.5,
-                      outline: "none", transition: "border-color 0.2s"
-                    }}
-                    onFocus={e => { e.target.style.borderColor = "rgba(167,139,250,0.6)"; }}
-                    onBlur={e => { e.target.style.borderColor = "rgba(167,139,250,0.25)"; }}
-                  />
-                  <button
-                    onClick={() => runChatQuery()}
-                    disabled={chatLoading || !chatInput.trim()}
-                    style={{
-                      display: "flex", alignItems: "center", gap: 6, padding: "9px 16px",
-                      background: chatLoading || !chatInput.trim() ? "rgba(167,139,250,0.05)" : "rgba(167,139,250,0.15)",
-                      border: "1px solid rgba(167,139,250,0.35)", borderRadius: 8,
-                      cursor: chatLoading || !chatInput.trim() ? "not-allowed" : "pointer",
-                      color: "#a78bfa", fontSize: 10, fontFamily: "monospace",
-                      opacity: chatLoading || !chatInput.trim() ? 0.5 : 1, transition: "all 0.2s"
-                    }}
-                  >
-                    {chatLoading
-                      ? <Cpu style={{ width: 12, height: 12, animation: "spin 1s linear infinite" }} />
-                      : <Send style={{ width: 12, height: 12 }} />
-                    }
-                    SEND
-                  </button>
-                </div>
-              </GlassCard>
             </div>
+          )}
+
+          {/* ── NEXUS HOLOGRAM TAB ── */}
+          {activeTab === "hologram" && (
+            <div style={{ display: "grid", gridTemplateColumns: "270px 1fr 270px", gap: 16 }}>
+              
+              {/* LEFT COLUMN: System Overview, Voice visualizer, Active modules */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                
+                {/* J.A.R.V.I.S. / NEXUS Title and Status */}
+                <GlassCard style={{ padding: "12px 14px" }}>
+                  <div style={{ fontSize: 16, fontWeight: 900, fontFamily: "'JetBrains Mono', monospace", color: "#00F5FF", letterSpacing: "0.15em", marginBottom: 2 }}>
+                    N.E.X.U.S.
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 8.5, fontFamily: "monospace", color: "rgba(255,255,255,0.6)" }}>STATUS:</span>
+                    <span style={{ fontSize: 8.5, fontFamily: "monospace", fontWeight: 700, color: "#34d399", letterSpacing: "0.08em" }}>ONLINE</span>
+                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#34d399", animation: "pulse 1.2s infinite" }} />
+                  </div>
+                </GlassCard>
+
+                {/* System Overview progress bars */}
+                <GlassCard style={{ padding: "12px 14px" }}>
+                  <div style={{ fontSize: 9.5, fontFamily: "'JetBrains Mono', monospace", color: "#00F5FF", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>
+                    System Overview
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    <MetricBar label="CPU Usage" value={28} max={100} color="#00F5FF" displayValue="28.4%" />
+                    <MetricBar label="Memory" value={42} max={100} color="#00F5FF" displayValue="42.1%" />
+                    <MetricBar label="Network" value={65} max={100} color="#00f5ff" displayValue="1.2 Gbps" />
+                    <MetricBar label="Storage" value={54} max={100} color="#38bdf8" displayValue="54.2%" />
+                    <MetricBar label="Holo-Energy" value={88} max={100} color="#34d399" displayValue="88.7%" />
+                  </div>
+                </GlassCard>
+
+                {/* Voice Command visualizer wave */}
+                <GlassCard style={{ padding: "12px 14px" }}>
+                  <div style={{ fontSize: 9.5, fontFamily: "'JetBrains Mono', monospace", color: "#00F5FF", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
+                    Voice Command
+                  </div>
+                  
+                  {/* Glowing frequency wave indicator */}
+                  <div style={{ height: 50, display: "flex", alignItems: "center", justifyContent: "center", gap: 3, background: "rgba(0,0,0,0.2)", borderRadius: 6, border: "1px solid rgba(0, 245, 255, 0.08)", overflow: "hidden", position: "relative" }}>
+                    {Array.from({ length: 18 }).map((_, i) => {
+                      const baseH = 5 + Math.sin(i * 0.4) * 15;
+                      const animateH = isTalking || isListening
+                        ? `calc(${baseH}px + ${Math.sin((i + Date.now()) * 0.05) * 12}px)`
+                        : `${baseH}px`;
+                      return (
+                        <div key={i} style={{
+                          width: 2,
+                          height: animateH,
+                          background: isListening ? "#FF2E88" : "#00F5FF",
+                          borderRadius: 1,
+                          transition: "height 0.1s ease",
+                          boxShadow: `0 0 6px ${isListening ? "#FF2E88" : "#00F5FF"}`
+                        }} />
+                      );
+                    })}
+                  </div>
+                  <div style={{ fontSize: 8.5, color: isListening ? "#FF2E88" : "rgba(148,163,184,0.5)", fontFamily: "monospace", marginTop: 6, display: "flex", alignItems: "center", gap: 5 }}>
+                    <span style={{ width: 4, height: 4, borderRadius: "50%", background: isListening ? "#FF2E88" : "rgba(148,163,184,0.4)", animation: isListening ? "pulse 1.2s infinite" : "none" }} />
+                    {isListening ? "Listening active..." : isTalking ? "Speaking..." : "Standby..."}
+                  </div>
+                </GlassCard>
+
+                {/* Operator Biometrics Monitor Card */}
+                <GlassCard style={{ padding: "12px 14px", position: "relative" }}>
+                  <style>{`
+                    @keyframes nx-scanline {
+                      0% { top: 0%; }
+                      50% { top: 100%; }
+                      100% { top: 0%; }
+                    }
+                  `}</style>
+                  <div style={{ fontSize: 9.5, fontFamily: "'JetBrains Mono', monospace", color: "#00F5FF", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>Biometric Scanner</span>
+                    <span style={{ fontSize: 8, color: bgCameraActive ? "#34d399" : "#fbbf24", display: "flex", alignItems: "center", gap: 3 }}>
+                      <span className="nx-pulse" style={{ width: 4, height: 4, borderRadius: "50%", background: bgCameraActive ? "#34d399" : "#fbbf24" }} />
+                      {bgCameraActive ? "ACTIVE" : "SIMULATED"}
+                    </span>
+                  </div>
+                  
+                  <div style={{ height: 120, position: "relative", background: "rgba(2, 6, 23, 0.6)", borderRadius: 6, border: "1px solid rgba(0, 245, 255, 0.15)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <video
+                      ref={bgVideoRef}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scaleX(-1)", display: bgCameraActive ? "block" : "none" }}
+                      playsInline
+                      muted
+                    />
+                    {!bgCameraActive && (
+                      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "monospace", fontSize: 9, color: "rgba(0, 245, 255, 0.4)", position: "relative" }}>
+                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px)", backgroundSize: "10px 10px" }} />
+                        <Brain style={{ width: 28, height: 28, color: "rgba(0, 245, 255, 0.25)", animation: "pulse 2s infinite" }} />
+                        <span style={{ marginTop: 8, letterSpacing: "0.08em" }}>ACQUIRING TARGET...</span>
+                      </div>
+                    )}
+                    
+                    {/* Scan Line Overlay */}
+                    <div style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      height: 2,
+                      background: "rgba(0, 245, 255, 0.65)",
+                      boxShadow: "0 0 8px #00F5FF",
+                      animation: "nx-scanline 3s linear infinite",
+                      zIndex: 5
+                    }} />
+                  </div>
+                  
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 8.5, fontFamily: "monospace", color: "rgba(148, 163, 184, 0.7)", marginTop: 6 }}>
+                    <span>TARGET OPERATOR:</span>
+                    <span style={{ color: recognizedOperator ? "#34d399" : "#FF2E88", fontWeight: 700 }}>
+                      {recognizedOperator ? recognizedOperator.toUpperCase() : "SEARCHING..."}
+                    </span>
+                  </div>
+                </GlassCard>
+
+                {/* Active Modules switches */}
+                <GlassCard style={{ padding: "12px 14px" }}>
+                  <div style={{ fontSize: 9.5, fontFamily: "'JetBrains Mono', monospace", color: "#00F5FF", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>
+                    Active Modules
+                  </div>
+                  {[
+                    { name: "Voice Recognition", status: isListening ? "ON" : "ON", color: "#34d399" },
+                    { name: "System Monitor",    status: "ON", color: "#34d399" },
+                    { name: "Security Suite",     status: "ON", color: "#34d399" },
+                    { name: "AI Assistant",       status: "ON", color: "#34d399" },
+                    { name: "Hologram Interface",  status: "ON", color: "#34d399" },
+                  ].map((mod, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 0", fontSize: 9, fontFamily: "monospace", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
+                      <span style={{ color: "rgba(148,163,184,0.85)" }}>{mod.name}</span>
+                      <span style={{ color: mod.color, fontWeight: 800, marginLeft: "auto" }}>{mod.status}</span>
+                    </div>
+                  ))}
+                </GlassCard>
+              </div>
+
+              {/* CENTER COLUMN: The projected 3D Hologram Face */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, position: "relative" }}>
+                <GlassCard style={{ flex: 1, padding: 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                  
+                  {/* Real-time feed header */}
+                  <div style={{ display: "flex", justifyContent: "space-between", width: "100%", borderBottom: "1px solid rgba(0, 245, 255, 0.12)", paddingBottom: 6, marginBottom: 8, boxSizing: "border-box" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <Radio style={{ width: 11, height: 11, color: "#00f5ff" }} />
+                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "0.15em", color: "#00f5ff", fontWeight: 700 }}>
+                        HOLOGRAM FEED
+                      </span>
+                      {recognizedOperator && (
+                        <span style={{ marginLeft: 6, fontSize: 8.5, fontFamily: "monospace", color: "#34d399", background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 4, padding: "1px 6px" }}>
+                          👤 {recognizedOperator.toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      {recognizedOperator ? (
+                        <button
+                          onClick={() => {
+                            setRecognizedOperator(null);
+                            appendLog("[BIOMETRICS] Operator signed out manually.", "#ef4444");
+                            toast.info("Operator signature cleared.");
+                          }}
+                          style={{
+                            background: "rgba(239, 68, 68, 0.1)",
+                            border: "1px solid rgba(239, 68, 68, 0.3)",
+                            color: "#f87171",
+                            fontSize: 8.5,
+                            fontFamily: "monospace",
+                            padding: "2px 8px",
+                            borderRadius: 4,
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                            textTransform: "uppercase"
+                          }}
+                        >
+                          Sign Out
+                        </button>
+                      ) : (
+                        <span style={{ fontSize: 8, fontFamily: "monospace", color: "rgba(148,163,184,0.4)" }}>MONITORING CAMERA...</span>
+                      )}
+                      <span style={{ fontSize: 8, fontFamily: "monospace", color: "rgba(148,163,184,0.5)" }}>REALTIME 3D PROJECTION</span>
+                    </div>
+                  </div>
+
+                  {/* Large 3D Hologram Canvas Projection */}
+                  <HologramFace
+                    isTalking={isTalking}
+                    isThinking={chatLoading}
+                    voiceEnabled={voiceEnabled}
+                    onToggleVoice={handleToggleVoice}
+                    isListening={isListening}
+                    onToggleListen={handleToggleListen}
+                    accentColor="#00F5FF"
+                  />
+                  
+                </GlassCard>
+              </div>
+
+              {/* RIGHT COLUMN: Earth Globe data stream, System Log, Quick Access */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                
+                {/* 3D Rotating Globe data stream */}
+                <GlassCard style={{ padding: "10px 12px" }}>
+                  <div style={{ fontSize: 9.5, fontFamily: "'JetBrains Mono', monospace", color: "#00F5FF", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 6 }}>
+                    Data Stream
+                  </div>
+                  
+                  {/* The 3D Rotating particle earth globe */}
+                  <RotatingGlobe color="#00f5ff" />
+                  
+                  <div style={{ fontSize: 7.5, color: "rgba(148,163,184,0.5)", fontFamily: "monospace", textAlign: "center", marginTop: 4 }}>
+                    GLOBAL CORRELATION GRID
+                  </div>
+                </GlassCard>
+
+                {/* System Log terminal console */}
+                <GlassCard style={{ border: "1px solid rgba(167,139,250,0.18)", padding: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+                    <MessageSquare style={{ width: 11, height: 11, color: "#a78bfa" }} />
+                    <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#a78bfa", fontWeight: 700 }}>System Log</span>
+                  </div>
+                  
+                  {/* Scrollable system message list */}
+                  <div style={{
+                    height: 110, overflowY: "auto", padding: "6px", background: "rgba(2,6,23,0.6)", borderRadius: 6,
+                    border: "1px solid rgba(167,139,250,0.08)", display: "flex", flexDirection: "column", gap: 6
+                  }}>
+                    {chatHistory.length === 0 ? (
+                      <div style={{ color: "rgba(148,163,184,0.35)", fontFamily: "monospace", fontSize: 8.5, lineHeight: 1.5 }}>
+                        &gt; Initializing hologram...<br />
+                        &gt; Connecting to neural city network...<br />
+                        &gt; All systems nominal.<br />
+                        &gt; How can I assist you?
+                      </div>
+                    ) : (
+                      chatHistory.map((msg, i) => (
+                        <div key={i} style={{ fontSize: 8.5, fontFamily: "monospace", color: msg.role === "user" ? "#00f5ff" : "rgba(255,255,255,0.75)" }}>
+                          <span style={{ color: "rgba(148,163,184,0.4)" }}>&gt; {msg.role === "user" ? "USER" : "NEXUS"}:</span> {msg.text?.slice(0, 100)}{msg.text?.length > 100 ? "..." : ""}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </GlassCard>
+
+                {/* Quick Access action links */}
+                <GlassCard style={{ padding: "10px 12px" }}>
+                  <div style={{ fontSize: 9.5, fontFamily: "'JetBrains Mono', monospace", color: "#00F5FF", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
+                    Quick Access
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    {[
+                      { name: "🔍 RUN ANALYSIS", action: () => { setActiveTab("aianalysis"); runAIAnalysis(); } },
+                      { name: "⚡ WEATHER OVERRIDE", action: fetchWeather },
+                      { name: "🚦 SIMULATE TRAFFIC", action: () => setActiveTab("cameras") },
+                      { name: "📋 AUDIT COMPLAINTS", action: () => setActiveTab("complaints") },
+                    ].map((item, i) => (
+                      <button key={i} onClick={item.action}
+                        style={{
+                          width: "100%", padding: "5px 8px", background: "rgba(0, 245, 255, 0.04)",
+                          border: "1px solid rgba(0, 245, 255, 0.15)", borderRadius: 4,
+                          color: "rgba(0, 245, 255, 0.85)", fontSize: 8, fontFamily: "monospace",
+                          textAlign: "left", cursor: "pointer", transition: "all 0.15s"
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "rgba(0, 245, 255, 0.12)"; e.currentTarget.style.borderColor = "rgba(0, 245, 255, 0.4)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "rgba(0, 245, 255, 0.04)"; e.currentTarget.style.borderColor = "rgba(0, 245, 255, 0.15)"; }}
+                      >
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                </GlassCard>
+              </div>
+
+            </div>
+          )}
+
+          {/* Chat Input Console Panel at the bottom of the grid */}
+          {activeTab === "hologram" && (
+            <GlassCard style={{ border: "1px solid rgba(0, 245, 255, 0.18)", marginTop: 14, padding: "10px 14px" }}>
+              <div style={{ display: "flex", gap: 8 }}>
+                <input
+                  value={chatInput}
+                  onChange={e => setChatInput(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); runChatQuery(); } }}
+                  placeholder="Ask NEXUS a telemetry query, tell a joke or talk conversational..."
+                  disabled={chatLoading}
+                  style={{
+                    flex: 1, padding: "9px 14px",
+                    background: "rgba(2,6,23,0.75)", border: "1px solid rgba(0, 245, 255, 0.22)",
+                    borderRadius: 8, color: "rgba(226,232,240,0.9)", fontFamily: "monospace", fontSize: 10.5,
+                    outline: "none", transition: "border-color 0.2s"
+                  }}
+                  onFocus={e => { e.target.style.borderColor = "rgba(0, 245, 255, 0.55)"; }}
+                  onBlur={e => { e.target.style.borderColor = "rgba(0, 245, 255, 0.22)"; }}
+                />
+                <button
+                  onClick={handleToggleListen}
+                  disabled={chatLoading}
+                  title={isListening ? "Listening... click to stop" : "Start Voice Input"}
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "center", width: 38, height: 38,
+                    background: isListening ? "rgba(255, 46, 136, 0.12)" : "rgba(0, 245, 255, 0.05)",
+                    border: `1px solid ${isListening ? "rgba(255, 46, 136, 0.45)" : "rgba(0, 245, 255, 0.25)"}`,
+                    borderRadius: 8, cursor: "pointer",
+                    color: isListening ? "#FF2E88" : "#00F5FF",
+                    transition: "all 0.2s", flexShrink: 0
+                  }}
+                >
+                  {isListening ? <Mic style={{ width: 14, height: 14 }} /> : <MicOff style={{ width: 14, height: 14 }} />}
+                </button>
+                <button
+                  onClick={() => runChatQuery()}
+                  disabled={chatLoading || !chatInput.trim()}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 6, padding: "9px 18px",
+                    background: chatLoading || !chatInput.trim() ? "rgba(0, 245, 255, 0.03)" : "rgba(0, 245, 255, 0.12)",
+                    border: "1px solid rgba(0, 245, 255, 0.35)", borderRadius: 8,
+                    cursor: chatLoading || !chatInput.trim() ? "not-allowed" : "pointer",
+                    color: "#00F5FF", fontSize: 10, fontFamily: "monospace",
+                    opacity: chatLoading || !chatInput.trim() ? 0.5 : 1, transition: "all 0.2s"
+                  }}
+                >
+                  {chatLoading
+                    ? <Cpu style={{ width: 12, height: 12, animation: "spin 1s linear infinite" }} />
+                    : <Send style={{ width: 12, height: 12 }} />
+                  }
+                  SEND
+                </button>
+              </div>
+            </GlassCard>
           )}
         </div>
 

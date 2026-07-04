@@ -57,9 +57,8 @@ export default function KnowledgeBase() {
       const r = await http.get(`/kb`); // Get all files
       const full = r.data.find(f => f.id === file.id) || file;
       // Actually need content — fetch from a different endpoint or use what we have
-      setPreview(file);
+      setPreview(full);
     } catch {}
-    setPreview(file);
   };
 
   const askKB = async () => {

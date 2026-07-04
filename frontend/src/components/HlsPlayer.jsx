@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Hls from "hls.js";
+import { BACKEND_URL } from "../lib/api";
 
-const PROXY_BASE = "http://localhost:8000/api/urban/hls-proxy";
+const PROXY_BASE = `${BACKEND_URL}/api/urban/hls-proxy`;
 
 /**
  * Convert a raw HLS .m3u8 URL into a proxied manifest URL so the
@@ -35,6 +36,7 @@ export default function HlsPlayer({
   const hlsRef     = useRef(null);
   const retryTimer = useRef(null);
   const retryCount = useRef(0);
+  const timeoutCount = useRef(0);
   const [state, setState] = useState("loading"); // loading | playing | error
 
   const destroyHls = useCallback(() => {
@@ -51,6 +53,7 @@ export default function HlsPlayer({
   const initHls = useCallback(() => {
     if (!src || !videoRef.current) return;
     const video = videoRef.current;
+    timeoutCount.current = 0;
 
     // Always generate a fresh proxy URL so the manifest is never stale
     const proxySrc = proxyManifestUrl(src);
@@ -117,6 +120,7 @@ export default function HlsPlayer({
 
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
       retryCount.current = 0;
+      timeoutCount.current = 0;
       // Seek to the absolute live edge before playing
       if (video.duration && isFinite(video.duration)) {
         video.currentTime = video.duration;
@@ -127,6 +131,29 @@ export default function HlsPlayer({
 
     hls.on(Hls.Events.ERROR, (_, data) => {
       console.warn("[HlsPlayer]", data.type, data.details, data.fatal);
+
+      // Check for unrecoverable HTTP response status codes immediately (even if flagged non-fatal)
+      if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+        const statusCode = data.response?.code;
+        if (statusCode === 404 || statusCode === 502 || statusCode === 503 || statusCode === 504) {
+          console.info(`[HlsPlayer] Upstream returned fatal status ${statusCode}. Marking offline.`);
+          setState("error");
+          destroyHls();
+          return;
+        }
+
+        // Count and limit timeout warnings (like levelLoadTimeOut / fragLoadTimeOut) to avoid infinite buffering
+        if (data.details === "levelLoadTimeOut" || data.details === "manifestLoadTimeOut" || data.details === "fragLoadTimeOut") {
+          timeoutCount.current += 1;
+          console.warn(`[HlsPlayer] Timeout warning (${timeoutCount.current}/3)`);
+          if (timeoutCount.current >= 3) {
+            console.info("[HlsPlayer] Too many network timeouts. Marking offline.");
+            setState("error");
+            destroyHls();
+            return;
+          }
+        }
+      }
 
       if (!data.fatal) {
         // Non-fatal — let hls.js recover automatically

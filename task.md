@@ -1,0 +1,13 @@
+- [x] Modify `backend/server.py` to append backend cache-buster `_t` to upstream manifest requests
+- [x] Verify the fixes locally
+- [x] Modify `backend/server.py` to bypass mock key for `/urban/analyze` and `/urban/chat` endpoints
+- [x] Verify AI cross-source analysis locally
+- [x] Create `frontend/src/components/HologramFace.jsx` with 3D canvas mesh logic
+- [x] Modify `frontend/src/pages/UrbanIntelligence.jsx` to render the 3D Hologram, Voice input and output
+- [x] Modify `backend/server.py` to expand `/urban/chat` fallback for conversational/jokes queries
+- [x] Verify the Hologram and Voice interactions locally
+- [x] Move Hologram Face and Q&A Console into a dedicated "NEXUS Hologram" tab in `UrbanIntelligence.jsx`
+- [x] Verify the new dedicated tab layout and interactions locally
+- [x] Implement backend face recognition endpoints and local profiles database in `server.py`
+- [x] Modify `UrbanIntelligence.jsx` to integrate Webcam, scan overlays, and biometric API calls
+- [x] Verify the biometric facial scan and recognition locally

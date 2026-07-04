@@ -754,5 +754,158 @@
     "agent": "nexus-core",
     "timestamp": "2026-06-30T16:33:05.834886+00:00",
     "_id": "d2245c2f-5a66-4356-9cab-621c03c3f9ce"
+  },
+  {
+    "id": "6b1edc07-4c09-4ae4-82c9-bbf547e183b8",
+    "session_id": "a808f8ef-6e9e-4a3c-9575-cf46ff329ecc",
+    "role": "user",
+    "content": "hi",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:02:26.396068+00:00",
+    "_id": "d81489b9-4cfe-4c35-8787-092502b9d5ac"
+  },
+  {
+    "id": "cfce035e-977e-41e1-93b5-641b144ebeda",
+    "session_id": "a808f8ef-6e9e-4a3c-9575-cf46ff329ecc",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"hi\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:02:30.361684+00:00",
+    "_id": "f25d18e9-5d0e-47b3-a93c-8986d8166e8f"
+  },
+  {
+    "id": "ac2595b3-7c49-4fd7-aeeb-ae8a159ed9bf",
+    "session_id": "283141d3-f5cf-4ac1-a244-73d2904ee02e",
+    "role": "user",
+    "content": "hi",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:02:41.737395+00:00",
+    "_id": "1f932f74-9c8f-4b71-943f-492a5c18836a"
+  },
+  {
+    "id": "b4ff5fb7-d7ac-49cd-8bdb-06ebc9232e97",
+    "session_id": "283141d3-f5cf-4ac1-a244-73d2904ee02e",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"hi\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:02:45.619590+00:00",
+    "_id": "99b918d1-afe2-4738-a400-c454964c83c5"
+  },
+  {
+    "id": "8c6f9435-e866-4fde-a874-b5748965846e",
+    "session_id": "fcd1579d-d334-41ef-90b2-07e21cfc4b55",
+    "role": "user",
+    "content": "hi",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:02:48.626737+00:00",
+    "_id": "8993a586-396e-477c-8279-8e49bab338c5"
+  },
+  {
+    "id": "36001e5d-be7e-460d-b556-021f213fa011",
+    "session_id": "fcd1579d-d334-41ef-90b2-07e21cfc4b55",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"hi\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:02:52.454290+00:00",
+    "_id": "bf47d0a4-ec25-4172-a5cb-262b6ac3ffec"
+  },
+  {
+    "id": "192f076b-c46b-4884-a509-b92b0fe69ecf",
+    "session_id": "85b30379-a9e9-4eab-8dc0-8f000a1ef194",
+    "role": "user",
+    "content": "Koi dikkat Nahin Hai",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:34:32.277382+00:00",
+    "_id": "770c8b67-f2b8-4b5c-9a3e-3950e9dc7429"
+  },
+  {
+    "id": "a3e20d15-fb6d-47bc-a8c7-26586376ad84",
+    "session_id": "85b30379-a9e9-4eab-8dc0-8f000a1ef194",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"Koi dikkat Nahin Hai\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T17:34:32.424457+00:00",
+    "_id": "4203a3f0-ec49-43a4-94be-532401e9db75"
+  },
+  {
+    "id": "92cecb0e-5315-4c86-82c3-d3dcaeacb7ff",
+    "session_id": "9f48be32-bc28-4eac-a2ee-927373dc30ca",
+    "role": "user",
+    "content": "data gathering",
+    "agent": "researcher",
+    "timestamp": "2026-07-01T19:59:09.359723+00:00",
+    "_id": "d45da114-8dd4-4d7f-949f-32e9c3ce6c8c"
+  },
+  {
+    "id": "68836e15-d0cd-4dca-9465-398496a7bcfb",
+    "session_id": "9f48be32-bc28-4eac-a2ee-927373dc30ca",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"data gathering\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "researcher",
+    "timestamp": "2026-07-01T19:59:09.548941+00:00",
+    "_id": "b46054dc-b144-47bb-b9e0-bd8ae394f92b"
+  },
+  {
+    "id": "2853f6e9-f982-4548-ad97-acd99660e285",
+    "session_id": "7b5f045d-ce4e-4bae-b174-f8ab73454374",
+    "role": "user",
+    "content": "hello",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T20:00:28.944075+00:00",
+    "_id": "36134369-67f7-4e73-bdd3-e13b47c336b7"
+  },
+  {
+    "id": "59984af1-1876-46d7-81bc-fca485072de8",
+    "session_id": "7b5f045d-ce4e-4bae-b174-f8ab73454374",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"hello\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-01T20:00:29.030565+00:00",
+    "_id": "9ad082ce-a649-4a4d-bf98-f9d77b694cb5"
+  },
+  {
+    "id": "04de1744-fe73-4cb7-8c52-e555c7d4a851",
+    "session_id": "c1d552e9-af10-4eb3-94f8-31d365713cdc",
+    "role": "user",
+    "content": "hello",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-02T17:28:14.916829+00:00",
+    "_id": "d63baf01-2594-4e57-a21e-ceafff83e937"
+  },
+  {
+    "id": "98e177e1-eac6-4e63-8328-b0ecbea1ce0a",
+    "session_id": "a74957f2-c073-473f-9e47-91f84dc83c78",
+    "role": "user",
+    "content": "hi",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-02T18:34:45.371551+00:00",
+    "_id": "a543627b-c233-4524-bffb-e8a66295d493"
+  },
+  {
+    "id": "e945c3bc-80a2-42c8-93cb-0fd9980ff176",
+    "session_id": "a74957f2-c073-473f-9e47-91f84dc83c78",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"hi\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-02T18:34:49.476324+00:00",
+    "_id": "89d937d1-d49f-43d7-ab14-ef7fd654bfc2"
+  },
+  {
+    "id": "1186acf1-c71f-451b-a3c9-e453e35df7d9",
+    "session_id": "a74957f2-c073-473f-9e47-91f84dc83c78",
+    "role": "user",
+    "content": "how are you",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-02T18:35:03.632988+00:00",
+    "_id": "15bc41db-208c-4cd5-ae36-afede16b1b9c"
+  },
+  {
+    "id": "1e3e2b6b-9f12-4288-bd63-53e3305279d3",
+    "session_id": "a74957f2-c073-473f-9e47-91f84dc83c78",
+    "role": "assistant",
+    "content": "**NEXUS Swarm Intelligence** online.\n                \nI analyzed your directive: *\"how are you\"*\n\nAll local microservices report a status of **NOMINAL**. Core databases, sensors, and telemetry grids are synchronized.\n\nHow can I assist you further with this operation?",
+    "agent": "nexus-core",
+    "timestamp": "2026-07-02T18:35:07.798166+00:00",
+    "_id": "05e49d54-f5ba-47ab-b69c-64f03fd18328"
   }
 ]

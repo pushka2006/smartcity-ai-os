@@ -8,7 +8,7 @@ const LS_KEY = "nexus_settings";
 const DEFAULTS = {
   llmKey: "",
   mongoUrl: "mongodb://localhost:27017",
-  backendUrl: "http://localhost:8000",
+  backendUrl: "http://localhost:8001",
   theme: "cyberpunk-dark",
 };
 

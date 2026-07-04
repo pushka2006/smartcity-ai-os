@@ -310,7 +310,7 @@ export default function BiometricSecurity() {
                   </div>
                   <button
                     onClick={() => handleDeleteSignature(sig.id, sig.operator_name)}
-                    style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(239, 68, 68, 0.6)", padding: 6, display: "flex", borderRadius: 6, border: "1px solid rgba(239, 68, 68, 0.15)" }}
+                    style={{ background: "none", cursor: "pointer", color: "rgba(239, 68, 68, 0.6)", padding: 6, display: "flex", borderRadius: 6, border: "1px solid rgba(239, 68, 68, 0.15)" }}
                     onMouseEnter={e => { e.currentTarget.style.color = "#f87171"; e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.4)"; }}
                     onMouseLeave={e => { e.currentTarget.style.color = "rgba(239, 68, 68, 0.6)"; e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.15)"; }}
                     title="Purge profile"
