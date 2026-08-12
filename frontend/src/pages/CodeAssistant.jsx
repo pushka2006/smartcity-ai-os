@@ -217,8 +217,8 @@ const FILE_CONTENTS = {
     path: ".env.local",
     lang: "Properties",
     lines: [
-      `MONGODB_URI=mongodb+srv://admin:secret@cluster0.mongodb.net/omegastore`,
-      `JWT_SECRET=super_secret_nexus_key_2026`,
+      `MONGODB_URI=mongodb://localhost:27017/nexus_db`,
+      `JWT_SECRET=your_jwt_secret_key_here`,
       `NEXT_PUBLIC_API_URL=http://localhost:3000/api`,
       `NODE_ENV=development`
     ]

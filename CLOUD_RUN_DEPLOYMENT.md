@@ -80,7 +80,7 @@ You can also pass environment variables during deployment or set them in the GCP
 ```bash
 gcloud run deploy smartcity-ai-os \
     --region=us-central1 \
-    --set-env-vars MONGO_URL="mongodb+srv://user:pass@cluster.mongodb.net/nexus_ai_os",CORS_ORIGINS="*"
+    --set-env-vars MONGO_URL="mongodb://localhost:27017/nexus_ai_os",CORS_ORIGINS="*"
 ```
 
 ---
