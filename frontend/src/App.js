@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./index.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Shell from "./components/Shell";
 import { ToastProvider } from "./components/Toast";
 import { SecurityProvider } from "./lib/SecurityContext";
@@ -118,7 +118,7 @@ function App() {
             lineDistance={particleSettings.lineDistance}
           />
           <div style={{ position: "relative", zIndex: 1 }}>
-            <BrowserRouter>
+            <Router>
               <VoiceProvider>
                 <Shell>
                   <Routes>
