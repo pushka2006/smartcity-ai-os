@@ -152,7 +152,7 @@ function App() {
                   </Routes>
                 </Shell>
               </VoiceProvider>
-            </BrowserRouter>
+            </Router>
           </div>
         </div>
         </ErrorFixerProvider>
