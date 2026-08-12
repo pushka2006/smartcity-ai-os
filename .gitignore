@@ -1,0 +1,35 @@
+# Environment and Secret Files
+.env
+.env.*
+*.env
+backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+venv/
+backend/venv/
+
+# Build Outputs
+build/
+frontend/build/
+dist/
+
+# Python Cache & Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Logs & Temporary Files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+brain/
