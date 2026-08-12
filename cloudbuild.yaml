@@ -1,0 +1,30 @@
+steps:
+  # 1. Build Docker image via Cloud Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t', 'gcr.io/$PROJECT_ID/smartcity-ai-os:$COMMIT_SHA',
+      '-t', 'gcr.io/$PROJECT_ID/smartcity-ai-os:latest',
+      '.'
+    ]
+
+  # 2. Push image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/smartcity-ai-os:latest']
+
+  # 3. Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'run', 'deploy', 'smartcity-ai-os',
+      '--image', 'gcr.io/$PROJECT_ID/smartcity-ai-os:latest',
+      '--region', 'us-central1',
+      '--platform', 'managed',
+      '--allow-unauthenticated',
+      '--memory', '1Gi',
+      '--cpu', '1'
+    ]
+
+images:
+  - 'gcr.io/$PROJECT_ID/smartcity-ai-os:latest'
+  - 'gcr.io/$PROJECT_ID/smartcity-ai-os:$COMMIT_SHA'

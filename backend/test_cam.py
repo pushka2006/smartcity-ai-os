@@ -1,7 +1,11 @@
-import httpx, json, asyncio
+import httpx, json, asyncio, os
+from dotenv import load_dotenv
+
+load_dotenv()
+TRAFFIC_API_KEY = os.environ.get("TRAFFIC_API_KEY", os.environ.get("511NY_API_KEY", "9d2ff4d0-c3e7-4aae-9e76-5c56b0f99e52"))
 
 async def f():
-    r = await httpx.AsyncClient(timeout=15).get('https://511ny.org/api/getcameras?key=9d2ff4d0-c3e7-4aae-9e76-5c56b0f99e52&format=json')
+    r = await httpx.AsyncClient(timeout=15).get(f'https://511ny.org/api/getcameras?key={TRAFFIC_API_KEY}&format=json')
     d = r.json()
     # Find ones with VideoUrl (HLS stream)
     with_video = [c for c in d if not c.get('Disabled') and c.get('VideoUrl')]

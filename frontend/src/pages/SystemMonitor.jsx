@@ -54,31 +54,44 @@ export default function SystemMonitor() {
   const [devices, setDevices] = useState([]);
   const [devicesLoading, setDevicesLoading] = useState(false);
   const mounted = useRef(true);
+  const pausedRef = useRef(false);
   const ivRef = useRef(null);
 
+  // Keep pausedRef in sync so the stable interval callback can read it
+  useEffect(() => { pausedRef.current = paused; }, [paused]);
+
   const loadMetrics = useCallback(async () => {
-    if (!mounted.current || paused) return;
+    if (!mounted.current || pausedRef.current) return;
     try {
-      const [m, s] = await Promise.all([http.get("/system/metrics"), http.get("/system/series?points=50")]);
-      setMetrics(m.data);
-      setSeries(s.data);
-    } catch {}
-  }, [paused]);
+      const [m, s] = await Promise.all([
+        http.get("/system/metrics"),
+        http.get("/system/series?points=50"),
+      ]);
+      if (mounted.current) {
+        setMetrics(m.data);
+        setSeries(s.data);
+      }
+    } catch (err) {
+      console.warn("Metrics fetch failed:", err?.message);
+    }
+  }, []); // stable — no deps that change
 
   const loadDevices = useCallback(async () => {
     if (!mounted.current) return;
     setDevicesLoading(true);
     try {
       const res = await http.get("/system/devices");
-      setDevices(res.data);
+      if (mounted.current) setDevices(res.data);
     } catch {}
-    setDevicesLoading(false);
+    if (mounted.current) setDevicesLoading(false);
   }, []);
 
   useEffect(() => {
     mounted.current = true;
+    // Immediate first load
     loadMetrics();
     loadDevices();
+    // Stable intervals — won't re-create on every render
     ivRef.current = setInterval(loadMetrics, 2000);
     const dvIv = setInterval(loadDevices, 5000);
     return () => {
@@ -86,7 +99,7 @@ export default function SystemMonitor() {
       clearInterval(ivRef.current);
       clearInterval(dvIv);
     };
-  }, [loadMetrics, loadDevices]);
+  }, [loadMetrics, loadDevices]); // both are now stable (empty deps)
 
   const exportMetrics = () => {
     const blob = new Blob([JSON.stringify({ metrics, series, exportedAt: new Date().toISOString() }, null, 2)], { type: "application/json" });

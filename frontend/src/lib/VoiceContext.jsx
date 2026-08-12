@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { http, streamChat } from "./api";
 import { toast } from "../components/Toast";
 import { useSecurity } from "./SecurityContext";
+import { speak as ttsSpeak, stopSpeaking as ttsStop, preloadVoices } from "./tts";
 
 const VoiceContext = createContext(null);
 
@@ -42,45 +43,22 @@ export function VoiceProvider({ children }) {
     ambientActiveRef.current = ambientActive;
   }, [ambientActive]);
 
-  // Initialize Speech Synthesis Voices
+  // Preload voices at mount so the best voice is ready immediately
   useEffect(() => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      const loadVoices = () => {
-        setVoices(window.speechSynthesis.getVoices());
-      };
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
+    preloadVoices();
   }, []);
 
-  // Text-To-Speech (Speech Synthesis)
+  // Text-To-Speech — uses the shared human-like TTS engine
   const speak = useCallback((text) => {
     if (typeof window === "undefined" || !window.speechSynthesis) return;
 
-    // Clear any existing safety timer before cancelling
+    // Clear any existing safety timer
     if (speakingSafetyTimerRef.current) {
       clearTimeout(speakingSafetyTimerRef.current);
       speakingSafetyTimerRef.current = null;
     }
 
-    window.speechSynthesis.cancel(); // stop any current speech
     isSpeakingRef.current = true;
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Choose a high-quality robotic/calm voice (prefer Google US English or Microsoft Zira)
-    let selectedVoice = voices.find(
-      (v) =>
-        v.lang.startsWith("en") &&
-        (v.name.includes("Google") || v.name.includes("Zira") || v.name.includes("Female"))
-    );
-    if (!selectedVoice) {
-      selectedVoice = voices.find((v) => v.lang.startsWith("en")) || voices[0];
-    }
-
-    if (selectedVoice) utterance.voice = selectedVoice;
-    utterance.pitch = 0.98;
-    utterance.rate = 1.05;
 
     const clearSpeaking = () => {
       isSpeakingRef.current = false;
@@ -90,11 +68,7 @@ export function VoiceProvider({ children }) {
       }
     };
 
-    utterance.onend = clearSpeaking;
-    utterance.onerror = clearSpeaking;
-
-    // Safety fallback: browsers sometimes never fire onend (tab blur, TTS engine bugs).
-    // Estimate speech duration from word count (~130 wpm average) + 2s buffer.
+    // Safety fallback: browsers sometimes never fire onend
     const wordCount = text.trim().split(/\s+/).length;
     const estimatedMs = Math.ceil((wordCount / 130) * 60 * 1000) + 2000;
     speakingSafetyTimerRef.current = setTimeout(() => {
@@ -104,8 +78,14 @@ export function VoiceProvider({ children }) {
       }
     }, estimatedMs);
 
-    window.speechSynthesis.speak(utterance);
-  }, [voices]);
+    ttsSpeak(text, {
+      lang: "en-US",
+      rate: 1.0,
+      pitch: 1.0,
+      onEnd: clearSpeaking,
+      onError: clearSpeaking,
+    });
+  }, []);
 
   // Keep speakRef always pointing to latest speak without causing effect re-runs
   useEffect(() => { speakRef.current = speak; }, [speak]);

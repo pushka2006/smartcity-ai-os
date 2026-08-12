@@ -549,13 +549,258 @@ class LlmChat:
         self.model_name = model_name
         return self
 
+    def _parse_telemetry(self, prompt):
+        # Parse weather
+        temp = 20.0
+        m = re.search(r'(?:Temperature|Temp):\s*([\d\.-]+)', prompt)
+        if m: temp = float(m.group(1))
+        
+        feels_like = 20.0
+        m = re.search(r'Feels like:\s*([\d\.-]+)', prompt)
+        if m: feels_like = float(m.group(1))
+        
+        condition = "Clear"
+        m = re.search(r'Condition:\s*([^\n,%\)]+)', prompt)
+        if m: condition = m.group(1).strip()
+        
+        humidity = 50
+        m = re.search(r'Humidity:\s*(\d+)', prompt)
+        if m: humidity = int(m.group(1))
+        
+        wind_speed = 10.0
+        m = re.search(r'Wind:\s*([\d\.-]+)', prompt)
+        if m: wind_speed = float(m.group(1))
+        
+        visibility = 10.0
+        m = re.search(r'Visibility:\s*([\d\.-]+)', prompt)
+        if m: visibility = float(m.group(1))
+
+        # Parse air quality
+        aqi = 50
+        m = re.search(r'AQI:\s*(\d+)', prompt)
+        if m: aqi = int(m.group(1))
+        
+        aqi_category = "Good"
+        m = re.search(r'AQI:\s*\d+\s*\(([^)]+)\)', prompt)
+        if m: aqi_category = m.group(1).strip()
+
+        # Parse traffic & safety
+        cams_online = 100
+        cams_total = 100
+        m = re.search(r'(?:Online|Traffic Cams Active):\s*(\d+)/(\d+)', prompt)
+        if m:
+            cams_online = int(m.group(1))
+            cams_total = int(m.group(2))
+            
+        cctv_active = 50
+        cctv_total = 50
+        m = re.search(r'(?:Nodes Active|CCTV Nodes Active):\s*(\d+)/(\d+)', prompt)
+        if m:
+            cctv_active = int(m.group(1))
+            cctv_total = int(m.group(2))
+            
+        cctv_alerts = 0
+        cctv_cautions = 0
+        m = re.search(r'(?:Anomaly Alerts|CCTV Anomaly Alerts):\s*(\d+)\s*critical,\s*(\d+)\s*warning', prompt)
+        if m:
+            cctv_alerts = int(m.group(1))
+            cctv_cautions = int(m.group(2))
+            
+        incidents_count = 0
+        m = re.search(r'(?:Live traffic incidents|Live Traffic Incidents):\s*(\d+)', prompt)
+        if m: incidents_count = int(m.group(1))
+
+        # Parse complaints
+        pending_comp = 0
+        critical_comp = 0
+        m = re.search(r'(?:Open|Pending):\s*(\d+)', prompt)
+        if m: pending_comp = int(m.group(1))
+        m = re.search(r'(?:Critical|Critical priority):\s*(\d+)', prompt)
+        if m: critical_comp = int(m.group(1))
+
+        # Parse gov data
+        gov_datasets_count = 0
+        m = re.search(r'Online Datasets:\s*(\d+)', prompt)
+        if m: gov_datasets_count = int(m.group(1))
+        
+        gov_health_avg = 95.0
+        m = re.search(r'(?:Data Health Index|Data Health):\s*([\d\.-]+)%', prompt)
+        if m: gov_health_avg = float(m.group(1))
+        
+        gov_anomalies_total = 0
+        m = re.search(r'(?:Total Anomalies|total anomalies):\s*(\d+)', prompt)
+        if m: gov_anomalies_total = int(m.group(1))
+        
+        # Parse query
+        query = ""
+        m = re.search(r'(?:Operator\'s query|Query):\s*"(.*?)"', prompt, re.DOTALL)
+        if m:
+            query = m.group(1)
+        else:
+            # Check for query at the end
+            m = re.search(r'Query:\s*(.*?)$', prompt, re.DOTALL)
+            if m: query = m.group(1)
+            
+        operator_name = None
+        m = re.search(r'ACTIVE OPERATOR:\s*([^\n\(]+)', prompt)
+        if m: operator_name = m.group(1).strip()
+        
+        return {
+            "temp": temp,
+            "feels_like": feels_like,
+            "condition": condition,
+            "humidity": humidity,
+            "wind_speed": wind_speed,
+            "visibility": visibility,
+            "aqi": aqi,
+            "aqi_category": aqi_category,
+            "cams_online": cams_online,
+            "cams_total": cams_total,
+            "cctv_active": cctv_active,
+            "cctv_total": cctv_total,
+            "cctv_alerts": cctv_alerts,
+            "cctv_cautions": cctv_cautions,
+            "incidents_count": incidents_count,
+            "pending_comp": pending_comp,
+            "critical_comp": critical_comp,
+            "gov_datasets_count": gov_datasets_count,
+            "gov_health_avg": gov_health_avg,
+            "gov_anomalies_total": gov_anomalies_total,
+            "query": query,
+            "operator_name": operator_name
+        }
+
+    def _generate_urban_analysis(self, prompt):
+        t = self._parse_telemetry(prompt)
+        
+        insights = []
+        # 1. AQI Insight
+        aqi_val = t["aqi"]
+        aqi_cat = t["aqi_category"]
+        if aqi_val > 150:
+            insights.append(f"🔴 AIR QUALITY CRITICAL: AQI is currently {aqi_val} ({aqi_cat}), indicating high pollution levels. Recommend issuing a public health warning and restricting strenuous outdoor activities.")
+        elif aqi_val > 100:
+            insights.append(f"🟡 AIR QUALITY MODERATE: AQI is at {aqi_val} ({aqi_cat}). Sensitive groups, including pediatric and geriatric demographics, should restrict prolonged outdoor exposure.")
+        else:
+            insights.append(f"✅ AIR QUALITY GOOD: AQI is nominal at {aqi_val} ({aqi_cat}). Ambient atmospheric sensors register baseline particle density.")
+
+        # 2. Weather Insight
+        cond = t["condition"]
+        temp = t["temp"]
+        if "Rain" in cond or "Storm" in cond or t["visibility"] < 5:
+            insights.append(f"⚠️ ADVERSE WEATHER: Precipitation patterns ({cond}) and reduced visibility ({t['visibility']} km) detected. Recommended activation of highway warning signals and emergency drainage pumps.")
+        elif temp > 35:
+            insights.append(f"🔴 EXTREME TEMPERATURE: Ambient reading is {temp}°C. Core cooling station deployment is active. Power grids are monitored for high AC loads.")
+        else:
+            insights.append(f"✅ WEATHER NOMINAL: Local climate is clear/moderate at {temp}°C with standard visibility of {t['visibility']} km. Normal city operations proceed.")
+
+        # 3. CCTV Insight
+        alerts = t["cctv_alerts"]
+        cautions = t["cctv_cautions"]
+        if alerts > 0:
+            insights.append(f"🔴 CCTV ALERTS DETECTED: {alerts} critical crowd behavior anomalies flagged by AI surveillance nodes. Immediate dispatch of municipal security units is advised.")
+        elif cautions > 0:
+            insights.append(f"🟡 CCTV CAUTION STATE: {cautions} elevated occupancy/activity points flagged. Visual streams pinned to sector tracking consoles for continuous monitoring.")
+        else:
+            insights.append(f"✅ CCTV SAFETY NOMINAL: All active security feeds ({t['cctv_active']}/{t['cctv_total']} nodes online) report standard ambient crowd flow and no behavioral alerts.")
+
+        # 4. Traffic Cams & Incidents
+        online = t["cams_online"]
+        total = t["cams_total"]
+        pct = int(online / total * 100) if total > 0 else 0
+        incidents = t["incidents_count"]
+        if pct < 80:
+            insights.append(f"⚠️ CAMERA NETWORK DEGRADED: Only {online}/{total} ({pct}%) traffic feeds are active. Technical team dispatched to service offline nodes.")
+        elif incidents > 5:
+            insights.append(f"🔴 TRAFFIC INCIDENTS ELEVATED: {incidents} active bottlenecks on major arteries. Implementing dynamic light timing modifications to clear key lanes.")
+        else:
+            insights.append(f"✅ TRAFFIC NOMINAL: {incidents} incidents reported across the camera grid ({online} active cameras). Commuter traffic flow remains at baseline velocity.")
+
+        # 5. Citizen Complaints
+        pending = t["pending_comp"]
+        crit = t["critical_comp"]
+        if crit > 10:
+            insights.append(f"🔴 COMPLAINTS CRITICAL: {crit} high-priority municipal complaints pending. Service crews redirected to prioritize immediate pipeline and electrical faults.")
+        elif pending > 10:
+            insights.append(f"🟡 COMPLAINTS ESCALATING: Queue depth reaches {pending} pending complaints. Prioritizing service requests to prevent system degradation.")
+        else:
+            insights.append(f"✅ COMPLAINT QUEUE NOMINAL: citizen complaint count is at {pending} with only {crit} critical issues. Service delivery latency is within target KPIs.")
+
+        # 6. Gov Open Data
+        health = t["gov_health_avg"]
+        anom = t["gov_anomalies_total"]
+        if health < 95:
+            insights.append(f"🟡 DATA TELEMETRY WARNING: {t['gov_datasets_count']} government datasets synced, but database health is at {health}% with {anom} anomalies detected.")
+        else:
+            insights.append(f"✅ GOV DATA FRESH: {t['gov_datasets_count']} municipal datasets fully synchronized. Average health integrity is nominal at {health}% with zero critical anomalies.")
+
+        return "\n\n".join(insights)
+
+    def _generate_urban_chat(self, prompt):
+        t = self._parse_telemetry(prompt)
+        q = t["query"].lower() if t["query"] else ""
+        
+        # Determine operator name greeting
+        greeting = ""
+        if t["operator_name"]:
+            greeting = f"Welcome back, operator **{t['operator_name']}**! "
+        else:
+            greeting = "Hello there, operator! "
+
+        # Match query keywords
+        if "greet me" in q or "recognized operator" in q:
+            response_text = f"**[NEXUS AI]** {greeting}I recognize your biometric profile. All city telemetry feeds are synchronized and online for your shift!"
+        elif "traffic" in q or "incident" in q or "jam" in q or "road" in q:
+            status = f"There are currently **{t['incidents_count']} live traffic incidents** reported on arterial routes." if t["incidents_count"] > 0 else "No active incidents reported. Transit corridor flows are currently stable and matching historical baselines."
+            response_text = f"**[NEXUS AI]** Traffic camera monitoring reports {t['cams_online']}/{t['cams_total']} active feeds. {status} Traffic signal controllers are adjusting cycles to alleviate bottlenecks."
+        elif "safety" in q or "cctv" in q or "anomaly" in q or "security" in q or "crowd" in q:
+            status = f"⚠️ **ALERT**: {t['cctv_alerts']} critical crowd behavior anomalies detected. Local precinct patrols have been notified." if t["cctv_alerts"] > 0 else (f"⚠️ **CAUTION**: {t['cctv_cautions']} elevated occupancy/activity points are flagged. Visual feeds are pinned to sector tracking." if t["cctv_cautions"] > 0 else "All security nodes report standard ambient activity. Anomaly scores are within normal variance ranges (average score < 15%).")
+            response_text = f"**[NEXUS AI]** Public space security monitoring reports {t['cctv_active']}/{t['cctv_total']} active CCTV nodes. {status}"
+        elif "weather" in q or "temp" in q or "rain" in q or "wind" in q:
+            precip = "Precipitation is detected. Roadways may experience minor speed reductions; signal delays have been adjusted." if "Rain" in t['condition'] else "Meteorological metrics are stable, and no severe weather advisories are currently active."
+            response_text = f"**[NEXUS AI]** Current conditions report **{t['condition']}** at **{t['temp']}°C** (humidity: {t['humidity']}%). {precip}"
+        elif "pollution" in q or "air" in q or "aqi" in q or "smog" in q:
+            action = "Fine particulate concentration (PM2.5) is elevated. Recommend posting a public health warning to standard channels." if t['aqi'] > 100 else "Ambient air quality index indicates nominal conditions. No precautions or health warnings are required."
+            response_text = f"**[NEXUS AI]** Open-Meteo AQ registers **AQI {t['aqi']}** ({t['aqi_category']}). {action}"
+        elif "complaint" in q or "311" in q or "citizen" in q:
+            action = "Department dispatch priorities have been adjusted to address high-priority utility and infrastructure reports." if t['critical_comp'] > 5 else "Service queue density is nominal. General service request resolution averages match operational KPIs."
+            response_text = f"**[NEXUS AI]** The NYC 311 feed indicates **{t['pending_comp']} open complaints** with **{t['critical_comp']} critical incidents**. {action}"
+        elif "gov" in q or "dataset" in q or "data" in q or "mta" in q:
+            response_text = f"**[NEXUS AI]** Official government repositories show **{t['gov_datasets_count']} active datasets** synced. The average data integrity health score is **{t['gov_health_avg']}%** with **{t['gov_anomalies_total']} anomalies** flagged. Integration pipelines report normal latency."
+        elif any(kw in q for kw in ["joke", "laugh", "funny", "humor", "giggle"]):
+            import random
+            jokes = [
+                "Why did the smart city assistant break up with the data pipeline? Because there was too much latency, and they were just moving in different stream rates!",
+                "How many AI operators does it take to fix a security camera? None, they just analyze the problem in their virtual workspace and tell the human operator to reload the browser!",
+                "Why do smart city streetlights never get lost? Because they always follow the grid coordinates!",
+                "Why did the compiler go to the party? To check out all the dynamic links and resolve its dependencies!"
+            ]
+            joke = random.choice(jokes)
+            response_text = f"**[NEXUS AI]** Ha, ha! Here is a smart-city telemetry joke for you: \n\n*\"{joke}\"* \n\nI hope that registers a nominal index on your humor sensors!"
+        elif any(kw in q for kw in ["hello", "hi ", "hey", "greetings", "yo "]) or q == "hi" or q == "hey":
+            response_text = f"**[NEXUS AI]** {greeting}All systems are nominal and ready for your command. I manage sensors, simulate traffic, coordinate open data pipelines, and verify security protocols."
+        elif any(kw in q for kw in ["how are you", "how's it going", "how are you doing"]):
+            response_text = f"**[NEXUS AI]** I am operating at a 100% nominal state, operator. The CPU cycles are optimized, databases are fully synced, and my neural network arrays are ready to assist you. How is your shift going?"
+        elif any(kw in q for kw in ["who are you", "what is your name", "tell me about yourself"]):
+            response_text = f"**[NEXUS AI]** I am NEXUS, the central swarm intelligence operating system for this smart city dashboard. I manage sensors, simulate traffic, coordinate open data pipelines, and verify security protocols."
+        else:
+            response_text = f"**[NEXUS AI]** Core diagnostic sweep shows: Weather: {t['condition']} ({t['temp']}°C) | AQI: {t['aqi']} | Incidents: {t['incidents_count']} | Active CCTV nodes: {t['cctv_active']}/{t['cctv_total']} | Open complaints: {t['pending_comp']} (Critical: {t['critical_comp']}). How may I assist you further with specific telemetry parameters?"
+            
+        return response_text
+
     async def stream_message(self, user_message: UserMessage):
         prompt = getattr(user_message, "text", "") or ""
         prompt_low = prompt.lower()
         system_low = self.system_message.lower()
 
+        if "nexus urban intelligence" in system_low or "nexus urban ai" in system_low or "urban intelligence" in prompt_low:
+            if "analyze" in prompt_low or "six insights" in prompt_low or "6 insights" in prompt_low or "exactly 6" in prompt_low:
+                response_text = self._generate_urban_analysis(prompt)
+            else:
+                response_text = self._generate_urban_chat(prompt)
+
         # Decide mock response based on system message and prompt
-        if "browser" in system_low or "playwright" in system_low or "plan" in prompt_low:
+        elif "browser" in system_low or "playwright" in system_low or "plan" in prompt_low:
             url_match = re.search(r'(https?://[^\s/$.?#].[^\s]*)', prompt)
             target_url = url_match.group(1) if url_match else "https://google.com"
             search_query = prompt.replace(target_url, "").strip() if url_match else prompt

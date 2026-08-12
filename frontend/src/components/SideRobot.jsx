@@ -197,9 +197,20 @@ export default function SideRobot() {
     setSpeechText(text);
   }, [location.pathname, handStatus, handDetected, hovered, chatOpen]);
 
-  const sendChatAssistantMessage = async () => {
-    if (!chatInput.trim() || chatStreaming) return;
-    const text = chatInput.trim();
+  // Close chat drawer on ESC key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && chatOpen) {
+        setChatOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [chatOpen]);
+
+  const sendChatAssistantMessage = async (customPrompt) => {
+    const text = (typeof customPrompt === "string" ? customPrompt : chatInput).trim();
+    if (!text || chatStreaming) return;
     setChatInput("");
     setChatStreaming(true);
 
@@ -214,6 +225,7 @@ export default function SideRobot() {
     try {
       let currentAgent = "nexus-core";
       if (location.pathname === "/code") currentAgent = "developer";
+      if (location.pathname === "/error-fixer") currentAgent = "debugger";
       
       await streamChat({
         session_id: sid,
@@ -224,7 +236,17 @@ export default function SideRobot() {
           setChatSessionId(m.session_id);
         },
         onDelta: c => {
-          setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content + c } : m));
+          setChatMessages(prev => prev.map(m => {
+            if (m.id === placeholder.id) {
+              const updatedContent = m.content + c;
+              const cleanSnippet = updatedContent.replace(/[#*`]/g, "").trim();
+              if (cleanSnippet) {
+                setSpeechText(cleanSnippet.length > 55 ? cleanSnippet.slice(0, 52) + "..." : cleanSnippet.toUpperCase());
+              }
+              return { ...m, content: updatedContent };
+            }
+            return m;
+          }));
         },
         onDone: () => {
           setChatStreaming(false);
@@ -232,13 +254,13 @@ export default function SideRobot() {
         },
         onError: err => {
           setChatStreaming(false);
-          setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content + ` [Stream Error: ${err.message}]`, streaming: false } : m));
+          setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content || `[Error: ${err.message}]`, streaming: false } : m));
         }
       });
     } catch (e) {
       console.error("Assistant chat stream failed:", e);
       setChatStreaming(false);
-      setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content + ` [System Error]`, streaming: false } : m));
+      setChatMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, content: m.content || `[System Error: ${e.message}]`, streaming: false } : m));
     }
   };
 
@@ -334,6 +356,45 @@ export default function SideRobot() {
                 <X style={{ width: 13, height: 13 }} />
               </button>
             </div>
+          </div>
+
+          {/* Quick Prompts Bar */}
+          <div
+            style={{
+              padding: "6px 12px",
+              background: "rgba(255,255,255,0.02)",
+              borderBottom: "1px solid rgba(255,255,255,0.05)",
+              display: "flex",
+              gap: 5,
+              overflowX: "auto",
+              whiteSpace: "nowrap"
+            }}
+          >
+            {[
+              "System Health",
+              "Urban Telemetry",
+              "Scan Code Bugs",
+              "EAS Alert Status",
+            ].map(prompt => (
+              <button
+                key={prompt}
+                onClick={() => sendChatAssistantMessage(prompt)}
+                disabled={chatStreaming}
+                style={{
+                  fontSize: 8.5,
+                  fontFamily: "monospace",
+                  background: "rgba(0, 245, 255, 0.06)",
+                  border: "1px solid rgba(0, 245, 255, 0.18)",
+                  borderRadius: 4,
+                  padding: "2px 7px",
+                  color: "#00F5FF",
+                  cursor: chatStreaming ? "wait" : "pointer",
+                  transition: "all 0.15s ease"
+                }}
+              >
+                {prompt}
+              </button>
+            ))}
           </div>
 
           {/* Messages */}

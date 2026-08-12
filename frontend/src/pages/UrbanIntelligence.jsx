@@ -185,6 +185,8 @@ export default function UrbanIntelligence() {
 
   // Biometric / Face Recognition states
   const [recognizedOperator, setRecognizedOperator] = useState(null);
+  const [strangerDetected,   setStrangerDetected]   = useState(false);
+  const [strangerSpoken,     setStrangerSpoken]     = useState(false);
 
   // Background constant camera tracking
   const bgVideoRef = useRef(null);
@@ -196,6 +198,9 @@ export default function UrbanIntelligence() {
   const [lastRefresh,  setLastRefresh]  = useState(now());
   const [streamLog,    setStreamLog]    = useState([]);
   const [autoRefresh,  setAutoRefresh]  = useState(false); // off by default to respect API limits
+  const [coords, setCoords] = useState(null);
+  const [searchArea, setSearchArea] = useState("");
+  const [resolvedAreaName, setResolvedAreaName] = useState("New York");
   const logRef = useRef(null);
   const intervalRef = useRef(null);
 
@@ -208,11 +213,15 @@ export default function UrbanIntelligence() {
     setStreamLog(prev => [{ time: now(), msg, color }, ...prev.slice(0, 39)]);
   }, []);
 
-  const fetchWeather = useCallback(async () => {
+  const fetchWeather = useCallback(async (c) => {
+    const activeCoords = c || coords;
     setLoad("weather", true); clearErr("weather");
     try {
       appendLog("[Open-Meteo] Syncing real-time weather telemetry…", "#38bdf8");
-      const resp = await fetch(`${API_BASE}/urban/weather`);
+      const url = activeCoords
+        ? `${API_BASE}/urban/weather?lat=${activeCoords.lat}&lng=${activeCoords.lng}`
+        : `${API_BASE}/urban/weather`;
+      const resp = await fetch(url);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
       setWeather(data);
@@ -223,13 +232,17 @@ export default function UrbanIntelligence() {
     } finally {
       setLoad("weather", false);
     }
-  }, []);
+  }, [coords, appendLog]);
 
-  const fetchAirQuality = useCallback(async () => {
+  const fetchAirQuality = useCallback(async (c) => {
+    const activeCoords = c || coords;
     setLoad("airquality", true); clearErr("airquality");
     try {
       appendLog("[OpenAQ v3] Ingesting pollution sensor readings…", "#fbbf24");
-      const resp = await fetch(`${API_BASE}/urban/airquality`);
+      const url = activeCoords
+        ? `${API_BASE}/urban/airquality?lat=${activeCoords.lat}&lng=${activeCoords.lng}`
+        : `${API_BASE}/urban/airquality`;
+      const resp = await fetch(url);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
       setAirQuality(data);
@@ -240,7 +253,7 @@ export default function UrbanIntelligence() {
     } finally {
       setLoad("airquality", false);
     }
-  }, []);
+  }, [coords, appendLog]);
 
   const fetchCameras = useCallback(async () => {
     setLoad("cameras", true); clearErr("cameras");
@@ -257,7 +270,7 @@ export default function UrbanIntelligence() {
     } finally {
       setLoad("cameras", false);
     }
-  }, []);
+  }, [appendLog]);
 
   const fetchCctv = useCallback(async () => {
     setLoad("cctv", true); clearErr("cctv");
@@ -274,7 +287,7 @@ export default function UrbanIntelligence() {
     } finally {
       setLoad("cctv", false);
     }
-  }, []);
+  }, [appendLog]);
 
   const fetchIncidents = useCallback(async () => {
     setLoad("incidents", true); clearErr("incidents");
@@ -291,7 +304,7 @@ export default function UrbanIntelligence() {
     } finally {
       setLoad("incidents", false);
     }
-  }, []);
+  }, [appendLog]);
 
   const fetchComplaints = useCallback(async () => {
     setLoad("complaints", true); clearErr("complaints");
@@ -308,7 +321,7 @@ export default function UrbanIntelligence() {
     } finally {
       setLoad("complaints", false);
     }
-  }, []);
+  }, [appendLog]);
 
   const fetchGovData = useCallback(async () => {
     setLoad("govdata", true); clearErr("govdata");
@@ -325,14 +338,15 @@ export default function UrbanIntelligence() {
     } finally {
       setLoad("govdata", false);
     }
-  }, []);
+  }, [appendLog]);
 
-  const fetchAll = useCallback(async () => {
+  const fetchAll = useCallback(async (c) => {
+    const activeCoords = c || coords;
     appendLog("[AI-CORE] Initiating full urban intelligence sweep…", "#6E56FF");
     setLastRefresh(now());
     await Promise.all([
-      fetchWeather(),
-      fetchAirQuality(),
+      fetchWeather(activeCoords),
+      fetchAirQuality(activeCoords),
       fetchCameras(),
       fetchCctv(),
       fetchIncidents(),
@@ -340,7 +354,41 @@ export default function UrbanIntelligence() {
       fetchGovData(),
     ]);
     appendLog("[AI-CORE] ✅ All data sources synchronized", "#34d399");
-  }, [fetchWeather, fetchAirQuality, fetchCameras, fetchCctv, fetchIncidents, fetchComplaints, fetchGovData]);
+  }, [coords, fetchWeather, fetchAirQuality, fetchCameras, fetchCctv, fetchIncidents, fetchComplaints, fetchGovData, appendLog]);
+
+  const handleAreaSearch = async (e) => {
+    if (e) e.preventDefault();
+    if (!searchArea.trim()) return;
+
+    appendLog(`[Geocoding] Searching location coordinates for "${searchArea}"…`, "#a78bfa");
+    try {
+      const geoResp = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchArea)}&count=1&language=en&format=json`);
+      if (!geoResp.ok) throw new Error(`HTTP ${geoResp.status}`);
+      const geoData = await geoResp.json();
+      
+      if (!geoData.results || geoData.results.length === 0) {
+        throw new Error("No matching location found");
+      }
+
+      const match = geoData.results[0];
+      const name = `${match.name}, ${match.admin1 ? match.admin1 + ", " : ""}${match.country}`;
+      const newC = { lat: match.latitude, lng: match.longitude };
+      
+      setCoords(newC);
+      setResolvedAreaName(name);
+      
+      // Fetch only weather & AQI for the new location
+      appendLog(`[Geocoding] Location resolved: ${name}. Updating climate feeds…`, "#34d399");
+      await Promise.all([
+        fetchWeather(newC),
+        fetchAirQuality(newC)
+      ]);
+      toast.success(`Weather updated for ${match.name}`);
+    } catch (err) {
+      appendLog(`[Geocoding] ❌ Search error: ${err.message}`, "#ef4444");
+      toast.error(err.message);
+    }
+  };
 
   // Initial load
   useEffect(() => {
@@ -606,6 +654,9 @@ export default function UrbanIntelligence() {
           if (resp.ok) {
             const data = await resp.json();
             if (data.verified) {
+              // Known operator recognised — clear stranger state
+              setStrangerDetected(false);
+              setStrangerSpoken(false);
               if (recognizedOperator !== data.operator_name) {
                 setRecognizedOperator(data.operator_name);
                 appendLog(`[BIOMETRICS] Background scan verified operator: ${data.operator_name} (${data.confidence}%)`, "#34d399");
@@ -613,9 +664,20 @@ export default function UrbanIntelligence() {
                 runChatQuery("greet me as recognized operator", data.operator_name);
               }
             } else {
+              // Unverified face detected in frame
               if (recognizedOperator !== null) {
                 setRecognizedOperator(null);
                 appendLog("[BIOMETRICS] Operator signature lost.", "#ef4444");
+              }
+              if (data.face_detected && !strangerSpoken) {
+                // A face is present but not recognised — stranger!
+                setStrangerDetected(true);
+                setStrangerSpoken(true);
+                const warningMsg = "⚠️ STRANGER DETECTED. Who are you and where is my operator?";
+                appendLog("[BIOMETRICS] ⚠️ Unrecognised face in frame — stranger alert!", "#FF2E88");
+                toast.warning("⚠️ Unknown individual detected by biometric scanner!");
+                setChatHistory(prev => [...prev, { role: "ai", text: `**[NEXUS AI]** 🔴 ${warningMsg}`, time: now() }]);
+                speakText(warningMsg);
               }
             }
           }
@@ -627,24 +689,36 @@ export default function UrbanIntelligence() {
     return () => {
       if (scanInterval) clearInterval(scanInterval);
     };
-  }, [bgCameraActive, activeTab, recognizedOperator, appendLog, runChatQuery, captureBgFrame]);
+  }, [bgCameraActive, activeTab, recognizedOperator, strangerSpoken, appendLog, runChatQuery, captureBgFrame, speakText]);
 
   // Background scan simulation (fallback when webcam unavailable)
+  // NOTE: Auto-simulate is disabled — user clicks "Simulate Operator" or "Simulate Stranger" buttons instead
+  // (kept as empty effect to preserve dependency tracking)
   useEffect(() => {
-    let mockScanTimeout;
-    if (!bgCameraActive && activeTab === "hologram" && !recognizedOperator) {
-      mockScanTimeout = setTimeout(() => {
-        const mockOperator = "pushkar";
-        setRecognizedOperator(mockOperator);
-        appendLog(`[BIOMETRICS] Mock scan verified operator: ${mockOperator} (100% simulated)`, "#34d399");
-        toast.success(`Identity Verified (Simulated): Welcome, ${mockOperator}!`);
-        runChatQuery("greet me as recognized operator", mockOperator);
-      }, 5000);
-    }
-    return () => {
-      if (mockScanTimeout) clearTimeout(mockScanTimeout);
-    };
-  }, [bgCameraActive, activeTab, recognizedOperator, appendLog, runChatQuery]);
+    // Auto-simulation removed to let user control it manually via buttons
+  }, [bgCameraActive, activeTab, recognizedOperator]);
+
+  // Manual simulation handlers
+  const simulateOperatorScan = useCallback(() => {
+    const mockOperator = "Pushkar";
+    setStrangerDetected(false);
+    setStrangerSpoken(false);
+    setRecognizedOperator(mockOperator);
+    appendLog(`[BIOMETRICS] Manual sim: operator verified as ${mockOperator}`, "#34d399");
+    toast.success(`Identity Verified (Simulated): Welcome, ${mockOperator}!`);
+    runChatQuery("greet me as recognized operator", mockOperator);
+  }, [appendLog, runChatQuery]);
+
+  const simulateStrangerScan = useCallback(() => {
+    setRecognizedOperator(null);
+    setStrangerDetected(true);
+    setStrangerSpoken(true);
+    const warningMsg = "Who are you and where is my operator?";
+    appendLog("[BIOMETRICS] ⚠️ Manual sim: STRANGER detected — initiating challenge protocol!", "#FF2E88");
+    toast.warning("⚠️ Unknown individual detected by biometric scanner!");
+    setChatHistory(prev => [...prev, { role: "ai", text: `**[NEXUS AI]** 🔴 STRANGER DETECTED. ${warningMsg}`, time: now() }]);
+    speakText(warningMsg);
+  }, [appendLog, speakText]);
 
   const handleToggleListen = useCallback(() => {
     if (isListening) {
@@ -1014,6 +1088,66 @@ export default function UrbanIntelligence() {
           {/* ── WEATHER TAB ── */}
           {activeTab === "weather" && (
             <div className="nx-fadein">
+              {/* Climate Search Input Bar */}
+              <GlassCard style={{ marginBottom: 12, padding: "12px 14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <CloudRain style={{ width: 14, height: 14, color: "#38bdf8" }} />
+                    <span style={{ fontSize: 11, fontWeight: 700, fontFamily: "monospace", letterSpacing: "0.08em", color: "#F1F5F9" }}>CLIMATE LOCATION SEARCH</span>
+                  </div>
+                  {resolvedAreaName && (
+                    <div style={{ fontSize: 10, fontFamily: "monospace", color: "#38bdf8" }}>
+                      CURRENT: <strong>{resolvedAreaName.toUpperCase()}</strong>
+                    </div>
+                  )}
+                </div>
+                <form onSubmit={handleAreaSearch} style={{ display: "flex", gap: 8 }}>
+                  <input
+                    type="text"
+                    placeholder="Search area (e.g. Delhi, London, Tokyo)..."
+                    value={searchArea}
+                    onChange={(e) => setSearchArea(e.target.value)}
+                    style={{
+                      flex: 1, background: "rgba(6,13,34,0.95)", border: "1px solid rgba(0,245,255,0.2)",
+                      borderRadius: 8, padding: "8px 12px", color: "#F1F5F9", fontSize: 11, fontFamily: "monospace"
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      padding: "8px 16px", background: "rgba(56,189,248,0.12)",
+                      border: "1px solid rgba(56,189,248,0.35)", borderRadius: 8,
+                      color: "#38bdf8", fontSize: 11, fontFamily: "monospace", cursor: "pointer",
+                      transition: "all 0.2s"
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = "rgba(56,189,248,0.22)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "rgba(56,189,248,0.12)"}
+                  >
+                    SEARCH
+                  </button>
+                  {coords && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCoords(null);
+                        setResolvedAreaName("New York");
+                        setSearchArea("");
+                        appendLog("[Geocoding] Reset to default coordinates (New York)", "#38bdf8");
+                        fetchWeather(null);
+                        fetchAirQuality(null);
+                      }}
+                      style={{
+                        padding: "8px 16px", background: "rgba(239,68,68,0.12)",
+                        border: "1px solid rgba(239,68,68,0.35)", borderRadius: 8,
+                        color: "#ef4444", fontSize: 11, fontFamily: "monospace", cursor: "pointer"
+                      }}
+                    >
+                      RESET
+                    </button>
+                  )}
+                </form>
+              </GlassCard>
+
               {loading.weather && !weather && <LoadingState color="#38bdf8" label="Fetching Open-Meteo weather…" />}
               {errors.weather && <ErrorState message={errors.weather} onRetry={fetchWeather} />}
               {weather && (
@@ -1678,11 +1812,92 @@ export default function UrbanIntelligence() {
                           Sign Out
                         </button>
                       ) : (
-                        <span style={{ fontSize: 8, fontFamily: "monospace", color: "rgba(148,163,184,0.4)" }}>MONITORING CAMERA...</span>
+                        <div style={{ display: "flex", gap: 5 }}>
+                          <button
+                            onClick={simulateOperatorScan}
+                            style={{
+                              background: "rgba(52, 211, 153, 0.12)",
+                              border: "1px solid rgba(52, 211, 153, 0.35)",
+                              color: "#34d399",
+                              fontSize: 8,
+                              fontFamily: "monospace",
+                              padding: "2px 8px",
+                              borderRadius: 4,
+                              cursor: "pointer",
+                              fontWeight: "bold",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.05em"
+                            }}
+                          >
+                            ✅ Simulate Operator
+                          </button>
+                          <button
+                            onClick={simulateStrangerScan}
+                            style={{
+                              background: "rgba(255, 46, 136, 0.12)",
+                              border: "1px solid rgba(255, 46, 136, 0.35)",
+                              color: "#FF2E88",
+                              fontSize: 8,
+                              fontFamily: "monospace",
+                              padding: "2px 8px",
+                              borderRadius: 4,
+                              cursor: "pointer",
+                              fontWeight: "bold",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.05em"
+                            }}
+                          >
+                            ⚠️ Simulate Stranger
+                          </button>
+                        </div>
                       )}
                       <span style={{ fontSize: 8, fontFamily: "monospace", color: "rgba(148,163,184,0.5)" }}>REALTIME 3D PROJECTION</span>
                     </div>
                   </div>
+
+                  {/* Stranger Detected Alert Banner */}
+                  {strangerDetected && !recognizedOperator && (
+                    <div style={{
+                      width: "100%",
+                      background: "rgba(255, 46, 136, 0.12)",
+                      border: "1px solid rgba(255, 46, 136, 0.5)",
+                      borderRadius: 8,
+                      padding: "8px 14px",
+                      marginBottom: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 10,
+                      boxSizing: "border-box"
+                    }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 16, animation: "pulse 1s infinite" }}>🔴</span>
+                        <div>
+                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: "#FF2E88", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                            ⚠️ STRANGER DETECTED
+                          </div>
+                          <div style={{ fontFamily: "monospace", fontSize: 9, color: "rgba(255,100,150,0.9)", marginTop: 2 }}>
+                            "Who are you and where is my operator?"
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => { setStrangerDetected(false); setStrangerSpoken(false); }}
+                        style={{
+                          background: "rgba(255, 46, 136, 0.15)",
+                          border: "1px solid rgba(255, 46, 136, 0.3)",
+                          color: "#FF2E88",
+                          fontSize: 8,
+                          fontFamily: "monospace",
+                          padding: "2px 7px",
+                          borderRadius: 4,
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          textTransform: "uppercase"
+                        }}
+                      >DISMISS</button>
+                    </div>
+                  )}
 
                   {/* Large 3D Hologram Canvas Projection */}
                   <HologramFace
@@ -1838,7 +2053,13 @@ export default function UrbanIntelligence() {
           {/* Sensor stream log */}
           <GlassCard style={{ padding: "12px 14px" }}>
             <SectionHeader icon={Radio} title="Data Stream Log" color="#6E56FF" live />
-            <div ref={logRef} style={{ height: 200, overflowY: "auto", fontFamily: "monospace", fontSize: 9, lineHeight: 1.7 }}>
+            
+            {/* Holographic Wireframe Rotating Globe */}
+            <div style={{ height: 110, marginBottom: 12, display: "flex", justifyContent: "center", alignItems: "center", border: "1px dashed rgba(110,86,255,0.22)", borderRadius: 8, background: "rgba(110,86,255,0.03)", overflow: "hidden" }}>
+              <RotatingGlobe color="#6E56FF" />
+            </div>
+
+            <div ref={logRef} style={{ height: 120, overflowY: "auto", fontFamily: "monospace", fontSize: 9, lineHeight: 1.7 }}>
               {streamLog.map((entry, i) => (
                 <div key={i} style={{ color: entry.color, opacity: Math.max(0.3, 1 - i * 0.025) }}>
                   <span style={{ color: "rgba(148,163,184,0.3)", marginRight: 5 }}>{entry.time}</span>

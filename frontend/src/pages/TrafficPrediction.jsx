@@ -149,6 +149,9 @@ export default function TrafficPrediction() {
   const [detectingLocation, setDetectingLocation] = useState(false);
   const [easActive, setEasActive] = useState(false);
   const easMarkerInstances = useRef([]);
+  const [isTracking, setIsTracking] = useState(false);
+  const watchIdRef = useRef(null);
+  const lastGeocodeTimeRef = useRef(0);
 
   // Audio Refs for EAS Siren
   const sirenAudioContextRef = useRef(null);
@@ -228,7 +231,16 @@ export default function TrafficPrediction() {
 
   // Initialize Map SDK
   useEffect(() => {
-    const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "";
+    let apiKey = "";
+    try {
+      const settings = JSON.parse(localStorage.getItem("nexus_settings") || "{}");
+      apiKey = settings.googleMapsApiKey;
+    } catch (e) {
+      console.warn("Failed to load settings from localStorage:", e);
+    }
+    if (!apiKey) {
+      apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "";
+    }
     
     loadGoogleMapsScript(apiKey)
       .then((maps) => {
@@ -273,6 +285,9 @@ export default function TrafficPrediction() {
       if (endMarkerInstance.current) endMarkerInstance.current.setMap(null);
       if (simulatedPolylineInstance.current) simulatedPolylineInstance.current.setMap(null);
       if (currentLocationMarkerInstance.current) currentLocationMarkerInstance.current.setMap(null);
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+      }
       easMarkerInstances.current.forEach(m => m.setMap(null));
       
       // Stop siren if active
@@ -399,6 +414,112 @@ export default function TrafficPrediction() {
       toast.success("Location set to GPS coordinates.");
     } finally {
       setDetectingLocation(false);
+    }
+  };
+
+  const toggleLiveTracking = () => {
+    if (isTracking) {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+      setIsTracking(false);
+      toast.info("Live GPS tracking disabled.");
+    } else {
+      if (!navigator.geolocation) {
+        toast.error("Geolocation is not supported by your browser");
+        return;
+      }
+      setIsTracking(true);
+      toast.info("Starting live GPS tracking...");
+      
+      // Geocode immediately on first tick
+      lastGeocodeTimeRef.current = 0;
+
+      watchIdRef.current = navigator.geolocation.watchPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          const pos = { lat: latitude, lng: longitude };
+
+          if (mapInstance.current) {
+            mapInstance.current.setCenter(pos);
+            
+            // Draw/Update custom current location marker
+            if (currentLocationMarkerInstance.current) {
+              currentLocationMarkerInstance.current.setPosition(pos);
+            } else if (window.google && window.google.maps) {
+              currentLocationMarkerInstance.current = new window.google.maps.Marker({
+                position: pos,
+                map: mapInstance.current,
+                title: "My Location",
+                icon: {
+                  path: window.google.maps.SymbolPath.CIRCLE,
+                  scale: 9,
+                  fillColor: "#8b5cf6",
+                  fillOpacity: 1,
+                  strokeColor: "#FFFFFF",
+                  strokeWeight: 2.5
+                }
+              });
+            }
+          }
+
+          const now = Date.now();
+          if (now - lastGeocodeTimeRef.current > 10000) {
+            lastGeocodeTimeRef.current = now;
+            
+            let addressFound = false;
+            if (window.google && window.google.maps && sdkReady) {
+              try {
+                const geocoder = new window.google.maps.Geocoder();
+                geocoder.geocode({ location: pos }, (results, status) => {
+                  if (status === "OK" && results[0]) {
+                    setOrigin(results[0].formatted_address);
+                  } else {
+                    fallbackWatchGeocode(latitude, longitude);
+                  }
+                });
+                addressFound = true;
+              } catch (e) {
+                console.warn("Watch geocoder failed, falling back:", e);
+              }
+            }
+            if (!addressFound) {
+              fallbackWatchGeocode(latitude, longitude);
+            }
+          } else {
+            // Update raw coordinates in between geocode updates to show live activity
+            setOrigin(`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+          }
+        },
+        (error) => {
+          console.error("Watch geolocation failed:", error);
+          toast.error("Live GPS tracking interrupted.");
+          if (watchIdRef.current !== null) {
+            navigator.geolocation.clearWatch(watchIdRef.current);
+            watchIdRef.current = null;
+          }
+          setIsTracking(false);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+  };
+
+  const fallbackWatchGeocode = async (lat, lng) => {
+    try {
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+        { headers: { "User-Agent": "SmartCity-AI-OS-Telemetry" } }
+      );
+      const data = await resp.json();
+      if (data && data.display_name) {
+        setOrigin(data.display_name);
+      } else {
+        setOrigin(`${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+      }
+    } catch (err) {
+      setOrigin(`${lat.toFixed(6)}, ${lng.toFixed(6)}`);
     }
   };
 
@@ -1118,6 +1239,28 @@ export default function TrafficPrediction() {
               </span>
             )}
             <button
+              onClick={toggleLiveTracking}
+              className="nx-btn"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 12px",
+                background: isTracking ? "rgba(139, 92, 246, 0.2)" : "rgba(255, 255, 255, 0.03)",
+                color: isTracking ? "#a78bfa" : "rgba(148, 163, 184, 0.8)",
+                border: isTracking ? "1px solid rgba(139, 92, 246, 0.5)" : "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: 6,
+                cursor: "pointer",
+                fontSize: 11,
+                fontWeight: 600,
+                boxShadow: isTracking ? "0 0 12px rgba(139, 92, 246, 0.4)" : "none",
+                transition: "all 0.2s"
+              }}
+            >
+              <Locate style={{ width: 12, height: 12, animation: isTracking ? "pulse-loc 1.5s infinite" : "none" }} />
+              {isTracking ? "TRACKING ACTIVE" : "TRACK LIVE GPS"}
+            </button>
+            <button
               onClick={() => fetchTrafficPrediction()}
               disabled={loading}
               className="nx-btn"
@@ -1138,7 +1281,17 @@ export default function TrafficPrediction() {
               <input
                 type="text"
                 value={origin}
-                onChange={e => setOrigin(e.target.value)}
+                onChange={e => {
+                  setOrigin(e.target.value);
+                  if (isTracking) {
+                    if (watchIdRef.current !== null) {
+                      navigator.geolocation.clearWatch(watchIdRef.current);
+                      watchIdRef.current = null;
+                    }
+                    setIsTracking(false);
+                    toast.info("Live GPS tracking disabled due to manual input.");
+                  }
+                }}
                 placeholder="e.g. Times Square, NY"
                 style={{ width: "100%", background: "rgba(2,6,23,0.5)", border: "1px solid rgba(0,245,255,0.18)", borderRadius: 6, padding: "7px 36px 7px 32px", fontSize: 12, color: "#fff", outline: "none", transition: "all 0.2s" }}
                 onFocus={e => e.target.style.borderColor = "#00F5FF"}

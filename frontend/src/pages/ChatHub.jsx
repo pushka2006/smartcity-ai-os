@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import { http, streamChat } from "../lib/api";
 import { toast } from "../components/Toast";
 import { Send, Plus, MessageSquare, Trash2, Square, Copy, ChevronDown, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import { speak as ttsSpeak, stopSpeaking as ttsStop, preloadVoices } from "../lib/tts";
 
 const AGENTS = [
   { key: "nexus-core", name: "NEXUS Core",     color: "#00F5FF", emoji: "⬡" },
@@ -150,15 +151,7 @@ export default function ChatHub() {
       recognitionRef.current = rec;
     }
     if ("speechSynthesis" in window) {
-      window.speechSynthesis.getVoices();
-      const loadVoices = () => {
-        window.speechSynthesis.getVoices();
-      };
-      window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
-      return () => {
-        window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
-        window.speechSynthesis.cancel();
-      };
+      preloadVoices(); // ensure voices are loaded before first Speak
     }
   }, []);
 
@@ -234,21 +227,7 @@ export default function ChatHub() {
         setStreaming(false);
         setMessages(prev => prev.map(m => m.id === placeholder.id ? { ...m, streaming: false } : m));
         if (speakEnabled && "speechSynthesis" in window) {
-          window.speechSynthesis.cancel();
-          const clean = fullResponseText
-            .replace(/```[\s\S]*?```/g, "[code block]")
-            .replace(/[*#`_\-]/g, "")
-            .trim();
-          if (clean) {
-            const utterance = new SpeechSynthesisUtterance(clean);
-            utterance.volume = 1.0;
-            utterance.rate = 1.0;
-            const voices = window.speechSynthesis.getVoices();
-            if (voices && voices.length > 0) {
-              utterance.voice = voices.find(v => v.lang.startsWith("en")) || voices[0];
-            }
-            window.speechSynthesis.speak(utterance);
-          }
+          ttsSpeak(fullResponseText, { lang: "en-US", rate: 1.0, pitch: 1.0 });
         }
         loadSessions();
       },
@@ -365,19 +344,11 @@ export default function ChatHub() {
               setSpeakEnabled(newVal);
               if (newVal) {
                 if ("speechSynthesis" in window) {
-                  window.speechSynthesis.cancel();
-                  const utterance = new SpeechSynthesisUtterance("Voice output enabled");
-                  utterance.volume = 1.0;
-                  utterance.rate = 1.0;
-                  const voices = window.speechSynthesis.getVoices();
-                  if (voices && voices.length > 0) {
-                    utterance.voice = voices.find(v => v.lang.startsWith("en")) || voices[0];
-                  }
-                  window.speechSynthesis.speak(utterance);
+                  ttsSpeak("Voice output enabled", { lang: "en-US" });
                 }
               } else {
                 if ("speechSynthesis" in window) {
-                  window.speechSynthesis.cancel();
+                  ttsStop();
                 }
               }
               toast.info(newVal ? "Voice output enabled" : "Voice output muted");

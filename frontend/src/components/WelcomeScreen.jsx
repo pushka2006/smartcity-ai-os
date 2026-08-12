@@ -452,33 +452,26 @@ export default function WelcomeScreen() {
     }
   }, [progress]); // eslint-disable-line
 
-  /* ── At 100%: show welcome card then speak ── */
+  /* ── At 100%: show welcome card ── */
   useEffect(() => {
     if (progress < 100 || spokenRef.current) return;
     spokenRef.current = true;
 
     setPhase("welcome");
     setShowWelcomeText(true);
+  }, [progress]);
 
-    // Voice greeting — dramatic, multi-sentence
-    const greetingTimer = setTimeout(() => {
-      speak(
-        "Welcome back, Operator. NEXUS operating system is fully online. " +
-        "All neural cores, biometric shields, and AI inference modules are nominal. " +
-        "Awaiting your directive."
-      );
-    }, 600);
-
-    // Fade out after welcome card shown
-    const fadeTimer = setTimeout(() => setPhase("fadeout"), 4200);
-    const unmountTimer = setTimeout(() => setVisible(false), 5200);
-
-    return () => {
-      clearTimeout(greetingTimer);
-      clearTimeout(fadeTimer);
-      clearTimeout(unmountTimer);
-    };
-  }, [progress, speak]);
+  const handleProceed = () => {
+    speak(
+      "Welcome back, Operator. NEXUS operating system is fully online. " +
+      "All neural cores, biometric shields, and AI inference modules are nominal. " +
+      "Awaiting your directive."
+    );
+    setPhase("fadeout");
+    setTimeout(() => {
+      setVisible(false);
+    }, 1000);
+  };
 
   if (!visible) return null;
 
@@ -899,6 +892,43 @@ export default function WelcomeScreen() {
                 ⬡
               </div>
             </div>
+
+            {/* Initialize Interface Button */}
+            <button
+              onClick={handleProceed}
+              style={{
+                marginTop: 8,
+                padding: "10px 24px",
+                fontFamily: "monospace",
+                fontSize: 11,
+                fontWeight: "bold",
+                letterSpacing: "0.18em",
+                color: "#00F5FF",
+                background: "rgba(0, 245, 255, 0.04)",
+                border: "1.5px solid rgba(0, 245, 255, 0.35)",
+                borderRadius: 4,
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                boxShadow: "0 0 12px rgba(0, 245, 255, 0.08)",
+                textTransform: "uppercase",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = "rgba(0, 245, 255, 0.12)";
+                e.currentTarget.style.borderColor = "#00F5FF";
+                e.currentTarget.style.boxShadow = "0 0 20px rgba(0, 245, 255, 0.25)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = "rgba(0, 245, 255, 0.04)";
+                e.currentTarget.style.borderColor = "rgba(0, 245, 255, 0.35)";
+                e.currentTarget.style.boxShadow = "0 0 12px rgba(0, 245, 255, 0.08)";
+              }}
+            >
+              <span>Initialize Interface</span>
+              <span style={{ fontSize: 13 }}>➔</span>
+            </button>
           </div>
         </div>
       )}

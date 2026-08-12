@@ -7,6 +7,7 @@ const LS_KEY = "nexus_settings";
 
 const DEFAULTS = {
   llmKey: "",
+  googleMapsApiKey: "",
   mongoUrl: "mongodb://localhost:27017",
   backendUrl: "http://localhost:8001",
   theme: "cyberpunk-dark",
@@ -19,6 +20,7 @@ export default function Settings() {
   });
   const [saved, setSaved] = useState(false);
   const [showKey, setShowKey] = useState(false);
+  const [showMapKey, setShowMapKey] = useState(false);
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState(null); // null | "ok" | "fail"
 
@@ -47,6 +49,11 @@ export default function Settings() {
   const copyKey = () => {
     if (!form.llmKey) { toast.error("No key to copy"); return; }
     navigator.clipboard.writeText(form.llmKey).then(() => toast.success("Key copied")).catch(() => toast.error("Copy failed"));
+  };
+
+  const copyMapKey = () => {
+    if (!form.googleMapsApiKey) { toast.error("No key to copy"); return; }
+    navigator.clipboard.writeText(form.googleMapsApiKey).then(() => toast.success("Key copied")).catch(() => toast.error("Copy failed"));
   };
 
   const resetDefaults = () => {
@@ -109,6 +116,28 @@ export default function Settings() {
                 {showKey ? <EyeOff style={{ width: 13, height: 13 }} /> : <Eye style={{ width: 13, height: 13 }} />}
               </button>
               <button onClick={copyKey} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(148,163,184,0.5)", padding: 4, display: "flex" }} title="Copy key">
+                <Copy style={{ width: 13, height: 13 }} />
+              </button>
+            </div>
+          </div>
+        </Field>
+
+        <Field label="GOOGLE MAPS API KEY" hint="Used for real-time traffic route predictions. Falls back to OpenStreetMap if empty or invalid.">
+          <div style={{ position: "relative" }}>
+            <input
+              type={showMapKey ? "text" : "password"}
+              value={form.googleMapsApiKey}
+              onChange={e => set("googleMapsApiKey", e.target.value)}
+              placeholder="AIzaSy…"
+              style={{ ...inputStyle, paddingRight: 80 }}
+              onFocus={e => e.target.style.borderColor = "rgba(0,245,255,0.4)"}
+              onBlur={e => e.target.style.borderColor = "rgba(0,245,255,0.2)"}
+            />
+            <div style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", display: "flex", gap: 4 }}>
+              <button onClick={() => setShowMapKey(p => !p)} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(148,163,184,0.5)", padding: 4, display: "flex" }} title={showMapKey ? "Hide" : "Show"}>
+                {showMapKey ? <EyeOff style={{ width: 13, height: 13 }} /> : <Eye style={{ width: 13, height: 13 }} />}
+              </button>
+              <button onClick={copyMapKey} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(148,163,184,0.5)", padding: 4, display: "flex" }} title="Copy key">
                 <Copy style={{ width: 13, height: 13 }} />
               </button>
             </div>

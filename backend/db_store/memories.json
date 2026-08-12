@@ -1226,5 +1226,4275 @@
     "importance": 3,
     "timestamp": "2026-07-02T16:55:50.587736+00:00",
     "_id": "d24855a1-99bf-42a9-ad0f-42681f821174"
+  },
+  {
+    "id": "4ec50d21-3aa1-4db5-b7a0-1a15a5c8b549",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:31:25.801801+00:00",
+    "_id": "d72f916a-6395-4e85-aea6-2a3246c3b671"
+  },
+  {
+    "id": "cd4e5248-d47a-43a4-827c-a17a447e6c96",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:31:32.967722+00:00",
+    "_id": "fa382478-237e-40c5-8997-ebe3003bd611"
+  },
+  {
+    "id": "85b13c5a-dc72-4729-bd91-939deaf50907",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:32:01.347864+00:00",
+    "_id": "59c2dac9-3965-46f7-aa99-1c0222f5dbd8"
+  },
+  {
+    "id": "d28fc99a-72bc-4e0d-ae6b-1bb3a84dfc54",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:32:08.512007+00:00",
+    "_id": "63cc0cd2-e739-4bbd-9153-9d13a0b210ac"
+  },
+  {
+    "id": "62662b37-85d2-44f1-9813-76d6988c2320",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:32:36.940408+00:00",
+    "_id": "d39a6b9c-f9ab-4c0c-85fd-7a9a75bc1696"
+  },
+  {
+    "id": "9d77f403-1972-48bb-b547-c21d81e40d93",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:33:19.282388+00:00",
+    "_id": "716b0f0e-2d1b-4809-863e-d5b0d9e53301"
+  },
+  {
+    "id": "d06e6fb2-356b-47b6-87eb-def886104927",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:33:33.965389+00:00",
+    "_id": "4f4c179c-b693-43da-bb43-dd84887c0b20"
+  },
+  {
+    "id": "ea2f16f8-0d00-4674-af47-acbc446fa0a6",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:33:41.157925+00:00",
+    "_id": "401a8060-593f-4a7c-899f-051ce46eda55"
+  },
+  {
+    "id": "16fc6756-f1e8-4b0b-af05-971f45d3a793",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:33:48.376358+00:00",
+    "_id": "0a3ffd14-0fc4-4a6e-ae25-7cadfa04eba8"
+  },
+  {
+    "id": "61af7df4-d99b-4673-a22f-b3e526fd96d1",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:33:55.428222+00:00",
+    "_id": "7b989c2c-60fd-4b64-bb62-a3c83130737e"
+  },
+  {
+    "id": "ef8b237d-ba87-4a81-b852-d182d0efce03",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:02.744038+00:00",
+    "_id": "66b7e1f6-1607-459d-9e4f-e60eac9a524b"
+  },
+  {
+    "id": "b8d7f52c-2e37-4898-b0f8-4b8273ec9112",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:10.131227+00:00",
+    "_id": "f02ae0e4-9891-4e1c-94e3-0531ab6b2b71"
+  },
+  {
+    "id": "b2e40862-35b0-4509-a595-cb45966936dc",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:16.703467+00:00",
+    "_id": "631a2e65-64ab-4b69-9374-97fb414802d9"
+  },
+  {
+    "id": "f9f0b5f1-227c-4dc4-88c0-bbb5fff028ac",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:23.993659+00:00",
+    "_id": "477ce24d-cf23-4db4-8830-b6783ec436e4"
+  },
+  {
+    "id": "913b1e37-c48b-4446-8546-8c29b8dfbbb5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:30.715888+00:00",
+    "_id": "7bc1363c-fbe0-41e1-af8c-0491e666b248"
+  },
+  {
+    "id": "dd4c5036-a6db-46ac-a001-0c6d7cd89b7d",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:38.098379+00:00",
+    "_id": "7680a5c8-4601-4386-a4f7-06e7d7e44774"
+  },
+  {
+    "id": "53b986c0-8def-48e9-b1f8-668f2c69336c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:44.711796+00:00",
+    "_id": "51fb5573-b178-4580-8ca4-d21facdba76d"
+  },
+  {
+    "id": "0cd73a5f-7535-4f79-aa76-ac6641896d13",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:52.030416+00:00",
+    "_id": "d5ca5737-cd91-4ed3-8403-57ddf07a4367"
+  },
+  {
+    "id": "f780fc08-483a-490f-9061-8bb30542e5cd",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:34:59.595848+00:00",
+    "_id": "f0c50dae-c0fa-4cd9-ba85-59c698ea07f8"
+  },
+  {
+    "id": "2500f42e-2d00-4fb6-8e16-68f774459341",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:35:06.951498+00:00",
+    "_id": "b1589fd8-1f03-4dd5-b27c-80448493bb24"
+  },
+  {
+    "id": "4f09f253-fb03-408f-b042-50bec948f2db",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:35:14.298726+00:00",
+    "_id": "944ff7a7-3970-4325-a977-5ef79ae98396"
+  },
+  {
+    "id": "0a4369d2-8e5a-4539-95e2-f210a5879bab",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:35:21.507143+00:00",
+    "_id": "fcbba550-ca02-439f-a4e0-8e71526ce097"
+  },
+  {
+    "id": "38800ab4-124e-4bb3-9406-c8994e925745",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:36:04.066140+00:00",
+    "_id": "931302e0-3ce9-4208-9269-cf6f43d42091"
+  },
+  {
+    "id": "455b759f-3e6f-497a-8320-ed2b9a421df1",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:36:18.608263+00:00",
+    "_id": "52c6faa1-effb-45e2-9ad1-a757a4f5dc71"
+  },
+  {
+    "id": "16e53587-3837-4331-b1af-b5dcbac03884",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:36:26.050037+00:00",
+    "_id": "838e5f25-28cc-4244-b582-3c86c126596c"
+  },
+  {
+    "id": "87f76845-50dc-4c9e-8af7-b5ee132cced0",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:36:33.422218+00:00",
+    "_id": "e2568ced-ae2e-404e-b3fe-d9b0d4b9dc71"
+  },
+  {
+    "id": "6a2c7047-17f4-4cb5-a17e-19c5ad3ac944",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:36:40.403767+00:00",
+    "_id": "9448c79e-9418-4897-af20-8dadcca37e2c"
+  },
+  {
+    "id": "01732e60-bfa4-450a-a8f4-f94c006cdf09",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:36:47.822473+00:00",
+    "_id": "8d74f1e4-af1a-4519-8b1e-5ea3e55d4d45"
+  },
+  {
+    "id": "a66adac9-75f9-481a-bfe7-a8e4df983d87",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:36:54.492005+00:00",
+    "_id": "fa29f9d6-74b7-42d6-a1ed-488382aa0879"
+  },
+  {
+    "id": "7dae2c12-b347-4433-af73-d7a31af1d1c7",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:37:08.876965+00:00",
+    "_id": "c471c3ad-2a0e-43fc-a0b1-be3a437ee682"
+  },
+  {
+    "id": "26599744-273e-405f-92cc-75fd64207606",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:37:23.356347+00:00",
+    "_id": "ce5cbf20-bfef-499c-82ac-16aeb8ba0234"
+  },
+  {
+    "id": "9fde8de7-d1b6-4aa5-b903-1e7e6e9c4a75",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:37:30.660451+00:00",
+    "_id": "95908c45-7259-4edb-ab4a-309e720728bc"
+  },
+  {
+    "id": "c16ebb0f-1baf-44f0-987d-69160234d5ea",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:37:37.982493+00:00",
+    "_id": "9e3073d6-e910-4e44-845b-e521d45b3249"
+  },
+  {
+    "id": "6f345332-736a-4fbe-abdc-4d809628a857",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:37:45.038725+00:00",
+    "_id": "9790b96a-e874-4393-ae11-fda585b2d7c6"
+  },
+  {
+    "id": "bb99c339-25af-40f1-80b0-c6893c6ed3c2",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:37:51.954273+00:00",
+    "_id": "ff0fdb20-e73f-4818-8842-a5d89b1595b6"
+  },
+  {
+    "id": "e5165ec7-c986-4344-8e05-736f7a84979f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:37:58.659643+00:00",
+    "_id": "ec1c3041-06e8-43c1-8960-2876b9728691"
+  },
+  {
+    "id": "54f1dc2f-e679-45c8-8a75-c81c2f292040",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:38:06.005365+00:00",
+    "_id": "111312fd-8ebd-4d1f-86aa-abcff28f26ad"
+  },
+  {
+    "id": "ba0979d0-23c7-496d-8909-e1d5b8fecf64",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:38:12.645318+00:00",
+    "_id": "106a4d5e-3738-4da4-9e0f-cabf4d7a9f23"
+  },
+  {
+    "id": "503e97ac-2d09-487d-99ef-1f4659ae64f3",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:38:19.968309+00:00",
+    "_id": "9c6a8aa1-4eb3-4376-9db6-b808c0d2f9da"
+  },
+  {
+    "id": "1f15c4ee-0701-42e0-a739-6075ecc570fa",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:38:35.952471+00:00",
+    "_id": "cbe43a9c-683d-4adb-a417-731710a721e2"
+  },
+  {
+    "id": "7c990d92-2fc0-4797-96f9-4499540952e9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:38:43.140979+00:00",
+    "_id": "c6d671b3-66f0-46ec-8280-080c7ed3b809"
+  },
+  {
+    "id": "13d53ce4-9913-4ed1-9662-e7e834e45a49",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:38:57.671761+00:00",
+    "_id": "dde52bff-b724-470d-a32d-db8a0ad6cdc9"
+  },
+  {
+    "id": "5df9fd05-3105-40fe-9152-5b8eb5733a79",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:04.905043+00:00",
+    "_id": "5552d0d1-eb3b-41e6-a30c-c54229f50a83"
+  },
+  {
+    "id": "1316e7d5-f914-4a3a-a6d9-4628d1c7d5db",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:11.868968+00:00",
+    "_id": "414a870d-22ee-4968-8426-94e90b0fc9e5"
+  },
+  {
+    "id": "e6e194f3-4a52-44ba-a4e2-92c0c500c6cf",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:19.213990+00:00",
+    "_id": "556c8066-d202-4136-8000-e39fa98e97da"
+  },
+  {
+    "id": "364dbb49-915b-4107-9c08-02651959bdbb",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:25.874298+00:00",
+    "_id": "44947ba7-0b39-4b83-973c-be2b9eebd9d5"
+  },
+  {
+    "id": "97eedfba-b75f-44b3-9e41-4b2b8e985a00",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:33.224019+00:00",
+    "_id": "59e08972-0693-44f1-bcbd-35b958e9ba97"
+  },
+  {
+    "id": "b0680ff8-4885-403d-96c7-aa5786843169",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:39.884533+00:00",
+    "_id": "b2375e16-b2fb-4507-a4ee-27d022a1775a"
+  },
+  {
+    "id": "38537ae6-f513-44ab-9b4a-262fbd0d2b9e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:47.192497+00:00",
+    "_id": "34832811-ff2e-43ba-9ecf-04bf0f2d5f03"
+  },
+  {
+    "id": "c498ac64-4c71-45aa-adb3-2dfde54619ec",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:39:53.881209+00:00",
+    "_id": "923ad5e4-8bf4-4ede-8fe0-33e7ae2798fb"
+  },
+  {
+    "id": "14d6fc78-67df-426a-8a78-b91f6a6b8dda",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:02.013198+00:00",
+    "_id": "36622b8f-4a39-40b8-954d-d43c8d5f2842"
+  },
+  {
+    "id": "1bf0b32e-4c57-4dfc-9d04-54cc94b602b7",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:08.624366+00:00",
+    "_id": "39dd05db-6bf1-4417-b98d-304f2fa1188a"
+  },
+  {
+    "id": "8e8cf94b-d17a-4101-852c-e04a7ae1b773",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:15.934458+00:00",
+    "_id": "d8be59f1-90d7-4aa4-a3a3-440d8c5f1ee3"
+  },
+  {
+    "id": "0ffb683a-ebf0-4109-b083-e5fbe361326d",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:22.591276+00:00",
+    "_id": "1b8f6081-e60e-4dde-b8e6-5d92d4ac499b"
+  },
+  {
+    "id": "4a814f71-4334-4827-b91b-94feb3e98ee7",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:29.947576+00:00",
+    "_id": "b7259234-f227-45fa-b2bb-1d2430b606e3"
+  },
+  {
+    "id": "ff3a5b27-c82f-4a42-98b7-e4de6372393b",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:36.603020+00:00",
+    "_id": "1d772986-aaaf-43e6-9829-2de9d0c89a93"
+  },
+  {
+    "id": "49ee681a-9de8-4f03-9916-47c1599de275",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:43.905524+00:00",
+    "_id": "dafcf4f8-8cab-4e36-b4f1-60ee7fa23a60"
+  },
+  {
+    "id": "94d34a7c-1417-404d-b543-d60b6f3a7a01",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:50.588469+00:00",
+    "_id": "eb800be0-0460-4729-8c94-d8787aef3fdd"
+  },
+  {
+    "id": "596a9f21-fe9c-4cbf-bb88-2460ac4cfb40",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:40:57.997058+00:00",
+    "_id": "e35e51c8-878e-4b34-bcc9-6fa6cf33cb6b"
+  },
+  {
+    "id": "c4279004-0f74-4f3e-b973-46b7ef8ba651",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:05.314288+00:00",
+    "_id": "a42a63dc-0537-424e-8be9-48fdcff80a94"
+  },
+  {
+    "id": "ae75a78e-e6cf-4285-8927-f7d7f4301310",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:12.618813+00:00",
+    "_id": "510ee5b0-918c-4f25-9b5c-56ca32ed6ca8"
+  },
+  {
+    "id": "4f33b539-afcc-40cb-9c04-502eb1480644",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:19.277274+00:00",
+    "_id": "4c22fe3f-342b-4587-bc58-46ee2663bcc6"
+  },
+  {
+    "id": "231e8aa4-cb21-483c-a53b-0d660b2d9757",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:26.595694+00:00",
+    "_id": "789a17e4-d270-400b-9e8b-299b907db2b8"
+  },
+  {
+    "id": "9baf16c6-e6a3-4e2d-874e-6b4e16b0ab29",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:33.285545+00:00",
+    "_id": "4c81318f-a2a5-4791-886b-6ffad1a41d19"
+  },
+  {
+    "id": "60b11df2-c0db-4f14-bbd0-f33b4aa0c4db",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:40.607552+00:00",
+    "_id": "f7afad4d-923f-4f3d-87f2-a564c9b9220b"
+  },
+  {
+    "id": "88bf11f7-4d2f-41ec-8a25-12d20ad0ff8b",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:47.259858+00:00",
+    "_id": "d8db0952-d961-40ec-babe-83795f9ae87c"
+  },
+  {
+    "id": "14098b10-df33-441f-bb29-8985bb44e751",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:41:54.559342+00:00",
+    "_id": "5f96fe83-6698-4295-92d0-a9260e5d3431"
+  },
+  {
+    "id": "245baf43-875b-4789-80fe-ad27a6dc4fda",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:01.609902+00:00",
+    "_id": "0585cdc4-ab98-41dc-bd6f-7f88557368c7"
+  },
+  {
+    "id": "a7347e9a-137a-4982-81c5-ba999a84e40c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:08.906750+00:00",
+    "_id": "2ae62c0c-26a0-439c-9c15-f6edaa242a1a"
+  },
+  {
+    "id": "02bf3f9c-9470-455a-a618-81539c323018",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:15.572880+00:00",
+    "_id": "9566fa08-2069-46cb-b972-8f38fe04ba3c"
+  },
+  {
+    "id": "267ceca5-fcf0-403e-83ce-8b363be72a9a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:22.951903+00:00",
+    "_id": "aef1cb1b-267f-4f35-8afb-8de2a6d0cbbc"
+  },
+  {
+    "id": "5335f377-a4f6-419c-bef6-04d8704752ae",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:29.786580+00:00",
+    "_id": "b30a8ed1-3430-4407-a962-e3d513113e51"
+  },
+  {
+    "id": "52f1e2f4-df4c-45c5-affd-92c9fc5eb773",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:36.899308+00:00",
+    "_id": "2f633345-9773-4ce9-844a-c96a6d60dcc0"
+  },
+  {
+    "id": "9b8f1fd3-975d-412f-bc99-e0df424416e3",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:43.663720+00:00",
+    "_id": "d7a700f6-93d7-4ac8-8415-d56713546efd"
+  },
+  {
+    "id": "e6c9ec7a-7529-47d5-bf86-7a005bb15746",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:50.988782+00:00",
+    "_id": "e21929aa-b115-4508-8ad5-d03e7121002b"
+  },
+  {
+    "id": "4ac57817-6b51-4f67-a808-a0c93549d267",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:42:57.645304+00:00",
+    "_id": "576f07af-8986-43d1-9b98-756e677b9d9a"
+  },
+  {
+    "id": "5c762ccc-440d-4234-aeac-74e69f8c3d22",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:43:04.954126+00:00",
+    "_id": "40397b9c-23d6-4337-9578-7684cc8fb4ed"
+  },
+  {
+    "id": "c8f47086-0121-4626-b5d8-b25cd4eaf6d3",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:43:11.665163+00:00",
+    "_id": "a2b8c1cf-8d97-4107-8f3d-93c67072261e"
+  },
+  {
+    "id": "34b28377-e45f-462f-be3e-7f9ae45b4ac1",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:51:42.721469+00:00",
+    "_id": "a6a62a1e-b04d-43ee-9321-f46a15264b36"
+  },
+  {
+    "id": "57e0ab93-f72c-4307-a53a-479be5020ca5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:51:42.911195+00:00",
+    "_id": "72bf7720-72de-4bfe-8489-50899a686b6e"
+  },
+  {
+    "id": "d23a1344-08e5-4cc9-93dc-6dcc67d6960e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:52:47.610162+00:00",
+    "_id": "1008855d-399b-4b30-a01c-a61c9e77c8fa"
+  },
+  {
+    "id": "da08bc9d-75b1-4563-b770-dee56690e51f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:09.248366+00:00",
+    "_id": "064d90f2-d47a-4a30-9235-f8bc3473fbd8"
+  },
+  {
+    "id": "35c37a09-ef7b-41fb-b76c-f8f4fcbb1bc7",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:16.738045+00:00",
+    "_id": "f3d63f5d-f4df-43ae-8154-88cdc1277f19"
+  },
+  {
+    "id": "59a370c8-5b84-47d5-a85a-21f06b62dcdb",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:24.055112+00:00",
+    "_id": "2f5f9c5f-7fc6-409d-a559-029be99d85b4"
+  },
+  {
+    "id": "4c150930-6a48-459f-8a4d-95ddb4d7b8f1",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:30.798041+00:00",
+    "_id": "dd5c412f-2f85-461a-ab12-ebbb0dc45b39"
+  },
+  {
+    "id": "36bcd09e-2d9f-454c-8baf-471b25167b51",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:38.093371+00:00",
+    "_id": "51c733c8-ce66-489a-90d3-0a6c34363b80"
+  },
+  {
+    "id": "a89d9fb2-11a1-401f-8154-abf82ec606cf",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:44.737793+00:00",
+    "_id": "a3d33d78-ed87-4511-9a04-c2cab456d198"
+  },
+  {
+    "id": "6b7315e2-dfbb-4382-b9eb-e77c37e195e4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:52.124844+00:00",
+    "_id": "e34cb574-0314-4039-a8b7-78cc17578828"
+  },
+  {
+    "id": "287d4757-c4c8-47a0-b6c8-67429032fd71",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:53:58.671887+00:00",
+    "_id": "a21f855d-570b-42ce-8c92-c74b19089ac3"
+  },
+  {
+    "id": "5bc06588-78a0-40a3-a22b-dcae1807f577",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:54:20.877769+00:00",
+    "_id": "d9f25a54-7761-4504-8921-78da0c185935"
+  },
+  {
+    "id": "7d2c965b-92c5-4aa8-a0bb-301f7bba600e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:54:28.023714+00:00",
+    "_id": "44f99c07-4914-4c17-a78b-f2de140dbaf9"
+  },
+  {
+    "id": "d5b82cba-57ff-42ab-94f8-9beb3bd0e665",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:54:35.026768+00:00",
+    "_id": "2f950826-7fed-4694-b4fa-d01521cef4b6"
+  },
+  {
+    "id": "34c46625-8175-4c6c-884c-4dfe87a7109d",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:54:42.340520+00:00",
+    "_id": "e4a366df-9d00-44f4-9d68-48a0ad81d3d9"
+  },
+  {
+    "id": "f6550c82-89e0-4e72-a961-8f42f8225bbf",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:54:49.116725+00:00",
+    "_id": "b7d8e490-57b0-4583-b6dc-92a3aacd796c"
+  },
+  {
+    "id": "601f083b-ae14-493e-9ebc-6b505ded71d8",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:54:56.323347+00:00",
+    "_id": "8b224ac3-ca25-4854-8d22-8a52fe36486c"
+  },
+  {
+    "id": "7cf3e75d-aa1c-49da-825d-5339ceecce36",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:55:03.028331+00:00",
+    "_id": "ddc15cda-520c-4a21-a130-fe2e4a808e9f"
+  },
+  {
+    "id": "7d8dbe5c-6064-40f9-a1e4-b407652bb165",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:55:10.341569+00:00",
+    "_id": "3b47bd25-a85a-4d84-8d7f-1960b50678c9"
+  },
+  {
+    "id": "05feddf8-b378-4f1e-9ea9-f9e05c5a8d80",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:55:17.023020+00:00",
+    "_id": "b6c9f9c1-416b-4a27-bd69-538bdd319e0c"
+  },
+  {
+    "id": "08d23386-47a3-4f16-82fa-c728f37b567e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:55:24.896132+00:00",
+    "_id": "72d36acd-2e7f-4265-93ae-58af09b54356"
+  },
+  {
+    "id": "c59cec15-0a21-43d1-bebe-cbf3e30699fb",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:55:31.572891+00:00",
+    "_id": "6efa9b0d-7fc4-41ad-b2bb-991071ac6efb"
+  },
+  {
+    "id": "90f90514-0d38-4a40-9d49-6037811f1f80",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:55:38.873600+00:00",
+    "_id": "b1835d60-0c04-40f8-a3e7-88b6f5947a70"
+  },
+  {
+    "id": "2bd83b8b-0648-4c06-9bac-14a67bf13f68",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:55:53.883831+00:00",
+    "_id": "43310be0-415d-42a5-af66-79b70814258b"
+  },
+  {
+    "id": "171869d2-6ba0-412d-9eb2-ba73e87a595c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:56:01.011865+00:00",
+    "_id": "2e5da7d8-fa80-47a1-a97f-19df160c7bbe"
+  },
+  {
+    "id": "a13291a8-f97a-4829-a8fc-a1003f9d95cd",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:56:07.995518+00:00",
+    "_id": "aebe2c7a-0116-4111-87c3-0b60b3fe4806"
+  },
+  {
+    "id": "7c22e83e-8fbd-405d-8633-df3b0aa3feaa",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:56:15.314349+00:00",
+    "_id": "4d9f4296-f221-4616-975c-c58ccec22d36"
+  },
+  {
+    "id": "133d21ef-0dc9-47fe-8f46-525fa3989040",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:56:22.005108+00:00",
+    "_id": "97ac11ed-bba2-4514-b2eb-a7c6b01e6714"
+  },
+  {
+    "id": "f3d282b3-166f-47bc-b110-80a07add3a75",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:56:29.319298+00:00",
+    "_id": "109a7e01-0eea-4902-ab3e-442fd10eb79b"
+  },
+  {
+    "id": "b5c7ebcc-60ea-4415-baed-01e698b1ff75",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:56:35.995346+00:00",
+    "_id": "61f520c7-cb09-4fbf-878a-c9ef717e176e"
+  },
+  {
+    "id": "0b5130ee-7afd-44d2-9869-0bb9c3e6d66d",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:56:57.582185+00:00",
+    "_id": "06c175fe-f600-4075-b8cf-39ae32f2c02c"
+  },
+  {
+    "id": "8e9fc666-d13d-48d3-b553-db564bc5320b",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:58:04.772108+00:00",
+    "_id": "d5ce58e4-430b-4474-80d0-17f109d0aaf5"
+  },
+  {
+    "id": "d3789f85-ff09-4187-a719-9ab5c5e3f4e6",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:58:21.466282+00:00",
+    "_id": "6292db44-c9ab-4269-821d-d7e016ccf7b0"
+  },
+  {
+    "id": "cee1b4f9-9212-4148-bdc7-743b767ee04f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T17:58:40.086794+00:00",
+    "_id": "88d55871-e38f-4e1b-b3ad-547fae09448c"
+  },
+  {
+    "id": "70714210-50d2-4686-ba2a-2be9e2273cb9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:00:31.778491+00:00",
+    "_id": "de321b81-a036-4683-9377-ddae62222882"
+  },
+  {
+    "id": "aa5e79e5-2b85-4c63-9c0a-f949dc803827",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:00:39.715397+00:00",
+    "_id": "fda85ae4-621d-4f23-9c00-bf10043fb893"
+  },
+  {
+    "id": "f79fb841-b3da-4c1c-8a55-f2657489cf8a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:00:47.347876+00:00",
+    "_id": "d9cbd237-b14a-43ea-83f7-da4784e63920"
+  },
+  {
+    "id": "7b50fe4f-dbd0-42c9-8760-f74f2de54817",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:00:54.683950+00:00",
+    "_id": "0e62fb95-c214-4cd1-9e37-13f9c7c6713f"
+  },
+  {
+    "id": "9a3bb51c-4634-4a47-9f6a-3fe8b7269789",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:00.933871+00:00",
+    "_id": "5bbae1f8-8e42-4e1b-a8ce-f1af35865614"
+  },
+  {
+    "id": "ec370ebf-c6c6-4e9b-ab2e-e430abdf424b",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:08.510320+00:00",
+    "_id": "7db45c35-f7f6-4438-981e-e832a7678421"
+  },
+  {
+    "id": "6c144a84-9cf2-4a40-b9f5-054074063d2e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:14.905853+00:00",
+    "_id": "f1d89ce6-1bc5-4dc0-9b7f-6aece2d3d40b"
+  },
+  {
+    "id": "b6c4319b-c21b-431c-ab6c-031f87487ec8",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:22.230867+00:00",
+    "_id": "4c96fc1d-f4df-4f1c-8853-8cadaccd3a09"
+  },
+  {
+    "id": "0b1191cf-e79f-484d-988a-d19b465ee85e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:28.929139+00:00",
+    "_id": "c072e16f-c7fa-485b-ab84-e4501cae2c5e"
+  },
+  {
+    "id": "ce415a26-bd79-4777-bc62-349e2670b131",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:36.212682+00:00",
+    "_id": "36e44368-ab3b-4728-a0e5-d69c771929b8"
+  },
+  {
+    "id": "d70c7e58-3cec-4f3a-8f4b-5dcb2f7209b0",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:43.589822+00:00",
+    "_id": "b94ff724-3578-4441-9003-6a0bdebcc91f"
+  },
+  {
+    "id": "36782b76-07f8-4dea-ac5f-bd958659bd78",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:50.942293+00:00",
+    "_id": "791091e2-f360-45c3-a67c-80ce16c4663b"
+  },
+  {
+    "id": "8591c853-9e23-4d9e-b381-1105da4b9b75",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:01:57.585013+00:00",
+    "_id": "137ad753-4e09-4843-9a98-f9bffc8f5214"
+  },
+  {
+    "id": "11780fc2-9e83-46c1-847e-40fbdcd33f26",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:02:04.892277+00:00",
+    "_id": "2fb99447-c5eb-4391-abe3-6c73b605e1e6"
+  },
+  {
+    "id": "2d046d03-3678-4928-ba4b-eb7a2802ea6e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:02:11.598850+00:00",
+    "_id": "33beb199-ee5a-4369-89ae-d22f174eb503"
+  },
+  {
+    "id": "92849cb0-c094-4f1c-adb5-8bd3b5097d2c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:02:18.913101+00:00",
+    "_id": "1c9dd82a-699e-481c-97bd-d2b8c6523b87"
+  },
+  {
+    "id": "23b6928d-489c-44da-b222-02a39db79356",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:02:25.632270+00:00",
+    "_id": "4b8ee543-8b93-41bf-997d-01d5ac00276c"
+  },
+  {
+    "id": "298372da-5e33-46a3-ad58-d031bea02a76",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:02:32.875989+00:00",
+    "_id": "cfad0739-498a-42cf-80e2-cffb4ada0d75"
+  },
+  {
+    "id": "8a910cbb-b6df-4c81-bdf5-c92340d51d88",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:02:47.936003+00:00",
+    "_id": "8362fba2-16b9-4249-9294-809c055888c1"
+  },
+  {
+    "id": "342dad1f-4c07-4e8e-ace6-996888f1e4e4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:03:02.359718+00:00",
+    "_id": "e7abca2b-9a79-4094-b224-b7af203b15fc"
+  },
+  {
+    "id": "1dc7e9ff-17f8-42d4-8877-1fe504ebf274",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:03:09.563918+00:00",
+    "_id": "a8124480-2698-47ad-b255-244eba615879"
+  },
+  {
+    "id": "44581a81-4122-4e36-a4ea-e51d14fe0c3c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:03:16.541597+00:00",
+    "_id": "462704d4-e0d1-47f7-bf13-4c9326f68eb6"
+  },
+  {
+    "id": "7cf263b4-c92e-45f9-bcd5-9a4a58a7f603",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:03:23.851744+00:00",
+    "_id": "ff69d7e3-15e0-4629-b7dd-605e6b5f1a8e"
+  },
+  {
+    "id": "adc1cdba-adca-4aa0-b395-1b95edb41b70",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:03:30.547704+00:00",
+    "_id": "3573ad72-36d7-483e-b47f-92e72033d190"
+  },
+  {
+    "id": "2a1d5690-e79d-4a14-92c4-248b2c75d3a9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:03:37.865240+00:00",
+    "_id": "72b13acb-e9aa-4254-88a1-c0fbf73056e2"
+  },
+  {
+    "id": "6e80d51b-3845-46f1-9e93-c37fffcdd1a4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:03:44.541536+00:00",
+    "_id": "8a7db894-1029-44d4-b249-d1f80759188d"
+  },
+  {
+    "id": "e6be3bbb-11c8-4203-9acc-a0ba662ef7dc",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:04:06.922469+00:00",
+    "_id": "306f4737-76fd-46eb-8a1e-c2d968800b4a"
+  },
+  {
+    "id": "a15ab08d-24b6-491f-8643-e6a26c87a65d",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:04:14.053526+00:00",
+    "_id": "ec1c232e-3ed5-49f6-83b3-94d146c50491"
+  },
+  {
+    "id": "3bcb674f-e081-495c-960b-348a09b40239",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:04:35.212750+00:00",
+    "_id": "f0872cea-046d-4367-acb0-f99d64e75c00"
+  },
+  {
+    "id": "dd50303f-a07c-4dfd-96e2-c134b735a66d",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:04:42.406379+00:00",
+    "_id": "95d68311-1ce2-4950-87d6-3613b4333937"
+  },
+  {
+    "id": "8d80f3fa-ea30-4407-9797-c35f3d6bcf5a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:04:49.726185+00:00",
+    "_id": "30e83cf2-065c-43e9-b7ce-7d42bff352a7"
+  },
+  {
+    "id": "9319bf98-001d-4700-9599-e82fb4c1b7bf",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:04:56.421322+00:00",
+    "_id": "db426280-be30-4de3-a114-4cad9c1dcc3a"
+  },
+  {
+    "id": "2107ded0-d568-4209-bea1-e203f29a3757",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:03.736899+00:00",
+    "_id": "32812c8a-a5a6-4816-9d2f-2cb959a5452b"
+  },
+  {
+    "id": "2707873b-3c8c-4a97-9fbd-93b5268f3f93",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:10.416683+00:00",
+    "_id": "c36eadf8-d1a8-471c-a20b-b2f09dfcaeec"
+  },
+  {
+    "id": "e4a913d0-33e6-4aed-92f8-e4e2f709767c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:17.751755+00:00",
+    "_id": "a8c1ef48-e267-46a6-9333-7ed548849b46"
+  },
+  {
+    "id": "a9385982-6e38-4e54-9611-c21e19e3ad84",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:24.423763+00:00",
+    "_id": "52fe4513-1e61-4338-9c5c-dbc9e1861f5b"
+  },
+  {
+    "id": "ff7a1f23-e9f0-4bb8-91be-d430728fe869",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:31.735041+00:00",
+    "_id": "03f0b800-c693-4e55-b25b-0f0c764e9536"
+  },
+  {
+    "id": "d20a7a0c-fbbd-4914-8b6b-8b934ee614ac",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:38.571094+00:00",
+    "_id": "cdba71f9-0e03-4ee2-8806-19d6ff0eb08d"
+  },
+  {
+    "id": "4f1648b1-6650-4b23-a7a4-6117a8151d5a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:45.901302+00:00",
+    "_id": "6d8e3986-38ab-499d-887a-e3e8e3e675fe"
+  },
+  {
+    "id": "25cb109d-5488-449e-b663-b8282f120f3c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:52.576551+00:00",
+    "_id": "2b2c53bb-984b-47aa-ae79-aaafedda95cb"
+  },
+  {
+    "id": "202e5309-ccdc-4b57-a67a-4da0602dcb41",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:05:59.872491+00:00",
+    "_id": "54ceb905-419d-4001-a115-3f0461c79d72"
+  },
+  {
+    "id": "7f407adf-9f07-4236-a43f-dff045b36d53",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:06:06.570079+00:00",
+    "_id": "a57b9470-c17b-487d-8d7a-351a00c84e82"
+  },
+  {
+    "id": "d0081a94-6d39-4f1e-96c1-85656e993694",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:06:13.887277+00:00",
+    "_id": "9d5dcaed-5c1f-4d1d-946a-3697b552f8a9"
+  },
+  {
+    "id": "c593d45d-26e2-4596-963c-7f5b698207de",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:06:20.602504+00:00",
+    "_id": "b52eea38-5a64-439b-8a17-bd68042d6878"
+  },
+  {
+    "id": "b13497ef-d9ce-4ba0-8cda-1fa7a7b6edd5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:06:27.881034+00:00",
+    "_id": "1c9c5cd3-a327-4763-a2ce-9822352bcea4"
+  },
+  {
+    "id": "85e2dd62-2c7d-4874-85da-b430003ff5fa",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:06:34.576914+00:00",
+    "_id": "d0c3684e-fdce-4ef2-b68d-c8c20cfa6af3"
+  },
+  {
+    "id": "4352dade-54d0-4e66-b093-6878c0022136",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:06:41.921420+00:00",
+    "_id": "997ac53e-492e-4243-b88f-524108431016"
+  },
+  {
+    "id": "c5a18df9-cbf6-426d-bb1f-7b464655fec6",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:06:48.594127+00:00",
+    "_id": "b22141b5-5585-4396-ab45-e5f1180b6b49"
+  },
+  {
+    "id": "c4e0ea48-5f51-4b3d-bcd0-acf74ecf154f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:09:37.977659+00:00",
+    "_id": "a0d29168-d037-438b-8212-edeb3d41737d"
+  },
+  {
+    "id": "5b7a7e44-876c-4884-a28f-ff49ef0fbc28",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:12:20.915556+00:00",
+    "_id": "18e8b896-1375-4d1c-9eb9-7053819d9b1f"
+  },
+  {
+    "id": "0467a4ba-b5e4-4aea-afe9-c8518ce9bd40",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:21:48.567902+00:00",
+    "_id": "2e195f9d-de10-4c40-9784-c3791d8a493e"
+  },
+  {
+    "id": "029c780d-6861-4472-8130-26775956a9a1",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:23:48.592344+00:00",
+    "_id": "6733899c-1ccc-41f7-a5b0-b9190cd3db34"
+  },
+  {
+    "id": "03c927ce-c790-4c70-80c2-12c4245c675c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:23:55.909454+00:00",
+    "_id": "e4547fcc-7a36-44ab-9ff5-c0ff59d1890c"
+  },
+  {
+    "id": "9137f20e-2a0f-4267-ae31-f0074897f64c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:24:24.947284+00:00",
+    "_id": "dd82fd71-4d9e-4b8c-8cb4-863d1d7c8c73"
+  },
+  {
+    "id": "eb19fd2d-f1f7-4ad7-9288-ddceccd45ac7",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:25:58.562065+00:00",
+    "_id": "f3a67712-82cf-4a56-9888-7bf1d74438b2"
+  },
+  {
+    "id": "4ffa6ad9-5e89-4ca9-ba14-c79d81957ff7",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:26:41.214852+00:00",
+    "_id": "eed8df65-a49b-4b09-adb5-6fce95ac8cf4"
+  },
+  {
+    "id": "e5051491-c1b8-457a-8bda-715c8b8423ba",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:27:45.489023+00:00",
+    "_id": "9efe78ed-8cc3-4b1e-97fd-1963601e52a7"
+  },
+  {
+    "id": "e1e7817c-4d39-4205-a685-d6944819e25b",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:27:53.006389+00:00",
+    "_id": "09cba6a0-1a89-4eea-9cd0-2e4f2910cc39"
+  },
+  {
+    "id": "5c4c8c3b-f1a3-476c-af95-1e1b83ba17b4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:27:59.903245+00:00",
+    "_id": "6c2bd321-bc64-47b7-b331-642ae47bb72b"
+  },
+  {
+    "id": "0ba914d5-e1ef-4808-a359-a0a3e9665435",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:28:07.229078+00:00",
+    "_id": "6986b3ff-8ed9-45bc-a5cd-6409d51cb557"
+  },
+  {
+    "id": "a0be9fab-ebbf-4296-8048-bf5eaf4ccefa",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:28:13.927965+00:00",
+    "_id": "a89a34b5-d249-4e28-97ab-7a0815302d45"
+  },
+  {
+    "id": "3371defb-5c6c-407e-8a33-dbf7481c1017",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:28:21.229522+00:00",
+    "_id": "24c087a6-42d3-421a-929e-55f04d3c4660"
+  },
+  {
+    "id": "f331f75b-a1cd-4062-b7d3-bd8ba333277e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:28:30.798209+00:00",
+    "_id": "c6cb6242-538c-466a-bbf7-cdce4d3b996e"
+  },
+  {
+    "id": "6a323f76-e660-4766-8c81-1c820a85c3d8",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:28:34.878009+00:00",
+    "_id": "3ab77d87-61f6-44e6-a303-38028ae5f83c"
+  },
+  {
+    "id": "d241080d-3d2a-413c-be21-13a2b2251cd9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:29:24.899797+00:00",
+    "_id": "993aedca-3f16-4ef4-865f-0a7ec9c9ca6f"
+  },
+  {
+    "id": "7c2849c2-352d-44d2-aab4-727a9ee8fb55",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:29:39.209843+00:00",
+    "_id": "101e9795-95fd-4f8d-9b75-87a1790a64ad"
+  },
+  {
+    "id": "488912c2-eb9e-439b-9e9d-8ac5c5b066d0",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:29:46.399002+00:00",
+    "_id": "12b51995-27d0-4a91-ba3e-ee239410e3f7"
+  },
+  {
+    "id": "292b8030-204a-41ea-a8e8-6cda2c1418b6",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:29:53.708434+00:00",
+    "_id": "7346cb0f-b522-4061-886a-9fb35658e236"
+  },
+  {
+    "id": "87e3ddd0-21f8-42c2-9b17-3d62b648f023",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:00.427605+00:00",
+    "_id": "230d7712-19ff-4f53-8f2c-bc99054fbdf1"
+  },
+  {
+    "id": "fdeab09e-58b4-4533-83fb-67faab8f3d9b",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:07.958132+00:00",
+    "_id": "0e980c35-c7db-4635-8df3-7c5f8a361fef"
+  },
+  {
+    "id": "df8f3149-9b72-46a1-b31c-c42f51531035",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:14.394556+00:00",
+    "_id": "ad2619cd-8922-4f1d-858f-4dbca3d39aa6"
+  },
+  {
+    "id": "0705fe98-2289-4cf2-b680-e6941c0c1352",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:21.711833+00:00",
+    "_id": "56f913e8-3405-4dfa-9a19-8d16d02994b0"
+  },
+  {
+    "id": "c65dae98-9871-41a6-8e0e-bcd00dc620a9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:28.401510+00:00",
+    "_id": "bd3ff1c5-e6c9-4009-bc32-d91ed50fc21a"
+  },
+  {
+    "id": "b687fe4c-2d25-4759-ba0f-43b57d58d39e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:35.730715+00:00",
+    "_id": "922c1ca5-f4ed-4283-afa1-8d5b7c78b2b5"
+  },
+  {
+    "id": "a832a345-6e70-4259-9ed4-f9418f5e6956",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:42.573915+00:00",
+    "_id": "ee1ea95b-e598-46c9-b73d-42412a20f7ef"
+  },
+  {
+    "id": "76583502-7ed7-4686-b10c-da43ba7360f4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:49.885879+00:00",
+    "_id": "f6a8886a-2eac-46b6-a40b-bb67092462be"
+  },
+  {
+    "id": "50f4df08-88e1-4f8a-9664-fdbd59d1d9d3",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:30:56.573615+00:00",
+    "_id": "4960c46f-8b73-4913-a801-03fac01a1c51"
+  },
+  {
+    "id": "036b1d4e-da7b-43ce-aaee-a00724408a70",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:03.915016+00:00",
+    "_id": "f15a47e0-6bb9-46e7-8cdb-47c3e6e5233b"
+  },
+  {
+    "id": "0ef77b24-ec08-45ff-8930-6734174ee1b2",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:10.571309+00:00",
+    "_id": "775dec52-ae6e-4f07-b9b4-a6ebfda1c4a0"
+  },
+  {
+    "id": "9f31074d-d174-4d84-9d84-136cdacf6e94",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:17.883385+00:00",
+    "_id": "aa1d046f-901b-4c10-9c35-ee8da3de4e5c"
+  },
+  {
+    "id": "9738bd31-50e7-4505-8d0d-e5a522274fc8",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:24.570172+00:00",
+    "_id": "398aa30c-7e18-4733-a5ef-ead28fc173aa"
+  },
+  {
+    "id": "21413ac7-2e07-4d8c-8b4a-d1f6cbb106a3",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:31.890190+00:00",
+    "_id": "9a89e592-9db4-47e9-8d7c-ba86ea47b2ed"
+  },
+  {
+    "id": "bb94a248-3e1e-4f5e-a5af-3f6304b26c14",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:38.570188+00:00",
+    "_id": "595e37ef-9b98-4c09-b99e-f53907e86fa9"
+  },
+  {
+    "id": "45498eac-2329-4aad-a001-51ad9d700f48",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:45.883660+00:00",
+    "_id": "710da585-063d-48db-b84f-01d584338f3a"
+  },
+  {
+    "id": "e6cf157a-1fb0-4f38-bf7f-76e90479a041",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:52.566246+00:00",
+    "_id": "19287d62-ecf7-42de-baf1-9dceb67b9c1a"
+  },
+  {
+    "id": "7aaa29d5-51fd-4499-8bcc-f97e03c6891a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:31:59.881739+00:00",
+    "_id": "de89df31-f470-4efa-b6f4-b70879103d92"
+  },
+  {
+    "id": "5be00f5d-9904-42a2-bc9e-74055eab2c18",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:06.567549+00:00",
+    "_id": "95e66686-0b3e-4000-8b24-4e65c7c0301f"
+  },
+  {
+    "id": "e6db0812-52f9-4816-ab00-93e5f0977407",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:13.886847+00:00",
+    "_id": "e5ce14c1-6957-47a7-97c5-19c53f4daae6"
+  },
+  {
+    "id": "affb4949-bb11-43ea-9615-13aac35e191c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:21.968820+00:00",
+    "_id": "29fd9fc7-9723-4330-b832-d27adb30b7c4"
+  },
+  {
+    "id": "b85b01f1-28cf-44f9-9f6e-1518599aa7e9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:27.890019+00:00",
+    "_id": "85aa079e-52aa-4940-b700-ad40d94a96af"
+  },
+  {
+    "id": "16e827dd-9c25-440d-8bbb-4443fe2fde16",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:34.577266+00:00",
+    "_id": "3211eaa8-7290-463a-ac03-cac4261f649d"
+  },
+  {
+    "id": "abfeab7b-ea7d-46ff-965f-67876ee55bd8",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:41.889516+00:00",
+    "_id": "5086a2f6-f593-4dbc-a479-cac9366ac6d6"
+  },
+  {
+    "id": "1cc87d55-093b-49cc-8dc4-b7b2af6d7a6e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:48.572260+00:00",
+    "_id": "b21d56a1-8f7d-4b2b-af32-eb4ce170f1b8"
+  },
+  {
+    "id": "b0b95aec-f814-4ebe-96c6-4cc043cd286f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:32:55.887506+00:00",
+    "_id": "9cef4cb1-e9ef-43e9-85fa-d8a68158093a"
+  },
+  {
+    "id": "1c61e1f8-a765-463a-98b4-48e7bf8b8442",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:33:02.591539+00:00",
+    "_id": "b6b30150-8bdd-48cf-b484-9b0c55d854cc"
+  },
+  {
+    "id": "cd9222e4-c696-43a7-a65e-c474e2599567",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:33:09.878959+00:00",
+    "_id": "c8ba90a8-56c0-474d-8728-ea0c75ca2830"
+  },
+  {
+    "id": "2c08f94d-6101-4515-a398-32281b6c07f6",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:33:16.580452+00:00",
+    "_id": "99e9e5f7-78b3-417e-ad31-40a365d5387e"
+  },
+  {
+    "id": "c86d7a87-83ee-436f-a0e0-483ff4797e36",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:33:23.881295+00:00",
+    "_id": "3b9ead46-b514-48cb-b047-1f14bc039a6e"
+  },
+  {
+    "id": "000e759c-4b67-492a-935b-24e54da501f3",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:33:30.567867+00:00",
+    "_id": "ac392930-97ef-468f-8105-2d04f9fe38ff"
+  },
+  {
+    "id": "eb9267ca-2790-4df5-a135-ad0853488253",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:33:37.869833+00:00",
+    "_id": "aaad5ff0-65af-44db-8b7c-f1b22f201263"
+  },
+  {
+    "id": "5495bc08-e5e0-4662-8799-894a9a98452a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:33:53.051969+00:00",
+    "_id": "4bdc4c6f-fc07-4bd9-bf15-360c515f6519"
+  },
+  {
+    "id": "fb920895-8b80-495e-acd4-f590e6ba3c74",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:00.313521+00:00",
+    "_id": "23f27e4b-04f8-44b6-8dc7-676a06dc10ff"
+  },
+  {
+    "id": "f2d4f4a4-2891-4b88-8071-a927c40eedbd",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:07.310323+00:00",
+    "_id": "f3f06258-4d57-4ada-8d79-556b442b47e5"
+  },
+  {
+    "id": "f4072f56-7ee2-44db-bd16-086c3d9eef47",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:14.328098+00:00",
+    "_id": "83921583-9ba9-4590-b348-083726cd1d09"
+  },
+  {
+    "id": "9d10f609-1156-40cd-9806-dbbbb9059dc4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:21.602185+00:00",
+    "_id": "98e0345c-9adc-4e01-888b-56da27864f2b"
+  },
+  {
+    "id": "4c959f03-ee39-44a5-a502-c9ae0371ef72",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:28.312231+00:00",
+    "_id": "e0de208e-50db-45e7-bcc9-3a5490cf693d"
+  },
+  {
+    "id": "a3509c31-f17b-4e4c-98d0-754b227071e5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:35.648770+00:00",
+    "_id": "56f717e7-4786-4770-8559-ca053baa95dd"
+  },
+  {
+    "id": "ecac9869-7f51-4483-b9c8-cbd2ae70f00e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:42.317598+00:00",
+    "_id": "a28d5c16-8704-41d1-9df6-4a17001abf30"
+  },
+  {
+    "id": "225c4e9f-d88d-4728-869d-c545af4ac122",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:49.663357+00:00",
+    "_id": "390623e5-f9fa-4774-ba14-c40c99c52ec6"
+  },
+  {
+    "id": "e6cf97ce-4f4d-49a2-8cca-e8f5cd874d1f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:34:56.598743+00:00",
+    "_id": "ffb25c50-7735-454c-8478-fbfa585e8152"
+  },
+  {
+    "id": "4e16c77e-29db-4993-b69a-6d4eb82be7e5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:03.907067+00:00",
+    "_id": "9c7683ed-879a-494d-86f2-6109af23c7d0"
+  },
+  {
+    "id": "f4eda7a0-2d54-4784-a43e-61674e222ee0",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:10.603371+00:00",
+    "_id": "776a5e15-6011-499b-bb09-edc8112e66f8"
+  },
+  {
+    "id": "30e7aca3-37de-4f76-bd8f-c2d47d36da23",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:17.905404+00:00",
+    "_id": "a2db57d4-8074-460e-9a6d-c6992a582033"
+  },
+  {
+    "id": "3954b27f-26ff-459d-accc-0abed3617da6",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:24.610328+00:00",
+    "_id": "bcd1ba71-1e0d-405f-a670-c61e2c629e0f"
+  },
+  {
+    "id": "24a37582-4980-473c-b644-2735049d3731",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:31.897688+00:00",
+    "_id": "e13be007-05aa-45d7-b581-3c1af5cb9d23"
+  },
+  {
+    "id": "505337ef-a4bc-4de8-9886-9733cbd830cb",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:38.583425+00:00",
+    "_id": "647ae58d-097e-4328-95b3-d870240aec43"
+  },
+  {
+    "id": "6e415f80-3cdf-456a-85ae-f7a0b8d27be0",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:45.876816+00:00",
+    "_id": "fe90ad97-3b4d-432a-bf73-e7c5fe8a6bcf"
+  },
+  {
+    "id": "50211178-a0d8-40b7-87e0-455a4385fee5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:52.577297+00:00",
+    "_id": "d8c93428-b218-441b-8c9f-6068bc71bd54"
+  },
+  {
+    "id": "e007dfa8-9d27-4365-a168-8ad56cce5c21",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:35:59.870689+00:00",
+    "_id": "ba2ac251-b145-432e-b110-5a980f770f57"
+  },
+  {
+    "id": "6b6b3a88-dac9-4ce5-b317-0bc0601dd64c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:06.617571+00:00",
+    "_id": "1285ad7e-1817-45fb-8c2d-2c198c795b2f"
+  },
+  {
+    "id": "01b29f4e-d072-4558-b6a1-9ae463bdef84",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:13.917747+00:00",
+    "_id": "73e9539c-d098-4761-bb06-3669ec6d8397"
+  },
+  {
+    "id": "5ee80e30-cbdc-41bf-853e-c3e4034be860",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:20.680180+00:00",
+    "_id": "f391e035-9517-4b75-a8e3-bed5d6de1be1"
+  },
+  {
+    "id": "56bd98cf-306a-4ced-9587-63026c8d5b38",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:27.927572+00:00",
+    "_id": "52cf2678-0067-4bff-a197-178114ec67e3"
+  },
+  {
+    "id": "7a862318-4e0d-4577-bbf9-b15ffd94247a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:34.594377+00:00",
+    "_id": "8949be03-ef21-41ac-aac5-8d8c94158fb3"
+  },
+  {
+    "id": "c2c715e9-9a73-4410-90c7-daf7336298b8",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:41.869884+00:00",
+    "_id": "04a135c2-1a37-471f-848d-d1a7da0a1019"
+  },
+  {
+    "id": "44f5f5b2-61d6-43fa-a202-aee564a85ace",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:48.578223+00:00",
+    "_id": "1204a5b0-fc6b-4ed6-853a-4b70bc566bac"
+  },
+  {
+    "id": "3497e440-5123-4301-aa77-cf5e41a5ce1e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:36:55.559036+00:00",
+    "_id": "ffa4ecac-2d4c-4816-81aa-d7e148897bb7"
+  },
+  {
+    "id": "9021a664-d7f9-48fc-a836-dd16bbc5e1f9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:37:02.886166+00:00",
+    "_id": "21e2c414-4670-411f-b79e-43bee997cdfd"
+  },
+  {
+    "id": "0d6ad57b-f805-4827-83ae-9e2b452de1c6",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:37:09.561099+00:00",
+    "_id": "dec9e619-6401-4cde-beac-cf8577a617d4"
+  },
+  {
+    "id": "ec6b34fe-2a42-4808-97fb-7e098252284a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:37:16.878960+00:00",
+    "_id": "c0941688-cd0a-4d97-9d3c-363b900958d3"
+  },
+  {
+    "id": "cf1101d7-e487-4b40-bc51-7141aeec50f4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:37:23.562949+00:00",
+    "_id": "012c4d6d-865c-42d9-b8d2-ceb9543e2cb6"
+  },
+  {
+    "id": "9498205b-bf4b-4dfc-97a5-dac42a34f3bf",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:37:30.883576+00:00",
+    "_id": "0a194cce-a53b-4118-948a-c4ccc8ac984f"
+  },
+  {
+    "id": "5142d995-79a0-4b20-af00-5bbbe75d3045",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:37:45.876089+00:00",
+    "_id": "81b6587f-e2a9-451a-964e-4d1fe7cea443"
+  },
+  {
+    "id": "ef1fa914-0912-48cb-aa18-691ce8f1ce84",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:37:52.966469+00:00",
+    "_id": "66d8a04e-9e0e-4d3f-a5d6-67a342f06314"
+  },
+  {
+    "id": "5312b1aa-ffa9-4bf8-a950-ecd9d3d7c305",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:38:35.390460+00:00",
+    "_id": "548fde98-9c9b-4c52-95f7-285aed761ded"
+  },
+  {
+    "id": "65744075-0fec-4ed6-acdd-4e648bf8168e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:38:42.501431+00:00",
+    "_id": "d188e1a1-3025-473c-98af-48f3785d4ca5"
+  },
+  {
+    "id": "5885f53c-c33a-461e-98e6-c9d9399381df",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:38:49.492919+00:00",
+    "_id": "f53b5fd5-ae98-49f9-8c4a-1c850a30a362"
+  },
+  {
+    "id": "0d5366c4-8d09-4d01-a2bb-ddc0b6e2dec9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:38:56.822416+00:00",
+    "_id": "5ace0e3c-1eb1-4c89-a9da-fbf579d38921"
+  },
+  {
+    "id": "3bbb679d-8694-46ee-9fd4-ec46fa3d0750",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:03.572098+00:00",
+    "_id": "ea353b3c-457a-4fbd-a0ee-862f5cd42028"
+  },
+  {
+    "id": "7275158c-4b93-4ab8-b466-e30a90138bb9",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:10.800525+00:00",
+    "_id": "556ae0a2-5536-40e5-b982-2d01b3cd6295"
+  },
+  {
+    "id": "28b19cf5-86f1-49c5-afb2-a2e21b09a28c",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:17.499014+00:00",
+    "_id": "13479afe-0510-44e3-82cc-d2850ea7c463"
+  },
+  {
+    "id": "f9e50d78-343f-4b72-b453-12e513d8122b",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:24.818821+00:00",
+    "_id": "12656f11-b13f-489e-a0c1-d52afda47612"
+  },
+  {
+    "id": "1575da66-a6e1-4e4d-a72e-b022320c3ffc",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:31.500161+00:00",
+    "_id": "bccdb5bf-4584-4a19-9a9f-c189a2f564ef"
+  },
+  {
+    "id": "ef9da6ff-594d-40f8-acce-0011c47b9ce5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:38.875546+00:00",
+    "_id": "94ccc6eb-8b86-4513-8b55-a9ffd9cb21ee"
+  },
+  {
+    "id": "500ea0bd-560e-4cf5-9912-50f68dbcd213",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:45.585167+00:00",
+    "_id": "9de649a6-5f0d-49c7-891e-e4cffe4e6448"
+  },
+  {
+    "id": "c5590b11-c819-4c48-b1af-c11e83934c23",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:52.891293+00:00",
+    "_id": "7143e226-c8cd-414c-a33f-f7419cbaa3b8"
+  },
+  {
+    "id": "8bc556ea-5e69-4c2d-b2e7-a072328908d0",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:39:59.586201+00:00",
+    "_id": "f2537ef3-f2bf-448f-9011-fde573ec91bc"
+  },
+  {
+    "id": "2e6ce4d3-3408-4bbe-b037-bbefaddd772f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:40:06.919906+00:00",
+    "_id": "41c5153b-24b4-414f-9a40-156ac63ec673"
+  },
+  {
+    "id": "a0c97f0a-9cfb-42fd-ab17-7d53d89a8eb1",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:40:13.568760+00:00",
+    "_id": "bd4a97e4-24fe-444a-afae-7db4c04fa9ef"
+  },
+  {
+    "id": "a812ad26-970a-4537-9482-57cf17680503",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:40:20.884864+00:00",
+    "_id": "afab5006-70dc-434d-a82f-7f7d020c1d8e"
+  },
+  {
+    "id": "75d5831c-a0f6-4c3d-b1b2-48879f267a47",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:40:27.569925+00:00",
+    "_id": "cf552e85-65f1-4b7e-95bc-227de9e2b6d3"
+  },
+  {
+    "id": "f4af2c01-824c-4dd1-a537-ef9f5dc1e252",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:40:42.613362+00:00",
+    "_id": "56d4815b-cbf2-4d60-97a2-7fff8dc548a1"
+  },
+  {
+    "id": "61c55365-d67b-4eb8-a9d0-319789a935a0",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:40:49.788862+00:00",
+    "_id": "b67875c9-78ff-4005-8fa7-598fca64d8bb"
+  },
+  {
+    "id": "3763b5aa-47a6-418a-9a11-49548acde3ef",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:40:57.087785+00:00",
+    "_id": "c6935462-c00a-401f-9475-d77ff9ea3997"
+  },
+  {
+    "id": "9b8f5c97-91d0-4443-9fe3-2b301e559472",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:41:03.770058+00:00",
+    "_id": "384e401d-0b95-4595-a465-1d6fc564c10e"
+  },
+  {
+    "id": "09f70ee0-b5af-487c-a153-bb1acd8da0be",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:41:11.076562+00:00",
+    "_id": "4f14cf9d-26ee-4660-8138-caf19a4af231"
+  },
+  {
+    "id": "2e4e04f5-9a4f-4138-af1b-e40650837b9d",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:41:17.769836+00:00",
+    "_id": "f68b9155-345f-4fb9-a40f-a753de05cea0"
+  },
+  {
+    "id": "9dd9f6b2-b175-46f9-98ff-041ee52d3940",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:41:25.093540+00:00",
+    "_id": "e5668d0a-29e2-4757-b2e9-9c34da725bd4"
+  },
+  {
+    "id": "05b9ac3c-523f-40cd-b4ae-8817c11109e1",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:41:31.770930+00:00",
+    "_id": "2c14889b-1198-40ce-b52d-94ef9a5734be"
+  },
+  {
+    "id": "159d8450-efc7-4fd8-a3ad-425b46f07466",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:41:39.116098+00:00",
+    "_id": "57a804fb-9a2f-4c30-b599-ee89811925c6"
+  },
+  {
+    "id": "5a494144-32a1-46c5-8bf4-10b7882ae5a4",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:41:46.581919+00:00",
+    "_id": "7eae0331-a6b3-43ef-80fe-5d8f4296f015"
+  },
+  {
+    "id": "41cba2be-2546-442c-a663-da3b0170e1f3",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:01.586958+00:00",
+    "_id": "293ed8b2-27e4-4721-a305-fde6163a9b30"
+  },
+  {
+    "id": "38556eb6-4eba-4df3-93f7-e61fb8af25ae",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:08.756598+00:00",
+    "_id": "dbe0f2e2-9cfa-4bc0-9def-a786818498a2"
+  },
+  {
+    "id": "95cbf9d3-9606-4e07-99c0-e09e1cb504cb",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:16.075705+00:00",
+    "_id": "5b14e0f6-92f6-4bc1-84f7-cd783dcee74f"
+  },
+  {
+    "id": "777d78e2-d90c-43de-859c-d92985679d52",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:22.774299+00:00",
+    "_id": "f3b7812a-1c2d-41c4-9a0f-996955d69d37"
+  },
+  {
+    "id": "24e70a49-0301-441c-979c-7d1eca43e100",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:30.071188+00:00",
+    "_id": "8146b488-ac2f-4f25-b1ac-d67c184ad3b4"
+  },
+  {
+    "id": "71303ad0-10d7-406d-9115-2ebdec1927e2",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:36.759833+00:00",
+    "_id": "1bc373a4-e9d3-45a6-887d-a1b7a43830be"
+  },
+  {
+    "id": "44654561-602d-4404-a026-dfc7291d67c8",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:44.069417+00:00",
+    "_id": "6139e097-bafe-4afc-9b92-be8b330c9277"
+  },
+  {
+    "id": "4a1661c4-5bb4-4851-9adb-47dc2beb2857",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:42:50.759706+00:00",
+    "_id": "f255e3b6-27bb-49db-9810-404328ef55a4"
+  },
+  {
+    "id": "4b025c7b-8504-4172-b5a9-589d3a4ed88f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:43:01.548462+00:00",
+    "_id": "98301d68-c4dd-476e-82bb-34d5dbad79ec"
+  },
+  {
+    "id": "1e18f49a-f58e-4610-9478-a034b08b71aa",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:43:05.625284+00:00",
+    "_id": "93d9b9f6-4882-4930-a5a1-c05781bf3ecd"
+  },
+  {
+    "id": "3784f322-00f9-4320-b393-2eeb497be121",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:43:12.622503+00:00",
+    "_id": "9f778161-086b-4eb2-9c47-6f0a3422e111"
+  },
+  {
+    "id": "a0951256-e5e0-4f6f-8e39-457ca54347df",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:43:19.884511+00:00",
+    "_id": "8c370492-07e3-46b5-8e0d-bdc25d599fb2"
+  },
+  {
+    "id": "73feb966-b2a9-4880-bcc0-2bafa8b7e2c6",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:43:26.592355+00:00",
+    "_id": "d62dbd34-fbb9-4b4b-b448-8f8e67dac511"
+  },
+  {
+    "id": "01afe531-5e5f-4d47-87ae-580b963a5a87",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:43:41.585295+00:00",
+    "_id": "d183b81d-d599-49c7-9b22-6264b0d33607"
+  },
+  {
+    "id": "ed9e5a78-f9c7-4eb4-a1a9-429205ba392a",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:44:10.179553+00:00",
+    "_id": "c4a29f13-2130-42f4-a0ea-b98c9ad9c661"
+  },
+  {
+    "id": "c426608f-1a96-435c-a0a8-9c7267fcc521",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:44:24.436874+00:00",
+    "_id": "bc38657d-4e37-4b70-b17e-22281d31c1c1"
+  },
+  {
+    "id": "2231f5dc-d553-4bba-9097-256656b8d16f",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:45:28.892019+00:00",
+    "_id": "66334334-d6c8-4a91-9f19-d5eabda7b34f"
+  },
+  {
+    "id": "715162ae-8e1d-46ba-ba15-2a7636c29c40",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:45:36.065915+00:00",
+    "_id": "1b361786-c1bd-49b4-8373-68b0ff08fec1"
+  },
+  {
+    "id": "dfec348d-fea3-455b-8a77-af4bef3e42aa",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:45:50.486915+00:00",
+    "_id": "cd288132-cbf9-4da9-a241-8bf928b041e1"
+  },
+  {
+    "id": "7bf47bf1-de37-46fb-871f-be25bc03e8a6",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:46:12.187409+00:00",
+    "_id": "417f7f6a-4c77-40b8-98de-6869ec106147"
+  },
+  {
+    "id": "314569d3-4f8a-410c-b94f-1b07226529a6",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:46:19.348513+00:00",
+    "_id": "0f6876d7-8863-411b-9749-b30f278fbd10"
+  },
+  {
+    "id": "306bb4a2-f1fa-489f-ae1d-ecc63387d2f7",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:47:50.901381+00:00",
+    "_id": "7099f909-fbc1-4425-ac08-8cfc683e127c"
+  },
+  {
+    "id": "199589d5-50f9-4e29-89eb-3ba5958e3ac5",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:48:47.206771+00:00",
+    "_id": "32d3e80e-391e-4987-9751-83dcda74cb2d"
+  },
+  {
+    "id": "82928cec-22a2-4726-99bd-293d2b680101",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:49:29.509676+00:00",
+    "_id": "77200ba3-7d57-4dc8-898b-513a683837bd"
+  },
+  {
+    "id": "8c9553f4-4be6-4725-b20a-9a544d5f9e17",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:50:54.881050+00:00",
+    "_id": "0e1ab02a-e85e-4ce1-82da-b25b341c46bc"
+  },
+  {
+    "id": "d4dc58e0-859e-4778-9b0a-6e46d7f56477",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:51:16.477489+00:00",
+    "_id": "1cb8bea6-5ee4-492d-b6ce-431a0111c681"
+  },
+  {
+    "id": "8b88bbee-14e0-4150-9b89-e17541db420e",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-08T18:53:10.162443+00:00",
+    "_id": "3efafb44-774a-43a9-971d-376e0b0a4c20"
+  },
+  {
+    "id": "3be7619c-87f1-45b0-940e-eab942841ecf",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-13T06:39:59.482990+00:00",
+    "_id": "037c4e45-ff4c-4a54-a46b-8b6ea1304a1a"
+  },
+  {
+    "id": "fec338e3-6008-4334-baa7-b488e7be3cf0",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-13T06:40:06.795078+00:00",
+    "_id": "4d865a2c-33a3-4d83-abe0-f979ae272b7a"
+  },
+  {
+    "id": "b89c80c2-6074-4344-8f94-b9576789d796",
+    "title": "Face Recognition: pushkar 1",
+    "content": "Hologram recognized and spoke with operator pushkar 1.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar 1"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-13T06:40:13.457091+00:00",
+    "_id": "b8752d55-b72e-4345-bec2-2260c890c852"
+  },
+  {
+    "id": "13b00189-6767-42e3-a2fb-5b5a61721125",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-20T17:35:06.583686+00:00",
+    "_id": "c67b13e6-efd0-4e30-9bed-93d615870060"
+  },
+  {
+    "id": "703756e7-4214-4daf-bfd2-dd844270cc44",
+    "title": "Face Recognition: pushkar",
+    "content": "Hologram recognized and spoke with operator pushkar.",
+    "category": "hologram_face_recognition",
+    "tags": [
+      "hologram",
+      "face_recognition",
+      "pushkar"
+    ],
+    "importance": 3,
+    "timestamp": "2026-07-20T17:35:13.737941+00:00",
+    "_id": "540c5095-a3eb-4aa0-ba8a-d10785e88074"
   }
 ]

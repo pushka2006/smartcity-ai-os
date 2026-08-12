@@ -194,6 +194,19 @@ export default function HlsPlayer({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src]);
 
+  // Auto-recover after signal loss / network glitch
+  useEffect(() => {
+    if (state === "error") {
+      const timer = setTimeout(() => {
+        console.info("[HlsPlayer] Auto-retrying stream connection...");
+        setState("loading");
+        retryCount.current = 0;
+        initHls();
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [state, initHls]);
+
   /* ── Layout ── */
   const container = {
     position: "relative",
