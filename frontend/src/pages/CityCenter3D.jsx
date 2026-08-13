@@ -2775,9 +2775,6 @@ export default function CityCenter3D() {
   }, []);
 
   // Building & District Search States
-  const [citySearchQuery, setCitySearchQuery] = useState("");
-  const [citySearchResults, setCitySearchResults] = useState([]);
-
   const handleCitySearch = (query) => {
     setCitySearchQuery(query);
     if (!query.trim()) {
@@ -2793,10 +2790,6 @@ export default function CityCenter3D() {
     ).slice(0, 5);
     setCitySearchResults(matches);
   };
-  const [securityLogs, setSecurityLogs] = useState([
-    "Port 80 Sentinel Active.",
-    "No intrusions detected on local interfaces."
-  ]);
 
   const audioTracks = useMemo(() => ["Cyber-Nexus Beats (Lo-Fi)", "Quantum Skyline", "Holographic Dusk"], []);
 
