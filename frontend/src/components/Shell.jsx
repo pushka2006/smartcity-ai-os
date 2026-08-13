@@ -273,71 +273,7 @@ export default function Shell({ children }) {
       {/* Main content */}
       <main style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
         {/* Top bar */}
-        {is3dCity ? (
-          <header style={{
-            padding: "12px 24px",
-            borderBottom: "1px solid rgba(0,245,255,0.08)",
-            background: "rgba(2,6,23,0.85)",
-            backdropFilter: "blur(20px)",
-            position: "sticky",
-            top: 0,
-            zIndex: 30,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between"
-          }}>
-            {/* Left Side: Empty */}
-            <div style={{ display: "flex", alignItems: "center" }}></div>
-
-            {/* Right Side: Mockup widgets */}
-            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-              {/* Time & Date */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#F1F5F9" }}>{time}</span>
-                  <span style={{ fontSize: 9, color: "#64748B", fontWeight: 500 }}>Saturday, 24 May 2025</span>
-                </div>
-              </div>
-
-              {/* Weather */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8, borderLeft: "1px solid rgba(255,255,255,0.12)", paddingLeft: 16 }}>
-                <CloudSun style={{ width: 15, height: 15, color: "#F59E0B" }} />
-                <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#F1F5F9" }}>32°C</span>
-                  <span style={{ fontSize: 9, color: "#64748B", fontWeight: 500 }}>Haze</span>
-                </div>
-              </div>
-
-              {/* AQI */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8, borderLeft: "1px solid rgba(255,255,255,0.12)", paddingLeft: 16 }}>
-                <div style={{ width: 14, height: 14, borderRadius: "50%", border: "2px solid #EAB308", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#EAB308" }} />
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#F1F5F9" }}>AQI 126</span>
-                  <span style={{ fontSize: 9, color: "#64748B", fontWeight: 500 }}>Moderate</span>
-                </div>
-              </div>
-
-              {/* Action Icons */}
-              <div style={{ display: "flex", alignItems: "center", gap: 14, borderLeft: "1px solid rgba(255,255,255,0.12)", paddingLeft: 16 }}>
-                <button onClick={() => setPaletteOpen(true)} style={{ background: "none", border: "none", color: "#64748B", cursor: "pointer", transition: "color 0.15s" }} onMouseEnter={e => e.currentTarget.style.color = "#00F5FF"} onMouseLeave={e => e.currentTarget.style.color = "#64748B"}>
-                  <Search style={{ width: 14, height: 14 }} />
-                </button>
-                <button style={{ background: "none", border: "none", color: "#64748B", cursor: "pointer", transition: "color 0.15s" }} onMouseEnter={e => e.currentTarget.style.color = "#00F5FF"} onMouseLeave={e => e.currentTarget.style.color = "#64748B"}>
-                  <LayoutGrid style={{ width: 14, height: 14 }} />
-                </button>
-                <button style={{ background: "none", border: "none", color: "#64748B", cursor: "pointer", transition: "color 0.15s" }} onMouseEnter={e => e.currentTarget.style.color = "#00F5FF"} onMouseLeave={e => e.currentTarget.style.color = "#64748B"}>
-                  <Bell style={{ width: 14, height: 14 }} />
-                </button>
-                <div style={{ width: 22, height: 22, borderRadius: "50%", overflow: "hidden", border: "1px solid rgba(0,245,255,0.3)", boxShadow: "0 0 6px rgba(0,245,255,0.2)" }}>
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                </div>
-              </div>
-            </div>
-          </header>
-        ) : (
+        {is3dCity ? null : (
           <header style={{ padding: "10px 24px", borderBottom: "1px solid rgba(0,245,255,0.1)", background: "rgba(2,6,23,0.75)", backdropFilter: "blur(20px)", position: "sticky", top: 0, zIndex: 30, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
