@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/smartcity-ai-os/static/css/main.25fedf9f.css",
+    "main.js": "/smartcity-ai-os/static/js/main.feee5883.js",
+    "static/js/453.20359781.chunk.js": "/smartcity-ai-os/static/js/453.20359781.chunk.js",
+    "index.html": "/smartcity-ai-os/index.html",
+    "main.25fedf9f.css.map": "/smartcity-ai-os/static/css/main.25fedf9f.css.map",
+    "main.feee5883.js.map": "/smartcity-ai-os/static/js/main.feee5883.js.map",
+    "453.20359781.chunk.js.map": "/smartcity-ai-os/static/js/453.20359781.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.25fedf9f.css",
+    "static/js/main.feee5883.js"
+  ]
+}
