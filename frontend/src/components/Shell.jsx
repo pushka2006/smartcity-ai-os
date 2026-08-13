@@ -412,7 +412,7 @@ export default function Shell({ children }) {
           </header>
         )}
 
-        <div style={{ padding: is3dCity ? "0px" : "22px 24px", flex: 1, display: "flex", flexDirection: "column" }} data-testid="page-content">{children}</div>
+        <div style={{ padding: isFullHeight ? "0px" : "22px 24px", flex: 1, display: "flex", flexDirection: "column", minHeight: 0, height: isFullHeight ? "calc(100vh - 55px)" : "auto" }} data-testid="page-content">{children}</div>
       </main>
     </div>
   );

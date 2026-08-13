@@ -861,6 +861,10 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
     }
 
     let resizeObserver;
+    const handleResize = () => {
+      if (sketch) sketch.resize();
+    };
+
     if (canvas && sketch) {
       resizeObserver = new ResizeObserver(() => {
         requestAnimationFrame(() => {
@@ -868,9 +872,14 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
         });
       });
       resizeObserver.observe(canvas.parentElement || canvas);
+      window.addEventListener('resize', handleResize);
+      setTimeout(handleResize, 50);
+      setTimeout(handleResize, 200);
+      setTimeout(handleResize, 500);
     }
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       if (resizeObserver) {
         resizeObserver.disconnect();
       }

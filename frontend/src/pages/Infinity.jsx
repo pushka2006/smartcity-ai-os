@@ -147,18 +147,18 @@ export default function InfinityPage() {
       }
     };
     check();
-    const interval = setInterval(check, 500);
+    const interval = setInterval(check, 300);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={{ flex: 1, height: "100%", display: "flex", flexDirection: "column", position: "relative" }} className="nx-fadein">
+    <div style={{ width: "100%", height: "calc(100vh - 60px)", minHeight: 600, display: "flex", flexDirection: "column", position: "relative" }} className="nx-fadein">
       {/* Title block */}
-      <div style={{ position: "absolute", top: 12, left: 16, zIndex: 10, pointerEvents: "none" }}>
-        <h1 className="font-display text-white" style={{ fontSize: 24, fontWeight: 800, margin: 0, textTransform: "uppercase", letterSpacing: "0.08em", textShadow: "0 0 10px rgba(0,0,0,0.8)" }}>
-          Nexus Infinity Console ({dims.w}x{dims.h})
+      <div style={{ position: "absolute", top: 16, left: 24, zIndex: 10, pointerEvents: "none" }}>
+        <h1 className="font-display text-white" style={{ fontSize: 22, fontWeight: 800, margin: 0, textTransform: "uppercase", letterSpacing: "0.08em", textShadow: "0 0 10px rgba(0,0,0,0.8)" }}>
+          Nexus Infinity Console {dims.w > 0 ? `(${dims.w}x${dims.h})` : ''}
         </h1>
-        <p style={{ fontSize: 13, color: "#94A3B8", margin: "4px 0 0", fontWeight: 500, letterSpacing: "0.02em", textShadow: "0 0 8px rgba(0,0,0,0.8)" }}>
+        <p style={{ fontSize: 12, color: "#94A3B8", margin: "4px 0 0", fontWeight: 500, letterSpacing: "0.02em", textShadow: "0 0 8px rgba(0,0,0,0.8)" }}>
           Infinite 3D Quantum Interface
         </p>
       </div>
