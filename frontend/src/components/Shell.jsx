@@ -117,6 +117,7 @@ export default function Shell({ children }) {
   }, []);
 
   const is3dCity = loc.pathname === "/3dcity";
+  const isFullHeight = is3dCity || loc.pathname === "/infinity";
   const activeNav = is3dCity ? [{ title: "UGX DASHBOARD", items: UGX_NAV }] : NAV_GROUPS;
   const activePage = FLAT_NAV.find(n => n.to === loc.pathname)?.label || "NEXUS";
 
