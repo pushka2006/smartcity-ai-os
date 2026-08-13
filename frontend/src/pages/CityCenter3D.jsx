@@ -2570,6 +2570,74 @@ export default function CityCenter3D() {
   const [trafficFlowSpeed, setTrafficFlowSpeed] = useState(48);
   const [buildings, setBuildings] = useState([]);
   const [roads, setRoads] = useState([]);
+  const [parks, setParks] = useState([]);
+  const [waters, setWaters] = useState([]);
+  const [mapTargetPos, setMapTargetPos] = useState({ x: 0, z: 0 });
+
+  const [customSatelliteUrl, setCustomSatelliteUrl] = useState(null);
+  const [customFileName, setCustomFileName] = useState("");
+  const [scanActive, setScanActive] = useState(false);
+  const [scanOffset, setScanOffset] = useState(0);
+
+  const [bldDensity, setBldDensity] = useState(55);
+  const [maxHeightScale, setMaxHeightScale] = useState(1.0);
+  const [isLoadingCity, setIsLoadingCity] = useState(false);
+
+  const [showLayers, setShowLayers] = useState({
+    landmarks: true,
+    buildings: true,
+    roads: true,
+    metro: true,
+    traffic: true,
+    water: true,
+    green: true
+  });
+  
+  const [activeCategory, setActiveCategory] = useState("Landmarks");
+  const [is2D, setIs2D] = useState(false);
+  const [zoomInCounter, setZoomInCounter] = useState(0);
+  const [zoomOutCounter, setZoomOutCounter] = useState(0);
+
+  const [aiChatInput, setAiChatInput] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+
+  // Simulated District Sub-app data states
+  const [coreCPU, setCoreCPU] = useState(42);
+  const [coreRAM, setCoreRAM] = useState(65);
+  const [coreGPU, setCoreGPU] = useState(28);
+  const [finData, setFinData] = useState([
+    { time: "10:00", Price: 1240 },
+    { time: "10:05", Price: 1252 },
+    { time: "10:10", Price: 1248 },
+    { time: "10:15", Price: 1263 },
+    { time: "10:20", Price: 1270 },
+  ]);
+  const [ecgPoints, setEcgPoints] = useState([]);
+  const [shoppingDroneProgress, setShoppingDroneProgress] = useState(0);
+  const [shoppingDroneActive, setShoppingDroneActive] = useState(true);
+  const [droneBoosted, setDroneBoosted] = useState(false);
+  const [educCode, setEducCode] = useState('function processCity() {\n  return "Infinity OS: Nominal";\n}');
+  const [educResult, setEducResult] = useState("");
+  const [educRunning, setEducRunning] = useState(false);
+  const [todoTasks, setTodoTasks] = useState([
+    "Check Core CPU load",
+    "Approve financial ledgers",
+    "Inspect Smart Home security feeds"
+  ]);
+  const [todoInput, setTodoInput] = useState("");
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audioTrackIdx, setAudioTrackIdx] = useState(0);
+  const [audioProgress, setAudioProgress] = useState(30);
+  const [activeCameraId, setActiveCameraId] = useState(1);
+  const [smartLightBrightness, setSmartLightBrightness] = useState(70);
+  const [smartLockSecured, setSmartLockSecured] = useState(true);
+  const [securityScanning, setSecurityScanning] = useState(false);
+  const [citySearchQuery, setCitySearchQuery] = useState("");
+  const [citySearchResults, setCitySearchResults] = useState([]);
+  const [securityLogs, setSecurityLogs] = useState([
+    "Port 80 Sentinel Active.",
+    "No intrusions detected on local interfaces."
+  ]);
 
   const addLog = useCallback((msg) => {
     setTerminalLog(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev.slice(0, 12)]);
@@ -2692,69 +2760,6 @@ export default function CityCenter3D() {
     setAiResponseText(reply);
     handleAiSpeech(reply);
   }, [buildings.length, roads.length, aqiIndex, trafficFlowSpeed, handleAiSpeech]);
-
-  const [customSatelliteUrl, setCustomSatelliteUrl] = useState(null);
-  const [customFileName, setCustomFileName] = useState("");
-  const [scanActive, setScanActive] = useState(false);
-  const [scanOffset, setScanOffset] = useState(0);
-
-  const [bldDensity, setBldDensity] = useState(55);
-  const [maxHeightScale, setMaxHeightScale] = useState(1.0);
-  const [isLoadingCity, setIsLoadingCity] = useState(false);
-
-  const [parks, setParks] = useState([]);
-  const [waters, setWaters] = useState([]);
-  const [mapTargetPos, setMapTargetPos] = useState({ x: 0, z: 0 });
-
-  const [showLayers, setShowLayers] = useState({
-    landmarks: true,
-    buildings: true,
-    roads: true,
-    metro: true,
-    traffic: true,
-    water: true,
-    green: true
-  });
-  
-  const [activeCategory, setActiveCategory] = useState("Landmarks");
-  const [is2D, setIs2D] = useState(false);
-  const [zoomInCounter, setZoomInCounter] = useState(0);
-  const [zoomOutCounter, setZoomOutCounter] = useState(0);
-
-  const [aiChatInput, setAiChatInput] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-
-  // Simulated District Sub-app data states
-  const [coreCPU, setCoreCPU] = useState(42);
-  const [coreRAM, setCoreRAM] = useState(65);
-  const [coreGPU, setCoreGPU] = useState(28);
-  const [finData, setFinData] = useState([
-    { time: "10:00", Price: 1240 },
-    { time: "10:05", Price: 1252 },
-    { time: "10:10", Price: 1248 },
-    { time: "10:15", Price: 1263 },
-    { time: "10:20", Price: 1270 },
-  ]);
-  const [ecgPoints, setEcgPoints] = useState([]);
-  const [shoppingDroneProgress, setShoppingDroneProgress] = useState(0);
-  const [shoppingDroneActive, setShoppingDroneActive] = useState(true);
-  const [droneBoosted, setDroneBoosted] = useState(false);
-  const [educCode, setEducCode] = useState('function processCity() {\n  return "Infinity OS: Nominal";\n}');
-  const [educResult, setEducResult] = useState("");
-  const [educRunning, setEducRunning] = useState(false);
-  const [todoTasks, setTodoTasks] = useState([
-    "Check Core CPU load",
-    "Approve financial ledgers",
-    "Inspect Smart Home security feeds"
-  ]);
-  const [todoInput, setTodoInput] = useState("");
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const [audioTrackIdx, setAudioTrackIdx] = useState(0);
-  const [audioProgress, setAudioProgress] = useState(30);
-  const [activeCameraId, setActiveCameraId] = useState(1);
-  const [smartLightBrightness, setSmartLightBrightness] = useState(70);
-  const [smartLockSecured, setSmartLockSecured] = useState(true);
-  const [securityScanning, setSecurityScanning] = useState(false);
 
   // Global mouse tracker for high-performance direct DOM tooltip
   useEffect(() => {
