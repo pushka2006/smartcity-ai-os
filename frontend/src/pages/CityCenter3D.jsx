@@ -46,13 +46,6 @@ const getDistrictByCoords = (x, z) => {
   return midDistricts[segment];
 };
 
-const getTrafficLightState = (x, z, time) => {
-  const phase = (Math.abs(Math.round(x * 7 + z * 13)) + Math.floor(time || 0)) % 15;
-  if (phase < 6) return "green";
-  if (phase < 8) return "yellow";
-  return "red";
-};
-
 // ─── Camera Controls Component using JSM OrbitControls ───────────────────────
 function CameraControls({ autoRotate, targetPos, is2D, zoomInCounter, zoomOutCounter }) {
   const { camera, gl } = useThree();
