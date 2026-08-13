@@ -46,6 +46,13 @@ const getDistrictByCoords = (x, z) => {
   return midDistricts[segment];
 };
 
+const getTrafficLightState = (x, z, time) => {
+  const phase = (Math.abs(Math.round(x * 7 + z * 13)) + Math.floor(time || 0)) % 15;
+  if (phase < 6) return "green";
+  if (phase < 8) return "yellow";
+  return "red";
+};
+
 // ─── Camera Controls Component using JSM OrbitControls ───────────────────────
 function CameraControls({ autoRotate, targetPos, is2D, zoomInCounter, zoomOutCounter }) {
   const { camera, gl } = useThree();
@@ -2081,7 +2088,7 @@ function City3DScene({
 
   useEffect(() => {
     let active = true;
-    const url = customSatelliteUrl || `/satellite_textures/${currentCity}.png`;
+    const url = customSatelliteUrl || `${process.env.PUBLIC_URL || ""}/satellite_textures/${currentCity}.png`;
     textureLoader.load(
       url,
       (tex) => {
@@ -2551,6 +2558,39 @@ export default function CityCenter3D() {
     transit: 33,
     energy: 34
   });
+  const [terminalLog, setTerminalLog] = useState([
+    "System Initialized.",
+    "Grid mapping module online: sector_3d_viewer.",
+  ]);
+  const [ttsMuted, setTtsMuted] = useState(true);
+  const [aiResponseText, setAiResponseText] = useState(
+    "Welcome to the 3D City Center Optimization portal. I am your Urban AI Assistant. Tap 'SPEAK' or chat to query advice on sector allocation, congestion ratings, or grid planning."
+  );
+
+  const [sirenActive, setSirenActive] = useState(false);
+  const [emergencyTarget, setEmergencyTarget] = useState(null);
+  const [blackoutActive, setBlackoutActive] = useState(false);
+  const [blackoutWaveRadius, setBlackoutWaveRadius] = useState(0);
+  const [blackoutOrigin, setBlackoutOrigin] = useState(null);
+  const [congestionMode, setCongestionMode] = useState(false);
+  const [aqiIndex] = useState(115);
+  const [trafficFlowSpeed, setTrafficFlowSpeed] = useState(48);
+  const [buildings, setBuildings] = useState([]);
+  const [roads, setRoads] = useState([]);
+
+  const addLog = useCallback((msg) => {
+    setTerminalLog(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev.slice(0, 12)]);
+  }, []);
+
+  const handleAiSpeech = useCallback((text) => {
+    if (ttsMuted) return;
+    speak(text, {
+      rate: 1.05,
+      pitch: 0.98,
+      onStart: () => addLog("AI Voice: Broadcasting transmission..."),
+      onEnd: () => addLog("AI Voice: Broadcast idle."),
+    });
+  }, [ttsMuted, addLog]);
 
   const handleToggleLight = useCallback((x, z) => {
     const key = `${x},${z}`;
@@ -2584,7 +2624,81 @@ export default function CityCenter3D() {
       setAiResponseText(ttsMsg);
       handleAiSpeech(ttsMsg);
     }
+  }, [addLog, handleAiSpeech]);
+
+  const triggerEmergencyResponse = useCallback(() => {
+    if (!selectedBld) return;
+    setSirenActive(true);
+    setEmergencyTarget({ x: selectedBld.x, z: selectedBld.z });
+    addLog(`Emergency dispatched to Building Node at (${selectedBld.x}, ${selectedBld.z}). Siren online.`);
+    const dispatchMsg = `Dispatching autonomous emergency pods to ${selectedBld.districtObj?.name || 'building node'}. Priority route cleared.`;
+    setAiResponseText(dispatchMsg);
+    handleAiSpeech(dispatchMsg);
+  }, [selectedBld, addLog, handleAiSpeech]);
+
+  const triggerBlackout = useCallback(() => {
+    if (blackoutActive) return;
+    setBlackoutActive(true);
+    setBlackoutWaveRadius(0);
+    const origin = selectedBld ? { x: selectedBld.x, z: selectedBld.z } : { x: 0, z: 0 };
+    setBlackoutOrigin(origin);
+    addLog(`ALERT: Cascading grid shutdown from (${origin.x}, ${origin.z})`);
+    const warningText = `Grid Overload detected in sector grid. Initiating cascading brownout. Turning off primary block power lines.`;
+    setAiResponseText(warningText);
+    handleAiSpeech(warningText);
+  }, [blackoutActive, selectedBld, addLog, handleAiSpeech]);
+
+  const restoreBlackout = useCallback(() => {
+    setBuildings(prev => prev.map(b => ({ ...b, blackout: false })));
+    setBlackoutActive(false);
+    setBlackoutWaveRadius(0);
+    addLog("Blackout resolved. Re-establishing full grid connectivity.");
+    const restoreText = "Power grid failure resolved. Grid nodes restored and synchronized.";
+    setAiResponseText(restoreText);
+    handleAiSpeech(restoreText);
+  }, [addLog, handleAiSpeech]);
+
+  const triggerCongestionTest = useCallback(() => {
+    setCongestionMode(prev => {
+      const mode = !prev;
+      setTrafficFlowSpeed(mode ? 14 : 48);
+      addLog(mode ? "TRAFFIC CONGESTION ALERT: Initiated gridlock test." : "Traffic congestion test ended.");
+      return mode;
+    });
   }, [addLog]);
+
+  const parseNlpCommands = useCallback((text) => {
+    if (!text) return;
+    const lower = text.toLowerCase();
+    if (lower.includes("blackout") || lower.includes("power off") || lower.includes("dark")) {
+      triggerBlackout();
+    } else if (lower.includes("restore") || lower.includes("power on") || lower.includes("light on")) {
+      restoreBlackout();
+    } else if (lower.includes("rain") || lower.includes("storm") || lower.includes("thunder")) {
+      setWeather("thunderstorm");
+    } else if (lower.includes("clear") || lower.includes("sun") || lower.includes("day")) {
+      setWeather("clear");
+      setTimeOfDay("noon");
+    } else if (lower.includes("night")) {
+      setTimeOfDay("night");
+    } else if (lower.includes("traffic") || lower.includes("congestion") || lower.includes("jam")) {
+      triggerCongestionTest();
+    } else if (lower.includes("emergency") || lower.includes("siren") || lower.includes("dispatch")) {
+      if (selectedBld) triggerEmergencyResponse();
+    }
+  }, [selectedBld, triggerBlackout, restoreBlackout, triggerCongestionTest, triggerEmergencyResponse]);
+
+  const handleLocalChatFallback = useCallback((userQuery) => {
+    const lower = userQuery.toLowerCase();
+    let reply = `[NEXUS City AI] Processing query: "${userQuery}". Sector grid operating at normal telemetry capacity. All 10 districts online.`;
+    if (lower.includes("status") || lower.includes("health") || lower.includes("report")) {
+      reply = `[NEXUS City AI] 3D Digital Twin Report: ${buildings.length} active building structures, ${roads.length} road grid segments, AQI index: ${aqiIndex} (Moderate), Traffic velocity: ${trafficFlowSpeed} km/h.`;
+    } else if (lower.includes("district") || lower.includes("zone")) {
+      reply = `[NEXUS City AI] 10 Sector Districts configured: Infinity Core, Financial, Shopping, Entertainment, Medical, Smart Home, Transport, Education, Productivity, and Security.`;
+    }
+    setAiResponseText(reply);
+    handleAiSpeech(reply);
+  }, [buildings.length, roads.length, aqiIndex, trafficFlowSpeed, handleAiSpeech]);
 
   const [customSatelliteUrl, setCustomSatelliteUrl] = useState(null);
   const [customFileName, setCustomFileName] = useState("");
@@ -2594,13 +2708,7 @@ export default function CityCenter3D() {
   const [bldDensity, setBldDensity] = useState(55);
   const [maxHeightScale, setMaxHeightScale] = useState(1.0);
   const [isLoadingCity, setIsLoadingCity] = useState(false);
-  const [terminalLog, setTerminalLog] = useState([
-    "System Initialized.",
-    "Grid mapping module online: sector_3d_viewer.",
-  ]);
 
-  const [buildings, setBuildings] = useState([]);
-  const [roads, setRoads] = useState([]);
   const [parks, setParks] = useState([]);
   const [waters, setWaters] = useState([]);
   const [mapTargetPos, setMapTargetPos] = useState({ x: 0, z: 0 });
@@ -2620,22 +2728,8 @@ export default function CityCenter3D() {
   const [zoomInCounter, setZoomInCounter] = useState(0);
   const [zoomOutCounter, setZoomOutCounter] = useState(0);
 
-  const [sirenActive, setSirenActive] = useState(false);
-  const [emergencyTarget, setEmergencyTarget] = useState(null);
-  const [blackoutActive, setBlackoutActive] = useState(false);
-  const [blackoutWaveRadius, setBlackoutWaveRadius] = useState(0);
-  const [blackoutOrigin, setBlackoutOrigin] = useState(null);
-  const [congestionMode, setCongestionMode] = useState(false);
-
-  const [aqiIndex] = useState(115);
-  const [trafficFlowSpeed, setTrafficFlowSpeed] = useState(48);
-
-  const [aiResponseText, setAiResponseText] = useState(
-    "Welcome to the 3D City Center Optimization portal. I am your Urban AI Assistant. Tap 'SPEAK' or chat to query advice on sector allocation, congestion ratings, or grid planning."
-  );
   const [aiChatInput, setAiChatInput] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
-  const [ttsMuted, setTtsMuted] = useState(true);
 
   // Simulated District Sub-app data states
   const [coreCPU, setCoreCPU] = useState(42);
@@ -2686,8 +2780,6 @@ export default function CityCenter3D() {
   const [citySearchQuery, setCitySearchQuery] = useState("");
   const [citySearchResults, setCitySearchResults] = useState([]);
 
-
-
   const handleCitySearch = (query) => {
     setCitySearchQuery(query);
     if (!query.trim()) {
@@ -2709,20 +2801,6 @@ export default function CityCenter3D() {
   ]);
 
   const audioTracks = useMemo(() => ["Cyber-Nexus Beats (Lo-Fi)", "Quantum Skyline", "Holographic Dusk"], []);
-
-  const addLog = useCallback((msg) => {
-    setTerminalLog(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev.slice(0, 12)]);
-  }, []);
-
-  const handleAiSpeech = (text) => {
-    if (ttsMuted) return;
-    speak(text, {
-      rate: 1.05,
-      pitch: 0.98,
-      onStart: () => addLog("AI Voice: Broadcasting transmission..."),
-      onEnd: () => addLog("AI Voice: Broadcast idle."),
-    });
-  };
 
   // Thunderstorm lighting flash runner
   useEffect(() => {
@@ -2980,7 +3058,7 @@ export default function CityCenter3D() {
 
   useEffect(() => {
     if (!customSatelliteUrl) {
-      generateCityGeometry(`/satellite_textures/${currentCity}.png`, bldDensity, maxHeightScale);
+      generateCityGeometry(`${process.env.PUBLIC_URL || ""}/satellite_textures/${currentCity}.png`, bldDensity, maxHeightScale);
     }
   }, [currentCity, customSatelliteUrl, bldDensity, maxHeightScale, generateCityGeometry]);
 
