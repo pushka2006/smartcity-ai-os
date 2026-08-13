@@ -3,9 +3,15 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import {
-  Upload, Activity, Volume2, VolumeX
+  Users, Car, Leaf, Zap, Droplet, HeartPulse, Search, Bell, User, Brain,
+  AlertTriangle, Info, CheckCircle, TrendingUp, TrendingDown, Sun, CloudRain,
+  CloudLightning, RotateCw, Plus, Minus, Maximize2, Layers, MapPin, Flame,
+  Shield, Crosshair, Send, Sparkles, Cpu, Wifi, MessageSquare, Radio, RefreshCw,
+  ChevronRight, Eye, Camera, Hospital, Trash2, Globe, Activity, Volume2, VolumeX, Upload
 } from "lucide-react";
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
+import {
+  ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell, Tooltip, XAxis, YAxis
+} from "recharts";
 import GlassCard from "../components/ui/GlassCard";
 import { speak } from "../lib/tts";
 import { streamChat } from "../lib/api";
@@ -3327,149 +3333,350 @@ export default function CityCenter3D() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "calc(100vh - 49px)", overflow: "hidden", position: "relative" }} className="nx-fadein">
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      minHeight: "100vh",
+      background: "#070B19",
+      color: "#F8FAFC",
+      fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      overflowY: "auto",
+      padding: "16px 20px 24px 20px",
+      boxSizing: "border-box",
+      gap: 16
+    }} className="nx-fadein">
       
-      {/* 1. 3D Interception Canvas */}
-      <div style={{ position: "absolute", inset: "12px 16px 16px 16px", zIndex: 1, background: "#020617", borderRadius: 16, border: "1px solid rgba(0, 245, 255, 0.12)", overflow: "hidden", boxShadow: "0 0 30px rgba(0, 245, 255, 0.05)" }}>
-        <Canvas
-          shadows
-          camera={{ position: [12, 14, 18], fov: 42 }}
-          dpr={[1, 2]}
-          gl={{ antialias: true, alpha: true }}
-        >
-          <City3DScene
-            currentCity={currentCity}
-            stylePreset={stylePreset}
-            weather={weather}
-            timeOfDay={timeOfDay}
-            buildings={buildings}
-            roads={roads}
-            parks={parks}
-            waters={waters}
-            selectedBld={selectedBld}
-            onSelectBld={inspectBuilding}
-            onSelectVehicle={inspectVehicle}
-            selectedVehicle={selectedVehicle}
-            sirenActive={sirenActive}
-            blackoutActive={blackoutActive}
-            blackoutWaveRadius={blackoutWaveRadius}
-            blackoutOrigin={blackoutOrigin}
-            scanActive={scanActive}
-            scanOffset={scanOffset}
-            emergencyTarget={emergencyTarget}
-            congestionMode={congestionMode}
-            customSatelliteUrl={customSatelliteUrl}
-            cameraAutoRotate={cameraAutoRotate}
-            mapTargetPos={mapTargetPos}
-            showLandmarks={showLayers.landmarks}
-            showBuildings={showLayers.buildings}
-            showRoads={showLayers.roads}
-            showMetro={showLayers.metro}
-            showTraffic={showLayers.traffic}
-            showWater={showLayers.water}
-            showGreen={showLayers.green}
-            is2D={is2D}
-            zoomInCounter={zoomInCounter}
-            zoomOutCounter={zoomOutCounter}
-            lightningActive={lightningActive}
-            textureLoader={textureLoader}
-          />
-          {isEditMode && (
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]} onClick={handleMapClick}>
-              <planeGeometry args={[30, 30]} />
-              <meshBasicMaterial transparent opacity={0.0} />
-            </mesh>
-          )}
-        </Canvas>
-      </div>
+      {/* ─── 1. TOP HEADER BAR ────────────────────────────────────────────── */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        background: "rgba(13, 20, 38, 0.85)",
+        backdropFilter: "blur(16px)",
+        border: "1px solid rgba(0, 245, 255, 0.15)",
+        borderRadius: 14,
+        padding: "10px 20px",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)"
+      }}>
+        {/* Left Branding */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{
+            width: 38, height: 38, borderRadius: 10,
+            background: "linear-gradient(135deg, rgba(0,245,255,0.2), rgba(59,130,246,0.3))",
+            border: "1px solid rgba(0,245,255,0.5)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 0 16px rgba(0, 245, 255, 0.3)"
+          }}>
+            <Globe style={{ width: 22, height: 22, color: "#00F5FF" }} />
+          </div>
+          <div>
+            <div style={{ fontSize: 16, fontWeight: 900, letterSpacing: "0.08em", color: "#FFFFFF", textShadow: "0 0 12px rgba(0, 245, 255, 0.4)" }}>
+              SMART CITY <span style={{ color: "#00F5FF" }}>AI OS</span>
+            </div>
+            <div style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.15em", color: "#64748B" }}>
+              INTELLIGENT · CONNECTED · SUSTAINABLE
+            </div>
+          </div>
+        </div>
 
-      {/* 2. FLOATING OVERLAYS */}
-      
-      {/* Constructor Toolbar (Top Center) */}
-      <div style={{ position: "absolute", top: 24, left: "50%", transform: "translateX(-50%)", zIndex: 10 }}>
-        <div className="nx-glass" style={{ display: "flex", alignItems: "center", gap: 14, padding: "8px 16px", borderRadius: 12, background: "rgba(10,15,30,0.85)", border: "1px solid rgba(0,245,255,0.15)", boxShadow: "0 0 20px rgba(0,245,255,0.15)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, borderRight: "1px solid rgba(255,255,255,0.1)", paddingRight: 14 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", fontSize: 11, fontWeight: 700, color: isEditMode ? "#00F5FF" : "#64748B", letterSpacing: "0.05em" }}>
-              CONSTRUCTOR
-              {isLoadingCity && (
-                <span className="nx-blink" style={{ color: "#00F5FF", fontSize: 8, fontWeight: "bold", marginLeft: 6 }}>
-                  [SCANNING...]
-                </span>
-              )}
-            </span>
-            <label className="switch" style={{ position: "relative", display: "inline-block", width: 28, height: 16 }}>
-              <input type="checkbox" checked={isEditMode} onChange={() => setIsEditMode(!isEditMode)} style={{ opacity: 0, width: 0, height: 0 }} />
-              <span style={{
-                position: "absolute", cursor: "pointer", top: 0, left: 0, right: 0, bottom: 0,
-                backgroundColor: isEditMode ? "#00F5FF" : "#334155", transition: "0.2s", borderRadius: 16
-              }}>
-                <span style={{
-                  position: "absolute", height: 10, width: 10, left: isEditMode ? 14 : 2, bottom: 2,
-                  backgroundColor: "#FFFFFF", transition: "0.2s", borderRadius: "50%"
-                }} />
-              </span>
-            </label>
+        {/* Center Search Bar */}
+        <div style={{
+          display: "flex", alignItems: "center", gap: 10,
+          background: "rgba(15, 23, 42, 0.6)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
+          borderRadius: 20, padding: "7px 16px", width: 340
+        }}>
+          <Search style={{ width: 14, height: 14, color: "#64748B" }} />
+          <input
+            type="text"
+            placeholder="Search city, services, people..."
+            value={citySearchQuery}
+            onChange={(e) => handleCitySearch(e.target.value)}
+            style={{
+              background: "transparent", border: "none", outline: "none",
+              color: "#E2E8F0", fontSize: 12, width: "100%"
+            }}
+          />
+        </div>
+
+        {/* Right Status Badges, Clock & Admin Profile */}
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          {/* System Operational Badge */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: 6,
+            background: "rgba(16, 185, 129, 0.1)",
+            border: "1px solid rgba(16, 185, 129, 0.3)",
+            borderRadius: 20, padding: "5px 12px"
+          }}>
+            <span className="nx-blink" style={{ width: 7, height: 7, borderRadius: "50%", background: "#10B981" }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: "#10B981" }}>System Status: Operational</span>
           </div>
 
-          {isEditMode ? (
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              {[
-                { tool: "build_commercial", label: "🏢 +Comm" },
-                { tool: "build_residential", label: "🏠 +Res" },
-                { tool: "build_park", label: "🌳 +Park" },
-                { tool: "draw_road", label: "🛣️ +Road" },
-                { tool: "demolish", label: "🔨 Demolish" }
-              ].map((t) => {
-                const isActive = editTool === t.tool;
-                return (
-                  <button
-                    key={t.tool}
-                    onClick={() => setEditTool(t.tool)}
-                    style={{
-                      padding: "5px 10px", borderRadius: 6, border: isActive ? "1px solid #00F5FF" : "1px solid transparent",
-                      background: isActive ? "rgba(0,245,255,0.08)" : "transparent",
-                      color: isActive ? "#00F5FF" : "#94A3B8", fontSize: 10, fontWeight: 600, cursor: "pointer",
-                      transition: "all 0.15s"
-                    }}
-                  >
-                    {t.label}
-                  </button>
-                );
-              })}
+          {/* AI Brain Active Badge */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: 6,
+            background: "rgba(168, 85, 247, 0.1)",
+            border: "1px solid rgba(168, 85, 247, 0.3)",
+            borderRadius: 20, padding: "5px 12px"
+          }}>
+            <Brain style={{ width: 13, height: 13, color: "#C084FC" }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: "#C084FC" }}>AI Brain: Active</span>
+          </div>
+
+          {/* Real-time Clock */}
+          <div style={{ textAlign: "right" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#F8FAFC", fontFamily: "monospace" }}>
+              {new Date().toLocaleTimeString()}
             </div>
-          ) : (
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <span style={{ fontSize: 8.5, color: "#64748B", fontWeight: "bold" }}>DENSITY:</span>
-                <input type="range" min="20" max="90" value={bldDensity} onChange={(e) => setBldDensity(parseInt(e.target.value))} style={{ width: 45, height: 3, accentColor: "#00F5FF" }} />
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 5, borderRight: "1px solid rgba(255,255,255,0.1)", paddingRight: 10 }}>
-                <span style={{ fontSize: 8.5, color: "#64748B", fontWeight: "bold" }}>HEIGHT:</span>
-                <input type="range" min="0.4" max="2.2" step="0.1" value={maxHeightScale} onChange={(e) => setMaxHeightScale(parseFloat(e.target.value))} style={{ width: 45, height: 3, accentColor: "#00F5FF" }} />
-              </div>
-              
-              <label style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, cursor: "pointer", fontSize: 10, fontWeight: 600, color: "#94A3B8" }}>
-                <Upload style={{ width: 12, height: 12, color: "#00F5FF" }} />
-                {customFileName ? customFileName.toUpperCase().substring(0, 12) + "..." : "UPLOAD BLUEPRINT"}
-                <input type="file" accept="image/*" onChange={handleSatelliteUpload} style={{ display: "none" }} />
-              </label>
-              {customSatelliteUrl && (
-                <button onClick={clearCustomUpload} style={{ padding: "5px 10px", borderRadius: 6, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", color: "#F87171", fontSize: 10, fontWeight: 600, cursor: "pointer" }}>
-                  RESET MAP
-                </button>
-              )}
+            <div style={{ fontSize: 9, color: "#64748B", fontWeight: 600 }}>
+              {new Date().toLocaleDateString(undefined, { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })}
             </div>
-          )}
+          </div>
+
+          {/* Notification Bell */}
+          <div style={{
+            position: "relative", width: 34, height: 34, borderRadius: "50%",
+            background: "rgba(30, 41, 59, 0.6)", border: "1px solid rgba(255,255,255,0.1)",
+            display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+          }}>
+            <Bell style={{ width: 15, height: 15, color: "#94A3B8" }} />
+            <span style={{
+              position: "absolute", top: -2, right: -2, width: 15, height: 15,
+              borderRadius: "50%", background: "#EF4444", color: "#FFF",
+              fontSize: 9, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center"
+            }}>8</span>
+          </div>
+
+          {/* Admin Avatar */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, paddingLeft: 8, borderLeft: "1px solid rgba(255,255,255,0.1)" }}>
+            <div style={{
+              width: 32, height: 32, borderRadius: "50%",
+              background: "linear-gradient(135deg, #3B82F6, #8B5CF6)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontWeight: 700, fontSize: 13, color: "#FFF"
+            }}>P</div>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#F8FAFC" }}>Admin</div>
+              <div style={{ fontSize: 9, color: "#64748B" }}>City Operator</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Grid Simulation Controls (Top Right, below compass) */}
-      <div style={{ position: "absolute", top: 90, right: 24, zIndex: 10, width: 220 }}>
-        <div className="nx-glass" style={{ borderRadius: 12, padding: "14px 16px", background: "rgba(10,15,30,0.85)", border: "1px solid rgba(0,245,255,0.15)" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: "#F1F5F9", marginBottom: 12 }}>
-            SYSTEM OUTAGES
+      {/* ─── 2. TOP KPI SUMMARY CARDS GRID ────────────────────────────────── */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 12 }}>
+        
+        {/* Card 1: Total Population */}
+        <div className="nx-glass" style={{ background: "rgba(13, 20, 38, 0.75)", border: "1px solid rgba(0, 245, 255, 0.2)", borderRadius: 12, padding: "12px 14px", position: "relative", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#94A3B8", letterSpacing: "0.05em" }}>TOTAL POPULATION</span>
+            <div style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(0, 245, 255, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Users style={{ width: 13, height: 13, color: "#00F5FF" }} />
+            </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 18, fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.02em" }}>2,45,80,146</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 4, fontSize: 10, fontWeight: 700, color: "#10B981" }}>
+            <span>▲ 1.25%</span>
+          </div>
+          <div style={{ height: 24, marginTop: 6 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={[{v:10},{v:15},{v:12},{v:18},{v:22},{v:25}]}>
+                <Area type="monotone" dataKey="v" stroke="#00F5FF" fill="rgba(0, 245, 255, 0.15)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Card 2: Live Traffic Index */}
+        <div className="nx-glass" style={{ background: "rgba(13, 20, 38, 0.75)", border: "1px solid rgba(251, 191, 36, 0.2)", borderRadius: 12, padding: "12px 14px", position: "relative", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#94A3B8", letterSpacing: "0.05em" }}>LIVE TRAFFIC INDEX</span>
+            <div style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(251, 191, 36, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Car style={{ width: 13, height: 13, color: "#FBBF24" }} />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontSize: 18, fontWeight: 900, color: "#FFFFFF" }}>63</span>
+            <span style={{ fontSize: 10, color: "#64748B" }}>/ 100</span>
+            <span style={{ fontSize: 9, fontWeight: 700, color: "#FBBF24", background: "rgba(251, 191, 36, 0.15)", padding: "2px 6px", borderRadius: 4 }}>Moderate</span>
+          </div>
+          <div style={{ height: 24, marginTop: 10 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={[{v:40},{v:55},{v:50},{v:68},{v:60},{v:63}]}>
+                <Area type="monotone" dataKey="v" stroke="#FBBF24" fill="rgba(251, 191, 36, 0.15)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Card 3: Air Quality Index */}
+        <div className="nx-glass" style={{ background: "rgba(13, 20, 38, 0.75)", border: "1px solid rgba(52, 211, 153, 0.2)", borderRadius: 12, padding: "12px 14px", position: "relative", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#94A3B8", letterSpacing: "0.05em" }}>AIR QUALITY INDEX</span>
+            <div style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(52, 211, 153, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Leaf style={{ width: 13, height: 13, color: "#34D399" }} />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontSize: 18, fontWeight: 900, color: "#FFFFFF" }}>42</span>
+            <span style={{ fontSize: 9, fontWeight: 700, color: "#34D399", background: "rgba(52, 211, 153, 0.15)", padding: "2px 6px", borderRadius: 4 }}>Good</span>
+          </div>
+          <div style={{ height: 24, marginTop: 10 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={[{v:60},{v:52},{v:48},{v:44},{v:40},{v:42}]}>
+                <Area type="monotone" dataKey="v" stroke="#34D399" fill="rgba(52, 211, 153, 0.15)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Card 4: Energy Consumption */}
+        <div className="nx-glass" style={{ background: "rgba(13, 20, 38, 0.75)", border: "1px solid rgba(249, 115, 22, 0.2)", borderRadius: 12, padding: "12px 14px", position: "relative", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#94A3B8", letterSpacing: "0.05em" }}>ENERGY CONSUMPTION</span>
+            <div style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(249, 115, 22, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Zap style={{ width: 13, height: 13, color: "#F97316" }} />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontSize: 18, fontWeight: 900, color: "#FFFFFF" }}>128.5 MW</span>
+            <span style={{ fontSize: 9, fontWeight: 700, color: "#F97316" }}>▼ 4.32%</span>
+          </div>
+          <div style={{ height: 24, marginTop: 10 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={[{v:145},{v:140},{v:138},{v:132},{v:130},{v:128.5}]}>
+                <Area type="monotone" dataKey="v" stroke="#F97316" fill="rgba(249, 115, 22, 0.15)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Card 5: Water Supply Status */}
+        <div className="nx-glass" style={{ background: "rgba(13, 20, 38, 0.75)", border: "1px solid rgba(56, 189, 248, 0.2)", borderRadius: 12, padding: "12px 14px", position: "relative", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#94A3B8", letterSpacing: "0.05em" }}>WATER SUPPLY STATUS</span>
+            <div style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(56, 189, 248, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Droplet style={{ width: 13, height: 13, color: "#38BDF8" }} />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontSize: 18, fontWeight: 900, color: "#FFFFFF" }}>98.6%</span>
+            <span style={{ fontSize: 9, fontWeight: 700, color: "#38BDF8", background: "rgba(56, 189, 248, 0.15)", padding: "2px 6px", borderRadius: 4 }}>Optimal</span>
+          </div>
+          <div style={{ height: 24, marginTop: 10 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={[{v:92},{v:95},{v:94},{v:97},{v:98},{v:98.6}]}>
+                <Area type="monotone" dataKey="v" stroke="#38BDF8" fill="rgba(56, 189, 248, 0.15)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Card 6: City Health Score */}
+        <div className="nx-glass" style={{ background: "rgba(13, 20, 38, 0.75)", border: "1px solid rgba(168, 85, 247, 0.2)", borderRadius: 12, padding: "12px 14px", position: "relative", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#94A3B8", letterSpacing: "0.05em" }}>CITY HEALTH SCORE</span>
+            <div style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(168, 85, 247, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <HeartPulse style={{ width: 13, height: 13, color: "#A855F7" }} />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontSize: 18, fontWeight: 900, color: "#FFFFFF" }}>87</span>
+            <span style={{ fontSize: 10, color: "#64748B" }}>/ 100</span>
+            <span style={{ fontSize: 9, fontWeight: 700, color: "#A855F7", background: "rgba(168, 85, 247, 0.15)", padding: "2px 6px", borderRadius: 4 }}>Excellent</span>
+          </div>
+          <div style={{ height: 24, marginTop: 10 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={[{v:75},{v:80},{v:82},{v:85},{v:86},{v:87}]}>
+                <Area type="monotone" dataKey="v" stroke="#A855F7" fill="rgba(168, 85, 247, 0.15)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── 3. MIDDLE SECTION: 3D CITY OVERVIEW + SIDEBAR PANELS ───────── */}
+      <div style={{ display: "grid", gridTemplateColumns: "2.3fr 1fr", gap: 14, minHeight: 490 }}>
+        
+        {/* Left Main Card: 3D City View */}
+        <div className="nx-glass" style={{
+          position: "relative", background: "rgba(10, 16, 32, 0.85)",
+          border: "1px solid rgba(0, 245, 255, 0.15)", borderRadius: 14,
+          overflow: "hidden", display: "flex", flexDirection: "column"
+        }}>
+          {/* Card Header */}
+          <div style={{
+            padding: "12px 18px", borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            background: "rgba(15, 23, 42, 0.4)", zIndex: 10
+          }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: "#F8FAFC", letterSpacing: "0.05em" }}>3D CITY OVERVIEW</div>
+              <div style={{ fontSize: 10, color: "#64748B" }}>Real-time unified view of city operations</div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <button onClick={() => setCameraAutoRotate(!cameraAutoRotate)} style={{
+                padding: "4px 10px", borderRadius: 6, border: "1px solid rgba(0, 245, 255, 0.3)",
+                background: cameraAutoRotate ? "rgba(0, 245, 255, 0.15)" : "transparent",
+                color: cameraAutoRotate ? "#00F5FF" : "#94A3B8", fontSize: 10, fontWeight: 600, cursor: "pointer"
+              }}>
+                <RotateCw style={{ width: 11, height: 11, display: "inline-block", marginRight: 4 }} />
+                {cameraAutoRotate ? "Orbiting" : "Orbit View"}
+              </button>
+            </div>
+          </div>
+
+          {/* 3D Canvas Container */}
+          <div style={{ position: "relative", flex: 1, minHeight: 410 }}>
+            <Canvas shadows camera={{ position: [12, 14, 18], fov: 42 }} dpr={[1, 2]} gl={{ antialias: true, alpha: true }}>
+              <City3DScene
+                currentCity={currentCity} stylePreset={stylePreset} weather={weather} timeOfDay={timeOfDay}
+                buildings={buildings} roads={roads} parks={parks} waters={waters} selectedBld={selectedBld}
+                onSelectBld={inspectBuilding} onSelectVehicle={inspectVehicle} selectedVehicle={selectedVehicle}
+                sirenActive={sirenActive} blackoutActive={blackoutActive} blackoutWaveRadius={blackoutWaveRadius}
+                blackoutOrigin={blackoutOrigin} scanActive={scanActive} scanOffset={scanOffset}
+                emergencyTarget={emergencyTarget} congestionMode={congestionMode} customSatelliteUrl={customSatelliteUrl}
+                cameraAutoRotate={cameraAutoRotate} mapTargetPos={mapTargetPos} showLandmarks={showLayers.landmarks}
+                showBuildings={showLayers.buildings} showRoads={showLayers.roads} showMetro={showLayers.metro}
+                showTraffic={showLayers.traffic} showWater={showLayers.water} showGreen={showLayers.green}
+                is2D={is2D} zoomInCounter={zoomInCounter} zoomOutCounter={zoomOutCounter}
+                lightningActive={lightningActive} textureLoader={textureLoader}
+              />
+            </Canvas>
+
+            {/* 3D Holographic Marker Pins */}
+            <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 5 }}>
+              {[
+                { label: "TRAFFIC CAMERAS", val: "248 Online", color: "#00F5FF", icon: Camera, top: "22%", left: "28%" },
+                { label: "ENERGY PLANTS", val: "12 Active", color: "#FBBF24", icon: Zap, top: "16%", left: "46%" },
+                { label: "AIR QUALITY", val: "Good", color: "#34D399", icon: Leaf, top: "14%", left: "54%" },
+                { label: "HOSPITALS", val: "24 Operational", color: "#EF4444", icon: Hospital, top: "30%", left: "68%" },
+                { label: "POLICE STATIONS", val: "18 Active", color: "#3B82F6", icon: Shield, top: "44%", left: "64%" },
+                { label: "FIRE STATIONS", val: "14 Active", color: "#F97316", icon: Flame, top: "56%", left: "60%" },
+                { label: "WASTE PLANTS", val: "8 Active", color: "#10B981", icon: Trash2, top: "60%", left: "48%" },
+                { label: "WATER TANKS", val: "95% Full", color: "#38BDF8", icon: Droplet, top: "48%", left: "30%" }
+              ].map((pin, idx) => (
+                <div key={idx} style={{
+                  position: "absolute", top: pin.top, left: pin.left,
+                  pointerEvents: "auto", cursor: "pointer"
+                }}>
+                  <div style={{
+                    background: "rgba(10, 18, 40, 0.88)", border: `1px solid ${pin.color}88`,
+                    borderRadius: 20, padding: "4px 10px 4px 6px", display: "flex", alignItems: "center", gap: 6,
+                    boxShadow: `0 0 16px ${pin.color}40`, backdropFilter: "blur(10px)"
+                  }}>
+                    <div style={{ width: 20, height: 20, borderRadius: "50%", background: `${pin.color}22`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <pin.icon style={{ width: 11, height: 11, color: pin.color }} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 8.5, fontWeight: 800, color: "#E2E8F0", letterSpacing: "0.04em" }}>{pin.label}</div>
+                      <div style={{ fontSize: 8, color: pin.color, fontWeight: 700 }}>{pin.val}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <span style={{ fontSize: 9, color: "#64748B", fontWeight: 700, letterSpacing: "0.04em" }}>POWER GRID</span>
               {blackoutActive || buildings.some(b => b.blackout) ? (
