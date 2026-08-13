@@ -4362,6 +4362,7 @@ _PAIRED_BLUETOOTH_DEVICES: List[Dict[str, Any]] = [
     }
 ]
 
+@api.get("/bluetooth/devices")
 @api.get("/phone/bluetooth/devices")
 async def get_bluetooth_devices():
     """List all real paired Bluetooth hardware devices from Windows PnP subsystem."""
@@ -4417,10 +4418,12 @@ def _scan_real_os_bluetooth_hardware():
                 if ("Wireless Bluetooth" in fname or "Bluetooth Radio" in fname or "Adapter" in fname) and "Intel" in fname:
                     adapter_info["name"] = fname
 
-                # Filter real paired devices (InstanceId contains BTHENUM and DEV_)
-                if "BTHENUM" in inst_id and "DEV_" in inst_id:
-                    # Skip services / transports
-                    if fname.endswith("Transport") or "Service" in fname or "Gateway" in fname or "Profile" in fname:
+                # Filter real paired devices (InstanceId contains BTHENUM or BTHLE and DEV_)
+                if ("BTHENUM" in inst_id or "BTHLE" in inst_id) and "DEV_" in inst_id:
+                    # Skip services / transports / generic profiles
+                    if any(x in fname for x in ["Transport", "Service", "Gateway", "Profile", "Enumerator"]):
+                        continue
+                    if fname.startswith("Bluetooth ") or fname.startswith("Generic "):
                         continue
 
                     # Extract MAC address from InstanceId: DEV_80E76993DFEE -> 80:E7:69:93:DF:EE
@@ -4435,12 +4438,12 @@ def _scan_real_os_bluetooth_hardware():
                         continue
                     seen_macs.add(mac_formatted)
 
-                    dev_type = "phone" if any(p in fname.lower() for p in ["phone", "realme", "galaxy", "iphone", "pixel", "5g", "mobile"]) else "headset"
+                    dev_type = "phone" if any(p in fname.lower() for p in ["phone", "realme", "galaxy", "iphone", "pixel", "5g", "mobile", "oneplus", "xiaomi", "oppo", "vivo"]) else "headset"
                     codec = "mSBC Wideband 16kHz" if dev_type == "headset" else "AAC HD Audio"
 
                     real_devices.append({
                         "id": f"real-bt-{len(real_devices)+1}",
-                        "name": f"{fname} (Real OS)",
+                        "name": f"{fname}",
                         "device_type": dev_type,
                         "battery_level": 90,
                         "codec": codec,
@@ -4453,15 +4456,6 @@ def _scan_real_os_bluetooth_hardware():
                     })
     except Exception as e:
         logging.warning(f"[BT-Hardware] PnP scan failed: {e}")
-
-    # Fallback default list if no devices connected right now
-    if not real_devices:
-        real_devices = [
-            {"id": "laptop-01", "name": "realme P4 Pro 5G (Real OS)", "device_type": "phone", "battery_level": 88, "codec": "AAC HD Audio", "rssi": -42, "connected": True, "mac": "80:E7:69:93:DF:EE", "paired_at": "Windows PnP Hardware", "isRealHardware": True},
-            {"id": "laptop-02", "name": "AirPods Pro (Real OS)", "device_type": "headset", "battery_level": 96, "codec": "mSBC Wideband 16kHz", "rssi": -38, "connected": False, "mac": "01:DD:6B:D4:1B:EF", "paired_at": "Windows PnP Hardware", "isRealHardware": True},
-            {"id": "laptop-03", "name": "Rockerz 558 (Real OS)", "device_type": "headset", "battery_level": 90, "codec": "AAC Stereo", "rssi": -48, "connected": False, "mac": "4C:72:74:0E:F1:EF", "paired_at": "Windows PnP Hardware", "isRealHardware": True},
-            {"id": "laptop-04", "name": "Noise 4 (Real OS)", "device_type": "headset", "battery_level": 92, "codec": "AAC Stereo", "rssi": -50, "connected": False, "mac": "BF:B5:EC:74:7D:F6", "paired_at": "Windows PnP Hardware", "isRealHardware": True},
-        ]
 
     return real_devices, adapter_info
 

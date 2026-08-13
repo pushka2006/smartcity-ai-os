@@ -53,7 +53,16 @@ export default function CommandCenter() {
   // Bluetooth states
   const [bluetoothOn, setBluetoothOn] = useState(false);
   const [btScanning, setBtScanning] = useState(false);
-  const [btDevices, setBtDevices] = useState([]);
+  const [btDevices, setBtDevices] = useState(() => {
+    try {
+      const saved = localStorage.getItem("nexus_real_bt_devices");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {}
+    return [];
+  });
 
   // Screencast states
   const [screencastOn, setScreencastOn] = useState(false);
@@ -78,9 +87,10 @@ export default function CommandCenter() {
   const fetchRealBtDevices = useCallback(async () => {
     try {
       const res = await http.get("/bluetooth/devices");
-      if (res.data && Array.isArray(res.data)) {
+      const list = Array.isArray(res.data) ? res.data : (res.data?.devices || []);
+      if (list.length > 0) {
         setBtDevices(prev => {
-          const backendMap = new Map(res.data.map(d => [d.name, d]));
+          const backendMap = new Map(list.map(d => [d.name, d]));
           const updated = prev.map(d => {
             if (backendMap.has(d.name)) {
               const backendDev = backendMap.get(d.name);
@@ -89,7 +99,7 @@ export default function CommandCenter() {
             return d;
           });
           const existingNames = new Set(updated.map(d => d.name));
-          const newHostDevices = res.data.filter(d => !existingNames.has(d.name));
+          const newHostDevices = list.filter(d => !existingNames.has(d.name));
           return [...updated, ...newHostDevices];
         });
       }
